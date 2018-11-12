@@ -70,9 +70,9 @@ class Request
     {
         return $this->method;
     }
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
-        $this->method = (string) $method;
+        $this->method = $method;
         return $this;
     }
 
@@ -80,9 +80,9 @@ class Request
     {
         return $this->url;
     }
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
-        $this->url = (string) $url;
+        $this->url = $url;
         return $this;
     }
 
@@ -92,7 +92,7 @@ class Request
     }
     public function setData($data)
     {
-        $this->data = (string) $data;
+        $this->data = $data;
         return $this;
     }
 
@@ -100,9 +100,9 @@ class Request
     {
         return $this->contentType;
     }
-    public function setContentType($contentType)
+    public function setContentType(string $contentType)
     {
-        $this->contentType = (string) $contentType;
+        $this->contentType = $contentType;
         return $this;
     }
 
@@ -110,9 +110,9 @@ class Request
     {
         return $this->encoding;
     }
-    public function setEncoding($encoding)
+    public function setEncoding(string $encoding)
     {
-        $this->encoding = (string) $encoding;
+        $this->encoding = $encoding;
         return $this;
     }
 
@@ -120,58 +120,57 @@ class Request
     {
         return $this->option;
     }
-    public function setOption($option)
+    public function setOption(RequestOption $option)
     {
         $this->option = $option;
         return $this;
     }
 
-    public function getHeader($header)
+    public function getHeader(string $header)
     {
-        try {
-            return $this->header->get($header);
-        } catch (\Exception $e) {}
+        return $this->header->getHeader($header);
+    }
+    public function getHeaderLine(string $header)
+    {
+        return $this->header->getHeaderLine($header);
     }
     public function getHeaders($headers)
     {
-        $result = [];
-        foreach ($headers as $header) {
-            $result[$header] = $this->getHeader($header);
-        }
-        return $result;
+        return $this->header->getHeaders($headers);
     }
     public function getAllHeaders()
     {
-        return $this->header->all();
+        return $this->header->getAllHeaders();
     }
     public function setHeader($header, $value)
     {
-        $this->header->set($header, $value);
+        $this->header->setHeader($header, $value);
         return $this;
     }
-    public function setHeaders($headers)
+    public function setHeaders(array $headers)
     {
-        foreach ($headers as $header => $value) {
-            $this->setHeader($header, $value);
-        }
+        $this->header->setHeaders($headers);
+        return $this;
+    }
+    public function addHeader($header, $value)
+    {
+        $this->header->addHeader($header, $value);
         return $this;
     }
 
     public function removeHeader($header)
     {
-        unset($this->header[$header]);
+        $this->header->removeHeader($header);
         return $this;
     }
-    public function removeHeaders($headers)
+    public function removeHeaders(array $headers)
     {
-        foreach ($headers as $header) {
-            $this->removeHeader($header);
-        }
+        $this->header->removeHeaders($headers);
         return $this;
     }
     public function removeAllHeaders()
     {
-        $this->removeHeaders(array_keys($this->getAllHeaders()));
+        $this->header->removeAllHeaders();
         return $this;
     }
 }

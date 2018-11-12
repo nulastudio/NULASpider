@@ -84,9 +84,8 @@ class Header
     /**
      * 获取已设置的Header中能与之相匹配的Header（大小写不敏感原因）
      *
-     * @param  string  $header  要检查的Header
-     * @return ?string          存在返回匹配的Header，否则返回null
-     *
+     * @param  string  $header                                          要检查的Header
+     * @return ?string 存在返回匹配的Header，否则返回null
      */
     protected function assocHeaderName(string $header)
     {

@@ -15,6 +15,12 @@ class Response
     protected $parsedHeader;
     protected $parsedContent;
 
+    public static function parseResponseString(string $responseStr, Request $request = null)
+    {
+        // TODO
+        return null;
+    }
+
     public static function fromSHCResponse(array $SHCResponse, Request $request = null)
     {
         $response                = new static();
@@ -46,11 +52,10 @@ class Response
     }
     public function getParsedHeader()
     {
-
+        return $this->parsedHeader;
     }
     public function getParsedContent()
     {
-
+        return $this->parsedContent;
     }
-
 }
