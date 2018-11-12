@@ -1,0 +1,47 @@
+{
+    "name": "nulastudio/nulaspider",
+    "description": "NULASpider",
+    "type": "project",
+    "keywords": [],
+    "homepage": "http://nulaspider.nulastudio.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fifty Percent",
+            "email": "fifty.percent@nulastudio.org",
+            "role": "Developer"
+        },
+        {
+            "name": "LiesAuer",
+            "email": "liesauer@nulastudio.org",
+            "homepage": "http://www.liesauer.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "psr/log": "^1.0",
+        "psr/container": "^1.0",
+        "nulastudio/middleware": "^1.2",
+        "liesauer/simple-http-client": "^1.2",
+        "liesauer/get-middle-text": "^1.0",
+        "pguardiario/phpuri": "^1.0",
+        "liesauer/kodmcrypt": "^1.1",
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-4": {
+            "nulastudio\\": "src/",
+            "User\\": "src/Spider/User/"
+        },
+        "classmap": [],
+        "files": [
+            "src/Util/Functions.php",
+            "src/Util/GenericsHelper.php"
+        ]
+    }
+}

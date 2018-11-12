@@ -1,0 +1,45 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "NULASpider.PHP",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0/NULASpider.PHP.dll",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "NULASpider.Test.CSharp",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NULASpider.Test.CSharp/bin/Debug/netcoreapp2.0/NULASpider.Test.CSharp.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NULASpider.Test.CSharp",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "NULASpider.Test.PHP",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NULASpider.Test.PHP/bin/Debug/netcoreapp2.0/NULASpider.Test.PHP.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NULASpider.Test.PHP",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
