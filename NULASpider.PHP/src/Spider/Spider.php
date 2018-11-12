@@ -7,11 +7,11 @@ use nulastudio\Log\NullLogger;
 use nulastudio\Networking\Http\Request;
 use nulastudio\Networking\Http\Response;
 use nulastudio\Spider\Application;
-use nulastudio\Spider\ConcurrentQueue;
 use nulastudio\Spider\Exceptions\SpiderException;
 use nulastudio\Spider\ServiceProviders\ExporterServiceProvider;
 use nulastudio\Spider\ServiceProviders\HookServiceProvider;
 use nulastudio\Spider\ServiceProviders\PluginServiceProvider;
+use nulastudio\Threading\ConcurrentQueue;
 use nulastudio\Threading\LockManager;
 use nulastudio\Util;
 use Psr\Log\LoggerAwareTrait;
@@ -21,8 +21,6 @@ class Spider
 {
     // 去重url数组
     private $unique_urls = [];
-
-    private $lockManager;
 
     // 请求队列
     private $downloadQueue;
@@ -72,9 +70,6 @@ class Spider
 
     public function __construct(array $configs = [])
     {
-        $this->lockManager = new LockManager;
-        LockManager::init();
-
         // 初始化请求队列、处理队列
         $this->downloadQueue = new ConcurrentQueue(Request::class);
         $this->processQueue  = new ConcurrentQueue(Response::class);
@@ -182,11 +177,11 @@ class Spider
     private function initWorker()
     {
         foreach ($this->configs['scan_urls'] as $scan_url) {
-            $this->add_url($scan_url);
+            $this->addUrl($scan_url);
         }
     }
 
-    public function add_url($url, $prevUrl = null)
+    public function addUrl($url, $prevUrl = null)
     {
         try {
             LockManager::getLock('add_url');
@@ -204,25 +199,25 @@ class Spider
         }
     }
 
-    public function get_url()
+    public function getUrl()
     {
         return $this->downloadQueue->Dequeue();
     }
-    public function has_url()
+    public function hasUrl()
     {
         return $this->downloadQueue->Count() !== 0;
     }
 
-    public function get_response()
+    public function getResponse()
     {
         return $this->processQueue->Dequeue();
     }
-    public function has_response()
+    public function hasResponse()
     {
         return $this->processQueue->Count() !== 0;
     }
 
-    public function fetch_url($request)
+    public function fetchUrl($request)
     {
         $this->hook('beforeRequest', $this, $request);
 
@@ -278,31 +273,31 @@ class Spider
         $this->processQueue->Enqueue($response);
     }
 
-    public function precess_response($response)
+    public function precessResponse($response)
     {
         $request = $response->getRequest();
         $url     = $request->getUrl();
         $content = $response->getRawContent();
-        if ($this->is_scan_url($url) && $this->on_scan_url) {
+        if ($this->isScanUrl($url) && $this->on_scan_url) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
-        if ($this->is_list_url($url) && $this->on_list_url) {
+        if ($this->isListUrl($url) && $this->on_list_url) {
             $ret = $this->callback('on_list_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
-        if ($this->is_content_url($url)) {
+        if ($this->isContentUrl($url)) {
             if ($this->on_content_url) {
                 $ret = $this->callback('on_content_url', $this, $url, $request, $response);
                 if ($ret !== true) {
                     return;
                 }
             }
-            $result = $this->fetch_fields($this->configs['fields'], $content, $request, $response);
+            $result = $this->fetchFields($this->configs['fields'], $content, $request, $response);
             if ($this->on_fetch_page) {
                 $result = $this->callback('on_fetch_page', $this, $result, $request, $response);
                 if ($result === false) {
@@ -313,29 +308,29 @@ class Spider
                 $this->callback('on_export', $this, $this->configs['export'], $result, $request, $response);
             }
         }
-        $this->find_list_url($content, $request, $response);
-        $this->find_content_url($content, $request, $response);
+        $this->findListUrl($content, $request, $response);
+        $this->findContentUrl($content, $request, $response);
 
         LockManager::getLock('update_processed');
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
     }
 
-    public function is_scan_url($url)
+    public function isScanUrl($url)
     {
-        return $this->is_url_matches_pattern($url, $this->configs['scan_urls']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['scan_urls']) !== false;
     }
-    public function is_list_url($url)
+    public function isListUrl($url)
     {
-        return $this->is_url_matches_pattern($url, $this->configs['list_url_pattern']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['list_url_pattern']) !== false;
     }
-    public function is_content_url($url)
+    public function isContentUrl($url)
     {
-        return $this->is_url_matches_pattern($url, $this->configs['content_url_pattern']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['content_url_pattern']) !== false;
     }
-    private function is_url_matches_pattern($url, $pattern)
+    private function isUrlMatchesPattern($url, $pattern)
     {
-        function is_regex($pattern)
+        function isRegex($pattern)
         {
             if (!is_string($pattern)) {
                 return false;
@@ -349,7 +344,7 @@ class Spider
         $matched_pattern = false;
         foreach ($patterns as $patt) {
             if (is_string($patt)) {
-                if (is_regex($patt) ? (preg_match($patt, $url) === 1) : ($url === $patt)) {
+                if (isRegex($patt) ? (preg_match($patt, $url) === 1) : ($url === $patt)) {
                     $matched_pattern = $patt;
                     break;
                 }
@@ -363,7 +358,7 @@ class Spider
         return $matched_pattern;
     }
 
-    private function find_list_url($content, $request, $response)
+    private function findListUrl($content, $request, $response)
     {
         $prevUrl = $request->getUrl();
         $urls    = [];
@@ -373,17 +368,17 @@ class Spider
                 $urls = $ret;
             }
         } else {
-            $urls = $this->find_urls($content, $request, $response);
+            $urls = $this->findUrls($content, $request, $response);
         }
         foreach ($urls as $url) {
             $url = Util\absolute_url($prevUrl, $url);
-            if ($this->is_list_url($url)) {
-                $this->add_url($url, $prevUrl);
+            if ($this->isListUrl($url)) {
+                $this->addUrl($url, $prevUrl);
             }
         }
     }
 
-    private function find_content_url($content, $request, $response)
+    private function findContentUrl($content, $request, $response)
     {
         $prevUrl = $request->getUrl();
         $urls    = [];
@@ -393,17 +388,17 @@ class Spider
                 $urls = $ret;
             }
         } else {
-            $urls = $this->find_urls($content, $request, $response);
+            $urls = $this->findUrls($content, $request, $response);
         }
         foreach ($urls as $url) {
             $url = Util\absolute_url($prevUrl, $url);
-            if ($this->is_content_url($url)) {
-                $this->add_url($url, $prevUrl);
+            if ($this->isContentUrl($url)) {
+                $this->addUrl($url, $prevUrl);
             }
         }
     }
 
-    private function find_urls($content, $request, $response)
+    private function findUrls($content, $request, $response)
     {
         $urls = [];
         try {
@@ -421,37 +416,37 @@ class Spider
         return $urls;
     }
 
-    private function fetch_single_field($type, $selector, $content, $request, $response)
+    private function fetchSingleField($type, $selector, $content, $request, $response)
     {
         if ($type === 'xpath') {
-            return $this->fetch_single_field_xpath($selector, $content, $request, $response);
+            return $this->fetchSingleFieldXpath($selector, $content, $request, $response);
         } else if ($type === 'regex') {
-            return $this->fetch_single_field_regex($selector, $content, $request, $response);
+            return $this->fetchSingleFieldRegex($selector, $content, $request, $response);
         } else if ($type === 'css') {
-            return $this->fetch_single_field_css($selector, $content, $request, $response);
+            return $this->fetchSingleFieldCss($selector, $content, $request, $response);
         } else if ($type === 'callback') {
-            return $this->fetch_single_field_callback($selector, $content, $request, $response);
+            return $this->fetchSingleFieldCallback($selector, $content, $request, $response);
         } else if ($type === 'raw') {
-            return $this->fetch_single_field_raw($selector, $content, $request, $response);
+            return $this->fetchSingleFieldRaw($selector, $content, $request, $response);
         }
         throw new SpiderException("Unrecognized selector type: {$type}.");
     }
-    private function fetch_repeated_fields($type, $selector, $content, $request, $response)
+    private function fetchRepeatedFields($type, $selector, $content, $request, $response)
     {
         if ($type === 'xpath') {
-            return $this->fetch_repeated_fields_xpath($selector, $content, $request, $response);
+            return $this->fetchRepeatedFieldsXpath($selector, $content, $request, $response);
         } else if ($type === 'regex') {
-            return $this->fetch_repeated_fields_regex($selector, $content, $request, $response);
+            return $this->fetchRepeatedFieldsRegex($selector, $content, $request, $response);
         } else if ($type === 'css') {
-            return $this->fetch_repeated_fields_css($selector, $content, $request, $response);
+            return $this->fetchRepeatedFieldsCss($selector, $content, $request, $response);
         } else if ($type === 'callback') {
-            return $this->fetch_repeated_fields_callback($selector, $content, $request, $response);
+            return $this->fetchRepeatedFieldsCallback($selector, $content, $request, $response);
         } else if ($type === 'raw') {
-            return $this->fetch_repeated_fields_raw($selector, $content, $request, $response);
+            return $this->fetchRepeatedFieldsRaw($selector, $content, $request, $response);
         }
         throw new SpiderException("Unrecognized selector type: {$type}.");
     }
-    private function fetch_single_field_xpath(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldXpath(string $selector, string $content, $request, $response)
     {
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
@@ -477,7 +472,7 @@ class Spider
             }
         } catch (\Exception $e) {}
     }
-    private function fetch_repeated_fields_xpath(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsXpath(string $selector, string $content, $request, $response)
     {
         $result = [];
         try {
@@ -507,20 +502,20 @@ class Spider
         } catch (\Exception $e) {}
         return $result;
     }
-    private function fetch_single_field_regex(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldRegex(string $selector, string $content, $request, $response)
     {
-        if (Util\is_regex($selector)) {
+        if (Util\isRegex($selector)) {
             if (preg_match($selector, $content, $matches) === 1) {
                 return $matches[0];
             }
         }
     }
-    private function fetch_repeated_fields_regex(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsRegex(string $selector, string $content, $request, $response)
     {
         $result = [];
         // 如果$matches数组只有一个元素，则表示无分组，使用匹配到的全文作为结果
         // 如果$matches数组有多个元素，则表示有分组，强制使用第一个分组作为结果
-        if (Util\is_regex($selector)) {
+        if (Util\isRegex($selector)) {
             if (preg_match_all($selector, $content, $matches)) {
                 if (count($matches) == 1) {
                     $result = array_values($matches);
@@ -531,7 +526,7 @@ class Spider
         }
         return $result;
     }
-    private function fetch_single_field_css(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldCss(string $selector, string $content, $request, $response)
     {
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
@@ -548,7 +543,7 @@ class Spider
             }
         } catch (\Exception $e) {}
     }
-    private function fetch_repeated_fields_css(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsCss(string $selector, string $content, $request, $response)
     {
         $result = [];
         try {
@@ -569,11 +564,11 @@ class Spider
         } catch (\Exception $e) {}
         return $result;
     }
-    private function fetch_single_field_callback(callable $callback, string $content, $request, $response)
+    private function fetchSingleFieldCallback(callable $callback, string $content, $request, $response)
     {
         return call_user_func($callback, $content, $this, $request, $response);
     }
-    private function fetch_repeated_fields_callback(callable $callback, string $content, $request, $response)
+    private function fetchRepeatedFieldsCallback(callable $callback, string $content, $request, $response)
     {
         $ret = call_user_func($callback, $content, $this, $request, $response);
         // 强制包装成数组，保证结构不被破坏
@@ -582,11 +577,11 @@ class Spider
         }
         return $ret;
     }
-    private function fetch_single_field_raw($selector, $content, $request, $response)
+    private function fetchSingleFieldRaw($selector, $content, $request, $response)
     {
         return $content;
     }
-    private function fetch_repeated_fields_raw($selector, $content, $request, $response)
+    private function fetchRepeatedFieldsRaw($selector, $content, $request, $response)
     {
         $res = $content;
         // 强制包装成数组，保证结构不被破坏
@@ -596,7 +591,7 @@ class Spider
         return $res;
     }
 
-    private function fetch_fields($fields, $content, $request, $response, $recursive = false)
+    private function fetchFields($fields, $content, $request, $response, $recursive = false)
     {
         $result = [];
         foreach ($fields as $name => $selector) {
@@ -605,7 +600,7 @@ class Spider
                 /**
                  * 简单xpath
                  */
-                $field = $this->fetch_single_field_xpath($selector, $content, $request, $response);
+                $field = $this->fetchSingleFieldXpath($selector, $content, $request, $response);
             } else if (is_array($selector)) {
                 /**
                  * 数组
@@ -656,11 +651,11 @@ class Spider
                 $_repeated = $selector['repeated'] ?? false;
                 // TODO repeated
                 if ($_repeated) {
-                    $repeated_fields = $this->fetch_repeated_fields($_type, $_selector, $content, $request, $response);
+                    $repeated_fields = $this->fetchRepeatedFields($_type, $_selector, $content, $request, $response);
                     foreach ($repeated_fields as &$_f) {
                         if ($_childs) {
                             // 递归提取
-                            $_f = $this->fetch_fields($_childs, $_f, $request, $response, true);
+                            $_f = $this->fetchFields($_childs, $_f, $request, $response, true);
                         }
                         if (is_callable($_callback)) {
                             $_f = call_user_func($_callback, $_f, $this, $request, $response);
@@ -668,10 +663,10 @@ class Spider
                     }
                     $field = $repeated_fields;
                 } else {
-                    $field = $this->fetch_single_field($_type, $_selector, $content, $request, $response);
+                    $field = $this->fetchSingleField($_type, $_selector, $content, $request, $response);
                     if ($_childs) {
                         // 递归提取
-                        $field = $this->fetch_fields($_childs, $field, $request, $response, true);
+                        $field = $this->fetchFields($_childs, $field, $request, $response, true);
                     }
                     if (is_callable($_callback)) {
                         $field = call_user_func($_callback, $field, $this, $request, $response);
@@ -681,7 +676,7 @@ class Spider
                 /**
                  * 简单回调
                  */
-                $field = $this->fetch_single_field_callback($selector, $content, $request, $response);
+                $field = $this->fetchSingleFieldCallback($selector, $content, $request, $response);
             } else {
                 throw new SpiderException("Unrecognized selector.");
             }
@@ -727,7 +722,7 @@ class Spider
         LockManager::releaseLock($hook);
     }
 
-    private function error_handler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
+    private function errorHandler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
     {
         $readable_error = '';
         switch ($errno) {
@@ -765,7 +760,7 @@ class Spider
             $this->safeExit(500);
         }
     }
-    private function exception_handler($ex)
+    private function exceptionHandler($ex)
     {
         $this->critical((string) $ex, []);
         $running = $this->callback('on_exception', $this, $ex);

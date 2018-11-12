@@ -6,7 +6,7 @@ use nulastudio\Spider\Contracts\ServiceProviderContract;
 use nulastudio\Spider\Exceptions\ServiceProviderRegisterException;
 use nulastudio\Spider\Kernel;
 use nulastudio\Spider\Services\HookService;
-use nulastudio\Spider\Util;
+use nulastudio\Util;
 
 class HookServiceProvider implements ServiceProviderContract
 {

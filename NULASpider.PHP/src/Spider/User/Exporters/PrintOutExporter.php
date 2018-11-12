@@ -3,7 +3,6 @@
 namespace User\Exporters;
 
 use nulastudio\Spider\Contracts\ExporterContract;
-use User\Exporters\ExporterInterface;
 
 class PrintOutExporter implements ExporterContract
 {

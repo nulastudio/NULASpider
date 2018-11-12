@@ -1,6 +1,6 @@
 <?php
 
-// namespace nulastudio\Spider\Util;
+// namespace nulastudio\Util;
 
 // class TypeInfo
 // {
