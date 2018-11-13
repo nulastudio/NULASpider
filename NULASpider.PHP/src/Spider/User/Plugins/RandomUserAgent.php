@@ -3,7 +3,7 @@
 namespace User\Plugins;
 
 use nulastudio\Spider\Contracts\PluginContract;
-use nulastudio\Spider\Http\UserAgent;
+use nulastudio\Networking\Http\UserAgent;
 
 class RandomUserAgent implements PluginContract
 {

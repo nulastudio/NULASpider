@@ -74,12 +74,12 @@ namespace nulastudio.Spider
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler((int)thread));
             Action<object> action = o => {
-                spider.fetch_url((PhpValue)o);
+                spider.fetchUrl((PhpValue)o);
                 finishDownloadOne();
             };
             while (true)
             {
-                dynamic request = spider.get_url();
+                dynamic request = spider.getUrl();
                 if (!request.IsNull)
                 {
                     startDownloadOne();
@@ -126,12 +126,12 @@ namespace nulastudio.Spider
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
             Action<object> action = o => {
-                spider.precess_response((PhpValue)o);
+                spider.precessResponse((PhpValue)o);
                 finishProcessOne();
             };
             while (true)
             {
-                dynamic response = spider.get_response();
+                dynamic response = spider.getResponse();
                 if (!response.IsNull)
                 {
                     startProcessOne();

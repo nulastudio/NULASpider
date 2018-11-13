@@ -186,7 +186,7 @@ class Spider
         try {
             LockManager::getLock('add_url');
             $url_hash = md5($url);
-            if (!Util\in_array($url_hash, $this->unique_urls)) {
+            if (!Util\inArray($url_hash, $this->unique_urls)) {
                 $this->unique_urls[] = $url_hash;
                 $request             = new Request(Request::REQUEST_METHOD_GET, $url);
                 if ($prevUrl) {
@@ -237,7 +237,7 @@ class Spider
             } else if ($method === Request::REQUEST_METHOD_POST) {
                 $response = SimpleHttpClient::quickPost($url, $header, $cookie, $data);
             }
-            $response = Response::fromSHCResponse($response)->setRequest($request);
+            $response = Response::fromSHCResponse($response, $request);
         }
 
         if ($this->on_request) {
@@ -371,7 +371,7 @@ class Spider
             $urls = $this->findUrls($content, $request, $response);
         }
         foreach ($urls as $url) {
-            $url = Util\absolute_url($prevUrl, $url);
+            $url = Util\absoluteUrl($prevUrl, $url);
             if ($this->isListUrl($url)) {
                 $this->addUrl($url, $prevUrl);
             }
@@ -391,7 +391,7 @@ class Spider
             $urls = $this->findUrls($content, $request, $response);
         }
         foreach ($urls as $url) {
-            $url = Util\absolute_url($prevUrl, $url);
+            $url = Util\absoluteUrl($prevUrl, $url);
             if ($this->isContentUrl($url)) {
                 $this->addUrl($url, $prevUrl);
             }

@@ -7,13 +7,13 @@ use nulastudio\Networking\Http\Request;
 
 class Response
 {
-    protected $request;
+    public $request;
 
-    protected $statusCode;
-    protected $rawHeader;
-    protected $rawContent;
-    protected $parsedHeader;
-    protected $parsedContent;
+    public $statusCode;
+    public $rawHeader;
+    public $rawContent;
+    public $parsedHeader;
+    public $parsedContent;
 
     public static function parseResponseString(string $responseStr, Request $request = null)
     {
@@ -24,7 +24,7 @@ class Response
     public static function fromSHCResponse(array $SHCResponse, Request $request = null)
     {
         $response                = new static();
-        $response->$request      = request;
+        $response->request       = $request;
         $response->statusCode    = $SHCResponse['http_code'] ?? 0;
         $response->rawHeader     = $SHCResponse['header'] ?? '';
         $response->rawContent    = $SHCResponse['data'] ?? '';

@@ -5,7 +5,7 @@ using Pchp.Core;
 
 namespace nulastudio.Threading
 {
-    sealed class LockManager
+    sealed public class LockManager
     {
         private static object _lockSelf = new object();
         private static Dictionary<string, object> _locks = new Dictionary<string, object>();

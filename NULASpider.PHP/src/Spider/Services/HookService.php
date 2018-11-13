@@ -3,7 +3,7 @@
 namespace nulastudio\Spider\Services;
 
 use nulastudio\Spider\Services\BaseService;
-use nulastudio\Spider\Util;
+use nulastudio\Util;
 
 class HookService extends BaseService implements \ArrayAccess
 {

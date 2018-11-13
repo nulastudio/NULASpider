@@ -71,7 +71,7 @@ class Header
                 $res[$header] = null;
             }
         }
-        return $result;
+        return $res;
     }
     public function getAllHeaders()
     {
