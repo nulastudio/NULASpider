@@ -48,11 +48,14 @@ return [
         // ],
     ],
     'export'              => [
-        'type'     => 'pdo',
-        'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
-        'username' => 'root',
-        'password' => 'root',
-        'table'    => 'blog',
-        'options'  => [],
+        'type'     => 'print',
     ],
+    // 'export'              => [
+    //     'type'     => 'pdo',
+    //     'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
+    //     'username' => 'root',
+    //     'password' => 'root',
+    //     'table'    => 'blog',
+    //     'options'  => [],
+    // ],
 ];

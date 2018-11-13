@@ -250,7 +250,7 @@ class Spider
         }
 
         if ($this->on_status_code) {
-            $status_code = $response->getHttpCode();
+            $status_code = $response->getStatusCode();
             $ret         = $this->callback('on_status_code', $this, $status_code, $request, $response);
             if ($ret === false) {
                 return;
@@ -273,7 +273,7 @@ class Spider
         $this->processQueue->Enqueue($response);
     }
 
-    public function precessResponse($response)
+    public function processResponse($response)
     {
         $request = $response->getRequest();
         $url     = $request->getUrl();
@@ -701,6 +701,15 @@ class Spider
         $this->hook('beforeExit', $this, $exit_code);
         $this->info("spider exited with code {$exit_code}", []);
         $this->callback('on_exit', $this, $exit_code);
+    }
+
+    private function validCallback(string $callback)
+    {
+        $lock = 'validCallback_' . md5($callback);
+        LockManager::getLock($lock);
+        $ret = Util\resolveCallable($this->$callback, true);
+        LockManager::releaseLock($lock);
+        return $ret !== false;
     }
 
     private function callback($callback, ...$params)

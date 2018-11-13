@@ -50,7 +50,6 @@ class PDOExporter implements ExporterContract
                 }
             }
             $sql .= implode(', ', $formatted);
-            var_dump($sql);
             $statement = $this->pdo->prepare($sql);
             var_dump($statement);
             $statement->execute($values);

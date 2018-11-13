@@ -18,8 +18,6 @@ class ExporterService extends BaseService
     public function register(string $name, string $exporter)
     {
         $className = ExporterContract::class;
-        # warning this is a bug!
-        $className = array_reverse(explode('\\', $className))[0];
 
         if (!class_exists($exporter) || !isset(class_implements($exporter)[$className])) {
             trigger_error("Can not register an invalid exporter: {$exporter}", E_USER_WARNING);

@@ -126,7 +126,7 @@ namespace nulastudio.Spider
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
             Action<object> action = o => {
-                spider.precessResponse((PhpValue)o);
+                spider.processResponse((PhpValue)o);
                 finishProcessOne();
             };
             while (true)
