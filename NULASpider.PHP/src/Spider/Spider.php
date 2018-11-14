@@ -615,7 +615,7 @@ class Spider
                 $_source = $selector['source'] ?? '';
                 if ($_source) {
                     if (is_callable($_source)) {
-                        $content = call_user_func($_source, $this, $request, $response);
+                        $content = call_user_func($_source, $content, $this, $request, $response);
                     } else if ($_source instanceof Request) {
                         $_is_ajax      = $selector['is_ajax'] ?? false;
                         $_auto_referer = $selector['auto_referer'] ?? false;
