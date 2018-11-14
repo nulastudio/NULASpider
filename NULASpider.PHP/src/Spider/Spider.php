@@ -637,7 +637,7 @@ class Spider
                         } else if ($method === Request::REQUEST_METHOD_POST) {
                             $_response = SimpleHttpClient::quickPost($url, $header, $cookie, $data);
                         }
-                        $content = Response::fromSHCResponse($_response)->setRequest($request)->getRawContent();
+                        $content = Response::fromSHCResponse($_response, $request)->getRawContent();
                     } else if ($_source instanceof Response) {
                         $content = $_source->getRawContent();
                     } else {
