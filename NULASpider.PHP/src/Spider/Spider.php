@@ -46,6 +46,7 @@ class Spider
     private $callbacks = [
         'on_start'         => null,
         'on_exit'          => null,
+        'on_error'         => null,
         'on_exception'     => null,
         'on_request'       => null,
         'on_status_code'   => null,
@@ -160,8 +161,8 @@ class Spider
     {
         define('BOOT_UP_TIME_FLOAT', microtime(true));
 
-        set_error_handler([$this, 'error_handler'], error_reporting());
-        set_exception_handler([$this, 'exception_handler']);
+        set_error_handler([$this, 'errorHandler'], error_reporting());
+        set_exception_handler([$this, 'exceptionHandler']);
 
         $this->callback('on_start', $this);
 
