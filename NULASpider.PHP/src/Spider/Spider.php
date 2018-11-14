@@ -44,21 +44,20 @@ class Spider
 
     // 回调函数以及功能覆写
     private $callbacks = [
-        'on_start'          => null,
-        'on_exit'           => null,
-        'on_exception'      => null,
-        'on_request'        => null,
-        'on_status_code'    => null,
-        'on_process'        => null,
-        'on_scan_url'       => null,
-        'on_list_url'       => null,
-        'on_content_url'    => null,
-        'on_fetch_field'    => null,
-        'on_fetch_page'     => null,
-        'on_export'         => null,
-        'requestOverride'   => null,
-        'findUrlsOverride'  => null,
-        'storeDataOverride' => null,
+        'on_start'         => null,
+        'on_exit'          => null,
+        'on_exception'     => null,
+        'on_request'       => null,
+        'on_status_code'   => null,
+        'on_process'       => null,
+        'on_scan_url'      => null,
+        'on_list_url'      => null,
+        'on_content_url'   => null,
+        'on_fetch_field'   => null,
+        'on_fetch_page'    => null,
+        'on_export'        => null,
+        'requestOverride'  => null,
+        'findUrlsOverride' => null,
     ];
 
     // 爬虫配置项
