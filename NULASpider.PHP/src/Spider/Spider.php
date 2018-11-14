@@ -224,6 +224,9 @@ class Spider
         $response = null;
         if ($this->requestOverride) {
             $response = $this->callback('requestOverride', $this, $request);
+            if (!$response instanceof Response) {
+                return;
+            }
         } else {
             $method   = $request->getMethod();
             $url      = $request->getUrl();
