@@ -19,6 +19,6 @@ error_reporting(E_ALL);
 date_default_timezone_set('Asia/Shanghai');
 
 // 加载爬虫程序
-require __DIR__ . '/User/spiders/program.php';
+// require __DIR__ . '/User/spiders/program.php';
 
-// loadScript(realpath('./dynamicSpider.php'));
+loadScript(realpath('./dynamicSpider.php'));
