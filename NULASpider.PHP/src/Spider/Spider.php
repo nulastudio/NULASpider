@@ -230,6 +230,7 @@ class Spider
         } else {
             $method   = $request->getMethod();
             $url      = $request->getUrl();
+            var_dump($url);
             $header   = $request->getAllHeaders();
             $cookie   = '';
             $data     = $request->getData();
@@ -280,6 +281,7 @@ class Spider
     {
         $request = $response->getRequest();
         $url     = $request->getUrl();
+        echo "{$url}\n";
         $content = $response->getRawContent();
         if ($this->isScanUrl($url) && $this->on_scan_url) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
