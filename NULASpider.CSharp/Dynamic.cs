@@ -6,7 +6,7 @@ using Peachpie.Library;
 
 public static class Dynamic
 {
-    public static PhpValue loadScript(Context ctx, string scriptFile)
+    public static PhpValue loadSingleScript(Context ctx, string scriptFile)
     {
         var script = ctx.ScriptingProvider.CreateScript(new Context.ScriptOptions()
         {

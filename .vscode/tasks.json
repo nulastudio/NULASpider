@@ -20,6 +20,17 @@
                 "${workspaceFolder}/NULASpider.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "-c=Release",
+                "${workspaceFolder}/NULASpider.sln"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
