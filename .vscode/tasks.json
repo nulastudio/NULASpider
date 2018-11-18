@@ -31,6 +31,68 @@
                 "${workspaceFolder}/NULASpider.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-all",
+            "dependsOn": [
+                "publish-win-x64",
+                "publish-win-x86",
+                "publish-linux-x64",
+                "publish-osx-x64",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-win-x64",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "-c=Release",
+                "-r=win-x64",
+                "-o=${workspaceFolder}/Release/win-x64/",
+                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-win-x86",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "-c=Release",
+                "-r=win-x86",
+                "-o=${workspaceFolder}/Release/win-x86/",
+                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-linux-x64",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "-c=Release",
+                "-r=linux-x64",
+                "-o=${workspaceFolder}/Release/linux-x64/",
+                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish-osx-x64",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "publish",
+                "-c=Release",
+                "-r=osx-x64",
+                "-o=${workspaceFolder}/Release/osx-x64/",
+                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutDir>/Users/imac/Projects/NULASpider/NULASpider.PHP/bin/Release/publish</OutDir>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <StartupObject>bootstrap.php</StartupObject>
     <Description>NULASpider</Description>
-    <RuntimeIdentifier>win-x86;win-x64;linux-x64;osx-x64</RuntimeIdentifier>
+    <RuntimeIdentifiers>win-x64;win-x86;linux-x64;osx-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />

@@ -15,6 +15,7 @@ __MACOSX
 # Build results
 [Bb]in/
 [Oo]bj/
+[Rr]elease/
 
 # sublime
 *.sublime-workspace
