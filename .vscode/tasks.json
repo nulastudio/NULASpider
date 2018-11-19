@@ -43,6 +43,15 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "publish-all-shell",
+            "type": "shell",
+            "command": "sh ${workspaceFolder}/publish-multi-targets.sh",
+            "windows": {
+                "command": "${workspaceFolder}/publish-multi-targets.bat",
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "publish-win-x64",
             "command": "dotnet",
             "type": "shell",
