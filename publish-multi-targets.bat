@@ -2,9 +2,13 @@
 
 set workdir=%~dp0
 
-for %target in ("win-x64" "win-x86" "linux-x64" "osx-x64") do (
-	echo "\npublishing target %target\n"
-	dotnet publish -c=Release -r=%target -o=%workdir/Release/%target/ %workdir/NULASpider.PHP/NULASpider.PHP.msbuildproj
+for %%i in (win-x64 win-x86 linux-x64 osx-x64) do (
+    echo\
+    echo publishing target %%i
+    echo\
+    dotnet publish -c=Release -r=%%i -o=%workdir%/Release/%%i/ %workdir%/NULASpider.PHP/NULASpider.PHP.msbuildproj
 )
 
-echo "all done!\n"
+echo\
+echo all done!
+echo\
