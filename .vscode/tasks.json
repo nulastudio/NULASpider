@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "Build Project",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -12,17 +12,28 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "restore",
+            "label": "Restore Project (composer init included)",
             "command": "dotnet",
             "type": "shell",
             "args": [
                 "restore",
                 "${workspaceFolder}/NULASpider.sln"
             ],
+            "windows": {
+                "command": "dotnet",
+                "args": [
+                    ";",
+                    "cd",
+                    "${workspaceFolder}/NULASpider.PHP",
+                    ";",
+                    "composer",
+                    "install"
+                ]
+            },
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
+            "label": "Publish",
             "command": "dotnet",
             "type": "shell",
             "args": [
@@ -33,7 +44,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-all",
+            "label": "Publish All Platforms",
             "dependsOn": [
                 "publish-win-x64",
                 "publish-win-x86",
@@ -43,7 +54,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-all-shell",
+            "label": "Publish All Platforms (Shell)",
             "type": "shell",
             "command": "sh ${workspaceFolder}/publish-multi-targets.sh",
             "windows": {
@@ -52,7 +63,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-win-x64",
+            "label": "Publish win-x64",
             "command": "dotnet",
             "type": "shell",
             "args": [
@@ -65,7 +76,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-win-x86",
+            "label": "Publish win-x86",
             "command": "dotnet",
             "type": "shell",
             "args": [
@@ -78,7 +89,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-linux-x64",
+            "label": "Publish linux-x64",
             "command": "dotnet",
             "type": "shell",
             "args": [
@@ -91,7 +102,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish-osx-x64",
+            "label": "Publish osx-x64",
             "command": "dotnet",
             "type": "shell",
             "args": [
