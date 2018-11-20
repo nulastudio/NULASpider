@@ -17,19 +17,14 @@
             "type": "shell",
             "args": [
                 "restore",
-                "${workspaceFolder}/NULASpider.sln"
+                "${workspaceFolder}/NULASpider.sln",
+                ";",
+                "cd",
+                "${workspaceFolder}/NULASpider.PHP",
+                ";",
+                "composer",
+                "install"
             ],
-            "windows": {
-                "command": "dotnet",
-                "args": [
-                    ";",
-                    "cd",
-                    "${workspaceFolder}/NULASpider.PHP",
-                    ";",
-                    "composer",
-                    "install"
-                ]
-            },
             "problemMatcher": "$msCompile"
         },
         {
