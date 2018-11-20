@@ -51,7 +51,7 @@ $config = [
         //     'repeated' => true,
         // ],
     ],
-    'export'              => [
+    '_export'              => [
         'type' => 'print',
     ],
     // 'export'              => [

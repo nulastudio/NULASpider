@@ -73,9 +73,13 @@ namespace nulastudio.Spider
         {
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler((int)thread));
+            object dLock = new object();
             Action<object> action = o => {
-                spider.fetchUrl((PhpValue)o);
-                finishDownloadOne();
+                lock (dLock)
+                {
+                    spider.fetchUrl((PhpValue)o);
+                    finishDownloadOne();
+                }
             };
             while (true)
             {
@@ -125,9 +129,13 @@ namespace nulastudio.Spider
         {
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
+            object pLock = new object();
             Action<object> action = o => {
-                spider.processResponse((PhpValue)o);
-                finishProcessOne();
+                lock (pLock)
+                {
+                    spider.processResponse((PhpValue)o);
+                    finishProcessOne();
+                }
             };
             while (true)
             {
@@ -145,25 +153,27 @@ namespace nulastudio.Spider
 
         private static void monitorTask(dynamic spider)
         {
-            while (false)
+            while (true)
             {
                 PhpArray monitor = (PhpArray)(spider.__get((PhpValue)"monitor"));
-                Console.Clear();
-                // Console.WriteAscii("NULASpider");
+                string downloaded = monitor.GetItemValue((IntStringKey)"downloaded").ToString();
+                string processed = monitor.GetItemValue((IntStringKey)"processed").ToString();
+                // Console.SetCursorPosition(0, 0);
+                // Console.Clear();
+                Console.Write("\x33[2J\n");
+                Console.WriteAscii("NULASpider");
                 string table = ConsoleTableBuilder
                     .From(new List<List<object>> {
-                        new List<object> {"a", "b", "c"},
-                        new List<object> {"c", "c", "c"},
-                        new List<object> {"c", "c", "c"},
+                        new List<object> { downloaded, processed },
                     })
                     .WithFormat(ConsoleTableBuilderFormat.Alternative)
                     .WithColumn(
-                        new List<string> {"name", "key", "value"}
+                        new List<string> { "downloaded", "processed" }
                     )
                     .Export().ToString();
-                // Console.WriteLine(table, Color.Red);
+                Console.WriteLine(table, Color.Red);
                 // Console.WriteWithGradient(table,Color.Red,Color.Blue);
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
             }
         }
     }

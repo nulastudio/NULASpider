@@ -219,6 +219,7 @@ class Spider
 
     public function fetchUrl($request)
     {
+        LockManager::getLock("fetchUrl");
         $this->hook('beforeRequest', $this, $request);
 
         $response = null;
@@ -274,10 +275,12 @@ class Spider
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
         $this->processQueue->Enqueue($response);
+        LockManager::releaseLock("fetchUrl");
     }
 
     public function processResponse($response)
     {
+        LockManager::getLock("processResponse");
         $request = $response->getRequest();
         $url     = $request->getUrl();
         $content = $response->getRawContent();
@@ -317,6 +320,7 @@ class Spider
         LockManager::getLock('update_processed');
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
+        LockManager::releaseLock("processResponse");
     }
 
     public function isScanUrl($url)
@@ -729,9 +733,9 @@ class Spider
     private function hook($hook, ...$params)
     {
         $lock = md5($hook);
-        LockManager::getLock($hook);
+        LockManager::getLock($lock);
         $this->triggerHook($hook, $params);
-        LockManager::releaseLock($hook);
+        LockManager::releaseLock($lock);
     }
 
     private function errorHandler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
