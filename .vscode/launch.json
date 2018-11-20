@@ -8,7 +8,7 @@
             "name": "NULASpider.PHP",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "Build Project",
             "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0/NULASpider.PHP.dll",
             "args": [
                 "User/spiders/liesauer-blog.php"
@@ -22,7 +22,7 @@
             "name": "NULASpider.Test.CSharp",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "Build Project",
             "program": "${workspaceFolder}/NULASpider.Test.CSharp/bin/Debug/netcoreapp2.0/NULASpider.Test.CSharp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/NULASpider.Test.CSharp",
@@ -34,7 +34,7 @@
             "name": "NULASpider.Test.PHP",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "Build Project",
             "program": "${workspaceFolder}/NULASpider.Test.PHP/bin/Debug/netcoreapp2.0/NULASpider.Test.PHP.dll",
             "args": [],
             "cwd": "${workspaceFolder}/NULASpider.Test.PHP",
