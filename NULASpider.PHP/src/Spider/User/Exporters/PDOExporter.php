@@ -2,10 +2,10 @@
 
 namespace User\Exporters;
 
-use nulastudio\Spider\Contracts\ExporterContract;
+use nulastudio\Spider\Contracts\AbstructExporter;
 use \PDO;
 
-class PDOExporter implements ExporterContract
+class PDOExporter extends AbstructExporter
 {
     // 你好
     private $pdo;

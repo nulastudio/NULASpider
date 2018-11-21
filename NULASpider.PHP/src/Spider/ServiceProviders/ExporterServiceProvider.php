@@ -17,6 +17,12 @@ class ExporterServiceProvider implements ServiceProviderContract
         $kernel->getApplication()->on_export = function ($spider, $config, $data, $request, $response) {
             $exporter = $this->exporterService->getExporter($config['type']);
             if ($exporter) {
+                $data = is_array($data) ? $data : [$data];
+                array_walk($data, function(&$val) use($exporter) {
+                    if (is_array($val) || is_object($val) || is_resource($val)) {
+                        $val = $exporter->handleUnsuppertedData($val);
+                    }
+                });
                 $exporter->export($data);
             } else {
                 trigger_error("Can not find a suitable exporter for type {$config['type']}.", E_USER_WARNING);

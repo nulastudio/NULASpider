@@ -158,9 +158,11 @@ namespace nulastudio.Spider
                 PhpArray monitor = (PhpArray)(spider.__get((PhpValue)"monitor"));
                 string downloaded = monitor.GetItemValue((IntStringKey)"downloaded").ToString();
                 string processed = monitor.GetItemValue((IntStringKey)"processed").ToString();
-                // Console.SetCursorPosition(0, 0);
-                // Console.Clear();
-                Console.Write("\x33[2J\n");
+                try
+                {
+                    Console.Clear();
+                }
+                catch {}
                 Console.WriteAscii("NULASpider");
                 string table = ConsoleTableBuilder
                     .From(new List<List<object>> {
@@ -173,7 +175,7 @@ namespace nulastudio.Spider
                     .Export().ToString();
                 Console.WriteLine(table, Color.Red);
                 // Console.WriteWithGradient(table,Color.Red,Color.Blue);
-                Thread.Sleep(3000);
+                Thread.Sleep(500);
             }
         }
     }

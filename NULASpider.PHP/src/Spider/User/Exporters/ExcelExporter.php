@@ -3,9 +3,9 @@
 namespace User\Exporters;
 
 use nulastudio\Document\EPPlus4PHP\ExcelPackage;
-use nulastudio\Spider\Contracts\ExporterContract;
+use nulastudio\Spider\Contracts\AbstructExporter;
 
-class ExcelExporter implements ExporterContract
+class ExcelExporter extends AbstructExporter
 {
     private $excelPackage;
     private $workSheet;

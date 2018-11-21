@@ -51,8 +51,10 @@ $config = [
         //     'repeated' => true,
         // ],
     ],
-    '_export'              => [
-        'type' => 'print',
+    'export' => [
+        'type' => 'excel',
+        'file'  => DIR_DATA . '/blog.xlsx',
+        'sheet' => 'blog',
     ],
     // 'export'              => [
     //     'type'     => 'pdo',

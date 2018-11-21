@@ -2,9 +2,9 @@
 
 namespace User\Exporters;
 
-use nulastudio\Spider\Contracts\ExporterContract;
+use nulastudio\Spider\Contracts\AbstructExporter;
 
-class PrintOutExporter implements ExporterContract
+class PrintOutExporter extends AbstructExporter
 {
     public function __construct(array $config = [])
     {}

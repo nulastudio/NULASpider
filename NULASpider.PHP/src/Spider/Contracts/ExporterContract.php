@@ -6,4 +6,5 @@ interface ExporterContract
 {
     public function __construct(array $config = []);
     public function export($data);
+    public function handleUnsuppertedData($data);
 }
