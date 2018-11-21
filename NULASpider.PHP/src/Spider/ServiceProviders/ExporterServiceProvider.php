@@ -18,7 +18,11 @@ class ExporterServiceProvider implements ServiceProviderContract
             $exporter = $this->exporterService->getExporter($config['type']);
             if ($exporter) {
                 $data = is_array($data) ? $data : [$data];
-                array_walk($data, function(&$val) use($exporter) {
+                array_walk($data, function (&$val) use ($exporter) {
+                    // 对于其他类型都能友好的转换为字符串
+                    // 布尔型转换为大写的FALSE TRUE
+                    // 浮点型转换为小数形式（小数点后为0会省略）
+                    // 整数型转换为整数
                     if (is_array($val) || is_object($val) || is_resource($val)) {
                         $val = $exporter->handleUnsuppertedData($val);
                     }
