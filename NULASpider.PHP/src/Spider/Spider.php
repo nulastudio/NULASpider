@@ -86,6 +86,9 @@ class Spider
             ExporterServiceProvider::class,
         ]);
         $this->kernel->bootstrap();
+
+        set_error_handler([$this, 'errorHandler'], error_reporting());
+        set_exception_handler([$this, 'exceptionHandler']);
     }
 
     public function __get($prop)
@@ -160,9 +163,6 @@ class Spider
     public function start()
     {
         define('BOOT_UP_TIME_FLOAT', microtime(true));
-
-        set_error_handler([$this, 'errorHandler'], error_reporting());
-        set_exception_handler([$this, 'exceptionHandler']);
 
         $this->callback('on_start', $this);
 
@@ -738,7 +738,7 @@ class Spider
         LockManager::releaseLock($lock);
     }
 
-    private function errorHandler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
+    public function errorHandler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
     {
         $readable_error = '';
         switch ($errno) {
@@ -776,7 +776,7 @@ class Spider
             $this->safeExit(500);
         }
     }
-    private function exceptionHandler($ex)
+    public function exceptionHandler(\Exception $ex)
     {
         $this->critical((string) $ex, []);
         $running = $this->callback('on_exception', $this, $ex);

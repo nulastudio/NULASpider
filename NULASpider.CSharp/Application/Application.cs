@@ -77,8 +77,15 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 lock (dLock)
                 {
-                    spider.fetchUrl((PhpValue)o);
-                    finishDownloadOne();
+                    try
+                    {
+                        spider.fetchUrl((PhpValue)o);
+                        finishDownloadOne();
+                    }
+                    catch (Pchp.Library.Spl.Exception ex)
+                    {
+                        spider.exceptionHandler(ex);
+                    }
                 }
             };
             while (true)
@@ -133,8 +140,15 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 lock (pLock)
                 {
-                    spider.processResponse((PhpValue)o);
-                    finishProcessOne();
+                    try
+                    {
+                        spider.processResponse((PhpValue)o);
+                        finishProcessOne();
+                    }
+                    catch (Pchp.Library.Spl.Exception ex)
+                    {
+                        spider.exceptionHandler(ex);
+                    }
                 }
             };
             while (true)
