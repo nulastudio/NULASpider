@@ -3,8 +3,7 @@
 namespace nulastudio\Spider;
 
 use nulastudio\Spider\Contracts\ServiceProviderContract;
-use nulastudio\Spider\Exceptions\ApplicationNotObjectException;
-use nulastudio\Spider\Exceptions\ServiceNotFoundException;
+use nulastudio\Spider\Exceptions\KernelException;
 
 class Kernel
 {
@@ -16,14 +15,22 @@ class Kernel
     {
         if (!is_object($application)) {
             $type = gettype($application);
-            throw new ApplicationNotObjectException("Trying to inject a non-object({$type} detected) to the kernel.");
-        }
-        foreach ($providers as $provider) {
-            $this->providers[] = $provider;
+            throw new KernelException("Trying to inject a non-object({$type} detected) into the kernel.");
         }
         $this->application = $application;
-        $this->bind('bind', function ($application, string $name, $provider) {
-            $this->bind($name, $provider);
+        foreach ($providers as $provider) {
+            check:
+            if (is_object($provider) && $provider instanceof ServiceProviderContract) {
+                $this->providers[] = $provider;
+            } else if (is_string($provider) && class_exists($provider)) {
+                $provider = new $provider;
+                goto check;
+            } else {
+                throw new KernelException('Trying to register an invalid service provider.');
+            }
+        }
+        $this->bind('bind', function ($application, string $name, $stuff) {
+            $this->bind($name, $stuff);
         });
     }
 
@@ -36,7 +43,7 @@ class Kernel
     private function registerProviders()
     {
         foreach ($this->providers as $provider) {
-            $this->register(new $provider);
+            $this->register($provider);
         }
     }
 
@@ -45,9 +52,9 @@ class Kernel
         $provider->register($this);
     }
 
-    public function bind(string $name, $provider)
+    public function bind(string $name, $stuff)
     {
-        $this->binds[$name] = $provider;
+        $this->binds[$name] = $stuff;
     }
 
     // public function singleton() {}
@@ -57,7 +64,7 @@ class Kernel
     public function getService(string $service)
     {
         if (!array_key_exists($service, $this->binds)) {
-            throw new ServiceNotFoundException("Service not found: {$service}");
+            throw new KernelException("Service not found: {$service}");
         }
         return $this->binds[$service];
     }

@@ -70,22 +70,26 @@ class Spider
 
     public function __construct(array $configs = [])
     {
-        // 初始化请求队列、处理队列
-        $this->downloadQueue = new ConcurrentQueue(Request::class);
-        $this->processQueue  = new ConcurrentQueue(Response::class);
+        try {
+            // 初始化请求队列、处理队列
+            $this->downloadQueue = new ConcurrentQueue(Request::class);
+            $this->processQueue  = new ConcurrentQueue(Response::class);
 
-        // 接收并检查配置
-        $this->checkConfig($configs);
+            // 接收并检查配置
+            $this->checkConfig($configs);
 
-        $this->setLogger($this->configs['logger']);
+            $this->setLogger($this->configs['logger']);
 
-        // 注册内核
-        $this->kernel = new Kernel($this, [
-            HookServiceProvider::class,
-            PluginServiceProvider::class,
-            ExporterServiceProvider::class,
-        ]);
-        $this->kernel->bootstrap();
+            // 注册内核
+            $this->kernel = new Kernel($this, [
+                HookServiceProvider::class,
+                PluginServiceProvider::class,
+                ExporterServiceProvider::class,
+            ]);
+            $this->kernel->bootstrap();
+        } catch (\Exception $e) {
+            exit("Exception occurred while booting.\n" . (string) $e);
+        }
 
         set_error_handler([$this, 'errorHandler'], error_reporting());
         set_exception_handler([$this, 'exceptionHandler']);
