@@ -82,7 +82,7 @@ class Spider
 
             // 注册内核
             $this->kernel = new Kernel($this, [
-                HookServiceProvider::class,
+                new HookServiceProvider($this->hook_points),
                 PluginServiceProvider::class,
                 ExporterServiceProvider::class,
             ]);
@@ -103,8 +103,6 @@ class Spider
                 return $this->configs;
             case 'monitor':
                 return $this->monitor;
-            case 'hook_points':
-                return $this->hook_points;
             // case 'callbacks':
             //     return $this->callbacks;
             default:

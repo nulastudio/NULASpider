@@ -70,7 +70,11 @@ class HookService extends BaseService implements \ArrayAccess
 
     public function addHook(string $hook, callable $callback)
     {
-        $this[$hook][] = $callback;
+        if (isset($this[$hook])) {
+            $this[$hook][] = $callback;
+            return true;
+        }
+        return false;
     }
 
     public function cleanHook(string $hook = null)
@@ -81,6 +85,14 @@ class HookService extends BaseService implements \ArrayAccess
             foreach (array_keys($this->hooks) as $key) {
                 unset($this[$key]);
             }
+        }
+    }
+
+    public function triggerHook(string $hook, ...$params)
+    {
+        foreach ($this->getHooks($hook) as $h) {
+            // $hook(...$params);
+            call_user_func_array($h, $params);
         }
     }
 

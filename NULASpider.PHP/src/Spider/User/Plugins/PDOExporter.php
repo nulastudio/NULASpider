@@ -10,11 +10,11 @@ class PDOExporter implements PluginContract
     public static function install($application, ...$params)
     {
         $application->registerExporter('pdo', _PDOExporter::class);
-        $application->hooks['beforeExit'] += [function ($spider, $exit_code) {
+        $application->hooks['beforeExit'][] = function ($spider, $exit_code) {
             $exporter = $spider->getExporter();
             if ($exporter !== null && $exporter instanceof _PDOExporter) {
                 $exporter->close();
             }
-        }];
+        };
     }
 }
