@@ -27,15 +27,15 @@ $config = [
             'type'     => 'css',
             'selector' => '.post-meta',
             'fields'   => [
-                'author' => [
+                'author'   => [
                     'type'     => 'css',
                     'selector' => 'li:nth-child(1)>a',
                 ],
-                'time'   => [
+                'time'     => [
                     'type'     => 'css',
                     'selector' => 'li:nth-child(2)>time',
                 ],
-                'author' => [
+                'category' => [
                     'type'     => 'css',
                     'selector' => 'li:nth-child(3)>a',
                 ],
