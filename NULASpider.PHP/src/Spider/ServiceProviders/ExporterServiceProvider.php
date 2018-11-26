@@ -15,7 +15,7 @@ class ExporterServiceProvider implements ServiceProviderContract
     {
         $this->exporterService               = new ExporterService($kernel->getApplication()->configs['export'] ?? []);
         $kernel->getApplication()->on_export = function ($spider, $config, $data, $request, $response) {
-            $exporter = $this->exporterService->getExporter($config['type']);
+            $exporter = $this->exporterService->getExporter();
             if ($exporter) {
                 $data = is_array($data) ? $data : [$data];
                 array_walk($data, function (&$val) use ($exporter) {
