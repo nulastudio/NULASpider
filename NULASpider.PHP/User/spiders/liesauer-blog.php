@@ -3,6 +3,7 @@
 use nulastudio\Log\FileLogger;
 use nulastudio\Networking\Http\Header;
 use nulastudio\Networking\Http\Request;
+use nulastudio\Networking\Http\RequestOption;
 use nulastudio\Networking\Http\UserAgent;
 use nulastudio\Spider\Spider;
 
@@ -73,6 +74,9 @@ $spider->on_start = function ($spider) {
         Header::defaultHeader()->setHeaders([
             'User-Agent' => UserAgent::USER_AGENTS['WIN10_X64_EDGE'],
         ]));
+    $requestOption = RequestOption::defaultRequestOption();
+    // $requestOption->proxy = 'http://127.0.0.1:8888';
+    Request::setDefaultOption($requestOption);
 };
 
 $spider->use(User\Plugins\Buff::class);

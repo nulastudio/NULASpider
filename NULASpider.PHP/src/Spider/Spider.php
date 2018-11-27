@@ -16,7 +16,8 @@ use nulastudio\Threading\LockManager;
 use nulastudio\Util;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerTrait;
-use Sabre\Uri;
+
+// use Sabre\Uri;
 
 class Spider
 {
@@ -232,25 +233,36 @@ class Spider
                 return;
             }
         } else {
-            $method    = $request->getMethod();
-            $url       = $request->getUrl();
-            $header    = $request->getAllHeaders();
-            $cookie    = '';
-            $data      = $request->getData();
-            $option    = $request->getOption();
-            $proxy     = Uri\parse($option->proxy);
+            $method = $request->getMethod();
+            $url    = $request->getUrl();
+            $header = $request->getAllHeaders();
+            $cookie = '';
+            $data   = $request->getData();
+            $option = $request->getOption();
+            // bug
+            /*
+            $uri = preg_replace_callback(
+            '/[^[:ascii:]]/u',
+            function($matches) {
+            return rawurlencode($matches[0]);
+            },
+            $uri
+            );
+             */
+            // $proxy     = Uri\parse($option->proxy);
+            $proxy     = parse_url($option->proxy) ?: [];
             $curl_opts = [
-                CURLOPT_HTTP_VERSION   => @[
-                    ''    => CURL_HTTP_VERSION_NONE,
-                    '1'   => CURL_HTTP_VERSION_1_0,
-                    '1.0' => CURL_HTTP_VERSION_1_0,
-                    '1.1' => CURL_HTTP_VERSION_1_1,
-                    '2'   => CURL_HTTP_VERSION_2,
-                ][$option->httpVersion] ?? '',
-                CURLOPT_TIMEOUT        => $option->timeout,
-                CURLOPT_FOLLOWLOCATION => $option->followLocation,
-                CURLOPT_AUTOREFERER    => $option->autoReferer,
-                CURLOPT_MAXREDIRS      => $option->maxRedirs,
+                // CURLOPT_HTTP_VERSION => @[
+                //     ''    => CURL_HTTP_VERSION_NONE,
+                //     '1'   => CURL_HTTP_VERSION_1_0,
+                //     '1.0' => CURL_HTTP_VERSION_1_0,
+                //     '1.1' => CURL_HTTP_VERSION_1_1,
+                //     '2'   => CURL_HTTP_VERSION_2,
+                // ][$option->httpVersion] ?? '',
+                // CURLOPT_TIMEOUT => $option->timeout,
+                // CURLOPT_FOLLOWLOCATION => $option->followLocation,
+                // CURLOPT_AUTOREFERER    => $option->autoReferer, // does not supported yet
+                // CURLOPT_MAXREDIRS      => $option->maxRedirs,   // does not supported yet
             ];
             if ($proxy && $proxy['scheme'] && $proxy['host'] && $proxy['port']) {
                 $scheme    = strtolower($proxy['scheme']);
@@ -268,8 +280,8 @@ class Spider
                 if (!isset($protocols[$scheme])) {
                     $this->warning("Unsupported proxy protocol: {$proxy['scheme']}", []);
                 } else {
-                    $curl_opts[CURLOPT_PROXYTYPE] = $protocols[$scheme];
-                    $curl_opts[CURLOPT_PROXY]     = "{$proxy['host']}:{$proxy['port']}";
+                    // $curl_opts[CURLOPT_PROXYTYPE] = $protocols[$scheme];
+                    $curl_opts[CURLOPT_PROXY] = "{$proxy['host']}:{$proxy['port']}";
                     if ($user) {
                         $curl_opts[CURLOPT_PROXYUSERPWD] = "{$proxy['user']}:{$proxy['pass']}";
                     }

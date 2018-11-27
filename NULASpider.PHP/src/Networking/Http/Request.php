@@ -48,8 +48,8 @@ class Request
 
         $this->method = $method;
         $this->url    = $url;
-        $this->header = Header::defaultHeader();
-        $this->option = RequestOption::defaultRequestOption();
+        $this->header = static::$defaultHeader;
+        $this->option = static::$defaultOption;
         foreach ($header as $key => $value) {
             $this->setHeader($key, $value);
         }

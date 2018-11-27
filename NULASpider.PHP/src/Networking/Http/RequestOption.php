@@ -12,7 +12,7 @@ class RequestOption
     public $maxRedirs      = 0;
     public $httpVersion    = '';
 
-    public function defaultRequestOption()
+    public static function defaultRequestOption()
     {
         return new static();
     }
