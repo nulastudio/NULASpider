@@ -6,11 +6,11 @@ class RequestOption
 {
     public $timeout        = 0;
     public $autoGzip       = false;
-    public $proxy          = '';
+    public $proxy          = ''; // protocal://username:password@server:port
     public $autoReferer    = true;
     public $followLocation = true;
     public $maxRedirs      = 0;
-    public $httpVersion    = '1.1';
+    public $httpVersion    = '';
 
     public function defaultRequestOption()
     {

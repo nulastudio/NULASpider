@@ -16,6 +16,7 @@ use nulastudio\Threading\LockManager;
 use nulastudio\Util;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerTrait;
+use Sabre\Uri;
 
 class Spider
 {
@@ -231,17 +232,54 @@ class Spider
                 return;
             }
         } else {
-            $method   = $request->getMethod();
-            $url      = $request->getUrl();
-            $header   = $request->getAllHeaders();
-            $cookie   = '';
-            $data     = $request->getData();
-            $options  = $request->getOption();
+            $method    = $request->getMethod();
+            $url       = $request->getUrl();
+            $header    = $request->getAllHeaders();
+            $cookie    = '';
+            $data      = $request->getData();
+            $option    = $request->getOption();
+            $proxy     = Uri\parse($option->proxy);
+            $curl_opts = [
+                CURLOPT_HTTP_VERSION   => @[
+                    ''    => CURL_HTTP_VERSION_NONE,
+                    '1'   => CURL_HTTP_VERSION_1_0,
+                    '1.0' => CURL_HTTP_VERSION_1_0,
+                    '1.1' => CURL_HTTP_VERSION_1_1,
+                    '2'   => CURL_HTTP_VERSION_2,
+                ][$option->httpVersion] ?? '',
+                CURLOPT_TIMEOUT        => $option->timeout,
+                CURLOPT_FOLLOWLOCATION => $option->followLocation,
+                CURLOPT_AUTOREFERER    => $option->autoReferer,
+                CURLOPT_MAXREDIRS      => $option->maxRedirs,
+            ];
+            if ($proxy && $proxy['scheme'] && $proxy['host'] && $proxy['port']) {
+                $scheme    = strtolower($proxy['scheme']);
+                $host      = $proxy['host'];
+                $port      = $proxy['port'];
+                $user      = $proxy['user'] ?? '';
+                $pass      = $proxy['pass'] ?? '';
+                $protocols = [
+                    'http'    => CURLPROXY_HTTP,
+                    'socks4'  => CURLPROXY_SOCKS4,
+                    'socks4a' => CURLPROXY_SOCKS4A,
+                    'socks5'  => CURLPROXY_SOCKS5,
+                    'socks5h' => CURLPROXY_SOCKS5_HOSTNAME,
+                ];
+                if (!isset($protocols[$scheme])) {
+                    $this->warning("Unsupported proxy protocol: {$proxy['scheme']}", []);
+                } else {
+                    $curl_opts[CURLOPT_PROXYTYPE] = $protocols[$scheme];
+                    $curl_opts[CURLOPT_PROXY]     = "{$proxy['host']}:{$proxy['port']}";
+                    if ($user) {
+                        $curl_opts[CURLOPT_PROXYUSERPWD] = "{$proxy['user']}:{$proxy['pass']}";
+                    }
+                }
+            }
             $response = null;
             if ($method === Request::REQUEST_METHOD_GET) {
-                $response = SimpleHttpClient::quickGet($url, $header, $cookie, $data);
+                $response = SimpleHttpClient::quickGet($url, $header, $cookie, $data, $curl_opts);
             } else if ($method === Request::REQUEST_METHOD_POST) {
-                $response = SimpleHttpClient::quickPost($url, $header, $cookie, $data);
+                $response = SimpleHttpClient::quickPost($url, $header, $cookie, $data, $curl_opts);
             }
             $response = Response::fromSHCResponse($response, $request);
         }
