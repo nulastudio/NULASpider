@@ -12,6 +12,7 @@
     <Compile Remove="User/**/*.php" />
     <Compile Remove="vendor/**/test/**/*.php" />
     <Compile Remove="vendor/**/tests/**/*.php" />
+    <Compile Remove="vendor/ezsql/ezsql/unsupported/**/*.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />

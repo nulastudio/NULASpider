@@ -4,8 +4,72 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0e3635d6172f96dc9c487f0e21865f6",
+    "content-hash": "c88483b95e5a17686c676adf626670da",
     "packages": [
+        {
+            "name": "ezsql/ezsql",
+            "version": "3.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezSQL/ezSQL.git",
+                "reference": "5db3f80ae0ff1684f18cf8b93fd69115062b43dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/5db3f80ae0ff1684f18cf8b93fd69115062b43dd",
+                "reference": "5db3f80ae0ff1684f18cf8b93fd69115062b43dd",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">5.6"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": ">5.7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "ez_sql_loader.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Vincent",
+                    "email": "webmaster@justinvincent.com"
+                },
+                {
+                    "name": "Stefanie Janine Stoelting",
+                    "email": "mail@stefanie-stoelting.de"
+                },
+                {
+                    "name": "l. stubbs",
+                    "email": "lstubbs@technoexpress.net"
+                }
+            ],
+            "description": "Advance database access layer PHP 5.6+ class. Make interacting with a database ridiculously easy.",
+            "keywords": [
+                "abstraction",
+                "database",
+                "dba",
+                "mssql",
+                "mysqli",
+                "pdo",
+                "postgres",
+                "sqlite"
+            ],
+            "time": "2018-09-25T21:39:33+00:00"
+        },
         {
             "name": "liesauer/get-middle-text",
             "version": "v1.0",
