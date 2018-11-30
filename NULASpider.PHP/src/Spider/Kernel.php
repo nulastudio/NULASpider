@@ -32,6 +32,9 @@ class Kernel
         $this->bind('bind', function ($application, string $name, $stuff) {
             $this->bind($name, $stuff);
         });
+        $this->bind('unbind', function ($application, string $name) {
+            $this->unbind($name);
+        });
     }
 
     public function bootstrap()
@@ -54,7 +57,17 @@ class Kernel
 
     public function bind(string $name, $stuff)
     {
-        $this->binds[$name] = $stuff;
+        if (array_key_exists($name, $this->binds)) {
+            throw new KernelException("Service exists: {$service}");
+        } else {
+            $this->binds[$name] = $stuff;
+        }
+    }
+
+    public function unbind(string $name)
+    {
+        // may not release resource
+        unset($this->binds[$name]);
     }
 
     // public function singleton() {}
