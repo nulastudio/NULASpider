@@ -18,9 +18,17 @@ define('DIR_LOG', DIR_USER . '/log');
 define('DIR_SPIDER', DIR_USER . '/spiders');
 define('DIR_TMP', Environment::getTempDirectory());
 
+define('TESTING', true);
+// define('TESTING', false);
+
 error_reporting(E_ALL);
 // error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 date_default_timezone_set('Asia/Shanghai');
+
+if (TESTING) {
+    require __DIR__ . '/src/Spider/User/Tests/bootstrap.php';
+    return;
+}
 
 foreach (glob(DIR_EXPORTERS . '/*.php') as $file) {
     try {
@@ -54,10 +62,10 @@ if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1) {
 }
 
 // try {
-    // 加载爬虫程序
-    // require __DIR__ . '/User/spiders/program.php';
+// 加载爬虫程序
+// require __DIR__ . '/User/spiders/program.php';
 
-    loadSingleScript($spider);
+loadSingleScript($spider);
 // } catch (\Exception $e) {
 //     echo "Uncaught exception occured!\n";
 //     echo $e;
