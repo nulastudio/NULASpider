@@ -20,4 +20,12 @@ class SimpleAria2JsonRpcClient extends SimpleJsonRpcClient
         }
         return parent::call("aria2.{$name}", ...$args);
     }
+    public function stsyem_call(string $name, ...$args)
+    {
+        // token does not needed for system calls.
+        // if ($this->token) {
+        //     array_unshift($args, "token:{$this->token}");
+        // }
+        return parent::call("system.{$name}", ...$args);
+    }
 }
