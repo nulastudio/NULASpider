@@ -19,6 +19,20 @@
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
+            "name": "NULASpider.PHP.Test",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build Project",
+            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0/NULASpider.PHP.dll",
+            "env": {
+                "NULASPIDER_TESTING": "true"
+            },
+            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
             "name": "NULASpider.Test.CSharp",
             "type": "coreclr",
             "request": "launch",

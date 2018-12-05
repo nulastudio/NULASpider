@@ -18,14 +18,13 @@ define('DIR_LOG', DIR_USER . '/log');
 define('DIR_SPIDER', DIR_USER . '/spiders');
 define('DIR_TMP', Environment::getTempDirectory());
 
-define('TESTING', true);
-// define('TESTING', false);
+define('TESTING_KEY', 'NULASPIDER_TESTING');
 
 error_reporting(E_ALL);
 // error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 date_default_timezone_set('Asia/Shanghai');
 
-if (TESTING) {
+if (getenv(TESTING_KEY)) {
     require __DIR__ . '/src/Spider/User/Tests/bootstrap.php';
     return;
 }
