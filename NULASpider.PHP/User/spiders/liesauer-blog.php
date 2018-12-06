@@ -52,19 +52,19 @@ $config = [
         //     'repeated' => true,
         // ],
     ],
-    'export'              => [
-        'type'  => 'excel',
-        'file'  => DIR_DATA . '/blog.xlsx',
-        'sheet' => 'blog',
-    ],
     // 'export'              => [
-    //     'type'     => 'pdo',
-    //     'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
-    //     'username' => 'root',
-    //     'password' => 'root',
-    //     'table'    => 'blog',
-    //     'options'  => [],
+    //     'type'  => 'excel',
+    //     'file'  => DIR_DATA . '/blog.xlsx',
+    //     'sheet' => 'blog',
     // ],
+    'export'              => [
+        'type'     => 'pdo',
+        'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
+        'username' => 'root',
+        'password' => 'root',
+        'table'    => 'blog',
+        'options'  => [],
+    ],
 ];
 
 $spider = new Spider($config);
