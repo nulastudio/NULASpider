@@ -2,7 +2,7 @@
 
 function pattern(string $pattern)
 {
-    return "./{$pattern}";
+    return __DIR__ . "/{$pattern}";
 }
 
 $patterns = [
