@@ -2,7 +2,7 @@
 
 use \ezSQL_pdo;
 
-$db = new ezSQL_pdo('mysql:host=localhost;dbname=test;charset=utf8mb4', 'root', '');
+$db = new ezSQL_pdo('mysql:host=localhost;dbname=test;charset=utf8mb4', 'root', 'root');
 
 var_dump($db->query('CREATE TABLE spider (
     id not null unsigned int primary key,
