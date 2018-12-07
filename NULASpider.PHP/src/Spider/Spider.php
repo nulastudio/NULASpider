@@ -760,6 +760,9 @@ class Spider
         $this->hook('beforeExit', $this, $exit_code);
         $this->info("spider exited with code {$exit_code}", []);
         $this->callback('on_exit', $this, $exit_code);
+        exit($exit_code);
+        // .NET way
+        // \System\Environment::Exit($exit_code);
     }
 
     private function validCallback(string $callback)
