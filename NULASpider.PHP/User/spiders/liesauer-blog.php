@@ -1,9 +1,7 @@
 <?php
 
 use nulastudio\Log\FileLogger;
-use nulastudio\Networking\Http\Header;
 use nulastudio\Networking\Http\Request;
-use nulastudio\Networking\Http\RequestOption;
 use nulastudio\Networking\Http\UserAgent;
 use nulastudio\Spider\Spider;
 
@@ -70,13 +68,10 @@ $config = [
 $spider = new Spider($config);
 
 $spider->on_start = function ($spider) {
-    Request::setDefaultHeader(
-        Header::defaultHeader()->setHeaders([
-            'User-Agent' => UserAgent::USER_AGENTS['WIN10_X64_EDGE'],
-        ]));
-    $requestOption = RequestOption::defaultRequestOption();
-    // $requestOption->proxy = 'http://127.0.0.1:8888';
-    Request::setDefaultOption($requestOption);
+    Request::getDefaultHeader()->setHeaders([
+        'User-Agent' => UserAgent::USER_AGENTS['WIN10_X64_EDGE'],
+    ]);
+    // Request::getDefaultOption()->proxy = 'http://127.0.0.1:8888';
 };
 
 $spider->use(User\Plugins\Buff::class);
@@ -84,5 +79,10 @@ $spider->use(User\Plugins\Pipeline::class);
 $spider->use(User\Plugins\ExcelExporter::class);
 $spider->use(User\Plugins\PrintOutExporter::class);
 $spider->use(User\Plugins\PDOExporter::class);
+
+// 默认是不开启的，指定第二个参数可默认开启
+$spider->use(User\Plugins\ProxyPool::class, [
+    'http://127.0.0.1:8888',
+]/*, true*/);
 
 $spider->start();

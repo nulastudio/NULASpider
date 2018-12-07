@@ -39,17 +39,10 @@ class Request
 
     public function __construct($method, $url, $header = [], $data = null, $contentType = self::REQUEST_CONTENT_TYPE_X_WWW_FORM_URLENCODED, $encoding = 'utf-8')
     {
-        if (is_null(static::$defaultHeader)) {
-            static::$defaultHeader = Header::defaultHeader();
-        }
-        if (is_null(static::$defaultOption)) {
-            static::$defaultOption = RequestOption::defaultRequestOption();
-        }
-
         $this->method = $method;
         $this->url    = $url;
-        $this->header = static::$defaultHeader;
-        $this->option = static::$defaultOption;
+        $this->header = static::getDefaultHeader();
+        $this->option = static::getDefaultOption();
         foreach ($header as $key => $value) {
             $this->setHeader($key, $value);
         }
@@ -57,9 +50,23 @@ class Request
         $this->encoding    = $encoding;
     }
 
+    public static function getDefaultHeader()
+    {
+        if (is_null(static::$defaultHeader)) {
+            static::$defaultHeader = Header::defaultHeader();
+        }
+        return static::$defaultHeader;
+    }
     public static function setDefaultHeader(Header $header)
     {
         static::$defaultHeader = $header;
+    }
+    public static function getDefaultOption()
+    {
+        if (is_null(static::$defaultOption)) {
+            static::$defaultOption = RequestOption::defaultRequestOption();
+        }
+        return static::$defaultOption;
     }
     public static function setDefaultOption(RequestOption $option)
     {
