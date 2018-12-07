@@ -34,13 +34,11 @@ class PDOExporter extends AbstructExporter
             }
             $sql .= implode(', ', $formatted);
             if ($statement = $this->pdo->prepare($sql)) {
-                if ($statement->execute($values)) {
-                    echo 'Y';
-                } else {
-                    echo 'N';
+                if (!$statement->execute($values)) {
+                    throw new \Exception("Can not export to database due to: ERROR ({$statement->errorCode()}) {$statement->errorInfo()}", $statement->errorInfo());
                 }
             } else {
-                echo 'X';
+                throw new \Exception("Can not generate sql due to: ERROR ({$this->pdo->errorCode()}) {$this->pdo->errorInfo()}", $this->pdo->errorInfo());
             }
             $statement = null;
         }
