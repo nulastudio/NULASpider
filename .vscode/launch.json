@@ -9,11 +9,11 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build Project",
-            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0/NULASpider.PHP.dll",
+            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1/NULASpider.PHP.dll",
             "args": [
                 "User/spiders/liesauer-blog.php"
             ],
-            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0",
+            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
@@ -23,11 +23,11 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build Project",
-            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0/NULASpider.PHP.dll",
+            "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1/NULASpider.PHP.dll",
             "env": {
                 "NULASPIDER_TESTING": "true"
             },
-            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.0",
+            "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
@@ -37,7 +37,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build Project",
-            "program": "${workspaceFolder}/NULASpider.Test.CSharp/bin/Debug/netcoreapp2.0/NULASpider.Test.CSharp.dll",
+            "program": "${workspaceFolder}/NULASpider.Test.CSharp/bin/Debug/netcoreapp2.1/NULASpider.Test.CSharp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/NULASpider.Test.CSharp",
             "console": "internalConsole",
@@ -49,7 +49,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build Project",
-            "program": "${workspaceFolder}/NULASpider.Test.PHP/bin/Debug/netcoreapp2.0/NULASpider.Test.PHP.dll",
+            "program": "${workspaceFolder}/NULASpider.Test.PHP/bin/Debug/netcoreapp2.1/NULASpider.Test.PHP.dll",
             "args": [],
             "cwd": "${workspaceFolder}/NULASpider.Test.PHP",
             "console": "internalConsole",
