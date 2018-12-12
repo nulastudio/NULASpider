@@ -73,19 +73,15 @@ namespace nulastudio.Spider
         {
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler((int)thread));
-            object dLock = new object();
             Action<object> action = o => {
-                lock (dLock)
+                try
                 {
-                    try
-                    {
-                        spider.fetchUrl((PhpValue)o);
-                        finishDownloadOne();
-                    }
-                    catch (Pchp.Library.Spl.Exception ex)
-                    {
-                        spider.exceptionHandler(ex);
-                    }
+                    spider.fetchUrl((PhpValue)o);
+                    finishDownloadOne();
+                }
+                catch (Pchp.Library.Spl.Exception ex)
+                {
+                    spider.exceptionHandler(ex);
                 }
             };
             while (true)
@@ -136,19 +132,15 @@ namespace nulastudio.Spider
         {
             PhpValue thread = Application.configs["thread"];
             TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
-            object pLock = new object();
             Action<object> action = o => {
-                lock (pLock)
+                try
                 {
-                    try
-                    {
-                        spider.processResponse((PhpValue)o);
-                        finishProcessOne();
-                    }
-                    catch (Pchp.Library.Spl.Exception ex)
-                    {
-                        spider.exceptionHandler(ex);
-                    }
+                    spider.processResponse((PhpValue)o);
+                    finishProcessOne();
+                }
+                catch (Pchp.Library.Spl.Exception ex)
+                {
+                    spider.exceptionHandler(ex);
                 }
             };
             while (true)

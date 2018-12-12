@@ -50,11 +50,14 @@ $config = [
         //     'repeated' => true,
         // ],
     ],
-    'export'              => [
-        'type'  => 'excel',
-        'file'  => DIR_DATA . '/blog.xlsx',
-        'sheet' => 'blog',
-    ],
+    // 'export'              => [
+    //     'type'  => 'excel',
+    //     'file'  => DIR_DATA . '/blog.xlsx',
+    //     'sheet' => 'blog',
+    // ],
+    // 'export'              => [
+    //     'type'  => 'print',
+    // ],
     // 'export'              => [
     //     'type'     => 'pdo',
     //     'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',

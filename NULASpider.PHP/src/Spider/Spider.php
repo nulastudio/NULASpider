@@ -225,7 +225,7 @@ class Spider
 
     public function fetchUrl($request)
     {
-        LockManager::getLock("fetchUrl");
+        // LockManager::getLock("fetchUrl");
         $this->hook('beforeRequest', $this, $request);
 
         $response = null;
@@ -329,12 +329,12 @@ class Spider
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
         $this->processQueue->Enqueue($response);
-        LockManager::releaseLock("fetchUrl");
+        // LockManager::releaseLock("fetchUrl");
     }
 
     public function processResponse($response)
     {
-        LockManager::getLock("processResponse");
+        // LockManager::getLock("processResponse");
         $request = $response->getRequest();
         $url     = $request->getUrl();
         $content = $response->getRawContent();
@@ -374,7 +374,7 @@ class Spider
         LockManager::getLock('update_processed');
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
-        LockManager::releaseLock("processResponse");
+        // LockManager::releaseLock("processResponse");
     }
 
     public function isScanUrl($url)
