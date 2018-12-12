@@ -181,7 +181,7 @@ class Spider
     private function initWorker()
     {
         foreach ($this->configs['scan_urls'] as $scan_url) {
-            if (is_string($scan_url) && strpos($scan_url, 'http') === 0) {
+            if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
                 $this->addUrl($scan_url);
             }
         }
@@ -391,13 +391,6 @@ class Spider
     }
     private function isUrlMatchesPattern($url, $pattern)
     {
-        function isRegex($pattern)
-        {
-            if (!is_string($pattern)) {
-                return false;
-            }
-            return preg_match('/^[^\da-zA-Z\s].*[^\da-zA-Z\s][a-zA-Z]*$/', $pattern) === 1;
-        }
         if (empty($url) || empty($pattern) || !is_string($url)) {
             return false;
         }
@@ -405,7 +398,7 @@ class Spider
         $matched_pattern = false;
         foreach ($patterns as $patt) {
             if (is_string($patt)) {
-                if (isRegex($patt) ? (preg_match($patt, $url) === 1) : ($url === $patt)) {
+                if (Util\isRegex($patt) ? (preg_match($patt, $url) === 1) : ($url === $patt)) {
                     $matched_pattern = $patt;
                     break;
                 }
