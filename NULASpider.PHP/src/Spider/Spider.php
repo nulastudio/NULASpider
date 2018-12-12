@@ -181,7 +181,9 @@ class Spider
     private function initWorker()
     {
         foreach ($this->configs['scan_urls'] as $scan_url) {
-            $this->addUrl($scan_url);
+            if (is_string($scan_url) && strpos($scan_url, 'http') === 0) {
+                $this->addUrl($scan_url);
+            }
         }
     }
 
