@@ -51,6 +51,7 @@ namespace nulastudio.Spider
             Application.ctx = ctx;
             Application.spider = spider;
             Application.configs = (PhpArray)(spider.__get((PhpValue)"configs"));
+            bool hasUI = ((PhpValue)Application.configs["UI"]).ToBoolean();
             Thread downloadThread = new Thread(new ParameterizedThreadStart(downloadTask));
             Thread processThread = new Thread(new ParameterizedThreadStart(processTask));
             Thread monitorThread = new Thread(new ParameterizedThreadStart(monitorTask));
@@ -59,7 +60,10 @@ namespace nulastudio.Spider
             monitorThread.IsBackground = true;
             downloadThread.Start(Application.spider);
             processThread.Start(Application.spider);
-            monitorThread.Start(Application.spider);
+            if (hasUI)
+            {
+                monitorThread.Start(Application.spider);
+            }
 
             Thread.Sleep(3000);
             // 检测是否已完成任务

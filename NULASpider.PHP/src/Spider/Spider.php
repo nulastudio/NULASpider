@@ -154,6 +154,7 @@ class Spider
     {
         $default_configs = [
             'thread'              => 5,
+            'UI'                  => true,
             'logger'              => new NullLogger,
             'scan_urls'           => [],
             'list_url_pattern'    => [],
