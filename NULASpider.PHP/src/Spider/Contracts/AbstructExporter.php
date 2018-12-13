@@ -8,7 +8,7 @@ abstract class AbstructExporter implements ExporterContract
 {
     abstract public function __construct(array $config = []);
     abstract public function export($data);
-    public function handleUnsuppertedData($data)
+    public function handleUnsupportedData($data)
     {
         return is_array($data) ? json_encode($data) : (string) $data;
     }

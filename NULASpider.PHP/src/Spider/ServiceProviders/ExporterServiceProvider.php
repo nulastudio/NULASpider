@@ -3,7 +3,6 @@
 namespace nulastudio\Spider\ServiceProviders;
 
 use nulastudio\Spider\Contracts\ServiceProviderContract;
-use nulastudio\Spider\Exceptions\ServiceProviderRegisterException;
 use nulastudio\Spider\Kernel;
 use nulastudio\Spider\Services\ExporterService;
 
@@ -24,7 +23,7 @@ class ExporterServiceProvider implements ServiceProviderContract
                     // 浮点型转换为小数形式（小数点后为0会省略）
                     // 整数型转换为整数
                     if (is_array($val) || is_object($val) || is_resource($val)) {
-                        $val = $exporter->handleUnsuppertedData($val);
+                        $val = $exporter->handleUnsupportedData($val);
                     }
                 });
                 $exporter->export($data);
