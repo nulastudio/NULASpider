@@ -1,7 +1,7 @@
-<p align="center">
+<h1 align="center">
   <img src="https://raw.githubusercontent.com/nulastudio/NULASpider/reborn/nulaspider.png">
-</p>
-<hr />
+</h1>
+
 <p align="center">
   <a href="https://github.com/nulastudio/NULASpider/releases"><img src="
 https://img.shields.io/github/release-pre/nulastudio/nulaspider.svg?style=for-the-badge"></a>
@@ -13,4 +13,3 @@ https://raw.githubusercontent.com/wiki/nulastudio/NULASpider/images/faux-shield-
   <a href="https://gitter.im/nulastudio/NULASpider"><img src="
 https://img.shields.io/gitter/room/nulastudio/NULASpider.svg?style=for-the-badge"></a>
 </p>
-<hr />
