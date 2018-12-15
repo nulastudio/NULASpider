@@ -1,6 +1,6 @@
-<h1 align="center">
-  NULASpider
-</h1>
+<p align="center">
+  <img src="nulaspider.png">
+</p>
 
 <p align="center">
   <a href="http://docs.nulaspider.nulastudio.org/"><img src="https://img.shields.io/badge/docs-docs.nulaspider.nulastudio.org-green.svg"></a>
