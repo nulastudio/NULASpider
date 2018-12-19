@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />
+    <Compile Remove="bin/**/User/**/*.php" />
     <Compile Remove="User/**/*.php" />
     <Compile Remove="vendor/**/test/**/*.php" />
     <Compile Remove="vendor/**/tests/**/*.php" />
