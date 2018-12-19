@@ -29,25 +29,25 @@ if (getenv(TESTING_KEY)) {
     return;
 }
 
-foreach (glob(DIR_EXPORTERS . '/*.php') as $file) {
-    try {
-        loadSingleScript($file);
-    } catch (\Exception $e) {
-        echo "Uncaught exception occured while loading user's exporter: {$file}\n";
-        echo $e;
-        exit;
-    }
-}
+// foreach (glob(DIR_EXPORTERS . '/*.php') as $file) {
+//     try {
+//         loadSingleScript($file);
+//     } catch (\Exception $e) {
+//         echo "Uncaught exception occured while loading user's exporter: {$file}\n";
+//         echo $e;
+//         exit;
+//     }
+// }
 
-foreach (glob(DIR_PLUGINS . '/*.php') as $file) {
-    try {
-        loadSingleScript($file);
-    } catch (\Exception $e) {
-        echo "Uncaught exception occured while loading user's plugins: {$file}\n";
-        echo $e;
-        exit;
-    }
-}
+// foreach (glob(DIR_PLUGINS . '/*.php') as $file) {
+//     try {
+//         loadSingleScript($file);
+//     } catch (\Exception $e) {
+//         echo "Uncaught exception occured while loading user's plugins: {$file}\n";
+//         echo $e;
+//         exit;
+//     }
+// }
 
 /*
 PHP的$argv的第一个参数是启动脚本，第二个开始才是参数
