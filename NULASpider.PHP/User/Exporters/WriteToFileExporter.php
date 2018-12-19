@@ -2,9 +2,9 @@
 
 namespace User\Exporters;
 
-use nulastudio\Spider\Contracts\ExporterContract;
+use nulastudio\Spider\Contracts\AbstructExporter;
 
-class WriteToFileExporter implements ExporterContract
+class WriteToFileExporter extends AbstructExporter
 {
     private $file;
 
