@@ -166,8 +166,10 @@ namespace nulastudio.Spider
             while (true)
             {
                 PhpArray monitor = (PhpArray)(spider.__get((PhpValue)"monitor"));
-                string downloaded = monitor.GetItemValue((IntStringKey)"downloaded").ToString();
-                string processed = monitor.GetItemValue((IntStringKey)"processed").ToString();
+                string downloaded = monitor["downloaded"].ToString();
+                string processed = monitor["processed"].ToString();
+                string error = monitor["error"].ToString();
+                string exception = monitor["exception"].ToString();
                 try
                 {
                     Console.Clear();
@@ -176,11 +178,11 @@ namespace nulastudio.Spider
                 Console.WriteAscii("NULASpider");
                 string table = ConsoleTableBuilder
                     .From(new List<List<object>> {
-                        new List<object> { downloaded, processed },
+                        new List<object> { downloaded, processed, error, exception },
                     })
                     .WithFormat(ConsoleTableBuilderFormat.Alternative)
                     .WithColumn(
-                        new List<string> { "downloaded", "processed" }
+                        new List<string> { "downloaded", "processed", "error", "exception" }
                     )
                     .Export().ToString();
                 Console.WriteLine(table, Color.Red);

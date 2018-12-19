@@ -36,6 +36,8 @@ class Spider
     private $monitor = [
         'downloaded' => 0,
         'processed'  => 0,
+        'error'      => 0,
+        'exception'  => 0,
     ];
 
     // 钩子挂接点
@@ -791,6 +793,9 @@ class Spider
 
     public function errorHandler(int $errno, string $errstr, string $errfile, int $errline, array $errcontext = [])
     {
+        LockManager::getLock('update_error');
+        $this->monitor['error']++;
+        LockManager::releaseLock('update_error');
         $readable_error = '';
         switch ($errno) {
             case E_PARSE:
@@ -829,6 +834,9 @@ class Spider
     }
     public function exceptionHandler(\Exception $ex)
     {
+        LockManager::getLock('update_exception');
+        $this->monitor['exception']++;
+        LockManager::releaseLock('update_exception');
         $this->critical((string) $ex, []);
         $running = $this->callback('on_exception', $this, $ex);
         if ($running !== true) {
