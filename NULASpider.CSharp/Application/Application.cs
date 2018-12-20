@@ -27,6 +27,8 @@ namespace nulastudio.Spider
         private static long downloaded = 0;
         private static long processing = 0;
         private static long processed = 0;
+        private static bool inited = false;
+        private static bool finished = false;
 
         internal static List<string> getFiles(string dir, string extension = null)
         {
@@ -65,12 +67,15 @@ namespace nulastudio.Spider
                 monitorThread.Start(Application.spider);
             }
 
-            Thread.Sleep(3000);
+            // Thread.Sleep(3000);
             // 检测是否已完成任务
-            while (downloading != 0 || processing != 0)
+            // 有UI的情况下检测finished
+            // 无UI的情况下检测downloading和processing
+            while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0))))
             {
                 Thread.Sleep(500);
             }
+            ;
         }
 
         private static void downloadTask(dynamic spider)
@@ -81,11 +86,13 @@ namespace nulastudio.Spider
                 try
                 {
                     spider.fetchUrl((PhpValue)o);
-                    finishDownloadOne();
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {
                     spider.exceptionHandler(ex);
+                }
+                finally {
+                    finishDownloadOne();
                 }
             };
             while (true)
@@ -94,10 +101,14 @@ namespace nulastudio.Spider
                 if (!request.IsNull)
                 {
                     startDownloadOne();
+                    if (!inited)
+                    {
+                        inited = true;
+                    }
                     taskFactory.StartNew(action, request);
-                    Thread.Sleep(50);
+                    Thread.Sleep(10);
                 } else {
-                    Thread.Sleep(300);
+                    Thread.Sleep(50);
                 }
             }
         }
@@ -140,11 +151,13 @@ namespace nulastudio.Spider
                 try
                 {
                     spider.processResponse((PhpValue)o);
-                    finishProcessOne();
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {
                     spider.exceptionHandler(ex);
+                }
+                finally {
+                    finishProcessOne();
                 }
             };
             while (true)
@@ -154,27 +167,38 @@ namespace nulastudio.Spider
                 {
                     startProcessOne();
                     taskFactory.StartNew(action, response);
-                    Thread.Sleep(50);
+                    Thread.Sleep(10);
                 } else {
-                    Thread.Sleep(300);
+                    Thread.Sleep(50);
                 }
             }
         }
 
         private static void monitorTask(dynamic spider)
         {
+            bool clearSupported = true;
+            bool shouldStop = false;
             while (true)
             {
+                if (inited && downloading == 0 && processing == 0)
+                {
+                    shouldStop = true;
+                }
                 PhpArray monitor = (PhpArray)(spider.__get((PhpValue)"monitor"));
                 string downloaded = monitor["downloaded"].ToString();
                 string processed = monitor["processed"].ToString();
                 string error = monitor["error"].ToString();
                 string exception = monitor["exception"].ToString();
-                try
+                if (clearSupported)
                 {
-                    Console.Clear();
+                    try
+                    {
+                        Console.Clear();
+                    }
+                    catch {
+                        clearSupported = false;
+                    }
                 }
-                catch {}
                 Console.WriteAscii("NULASpider");
                 string table = ConsoleTableBuilder
                     .From(new List<List<object>> {
@@ -187,7 +211,11 @@ namespace nulastudio.Spider
                     .Export().ToString();
                 Console.WriteLine(table, Color.Red);
                 // Console.WriteWithGradient(table,Color.Red,Color.Blue);
-                Thread.Sleep(500);
+                Thread.Sleep(300);
+                if (shouldStop) {
+                    finished = true;
+                    break;
+                }
             }
         }
     }

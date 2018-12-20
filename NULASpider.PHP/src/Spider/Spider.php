@@ -173,9 +173,9 @@ class Spider
 
         $this->callback('on_start', $this);
 
-        $this->initWorker();
-
-        Application::run($this);
+        if ($this->initWorker()) {
+            Application::run($this);
+        }
 
         // 安全退出
         $this->safeExit();
@@ -183,11 +183,15 @@ class Spider
 
     private function initWorker()
     {
+        if (!$this->configs['scan_urls']) {
+            return false;
+        }
         foreach ($this->configs['scan_urls'] as $scan_url) {
             if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
                 $this->addUrl($scan_url);
             }
         }
+        return true;
     }
 
     public function addUrl($url, $prevUrl = null)
