@@ -18,5 +18,9 @@ https://img.shields.io/gitter/room/nulastudio/NULASpider.svg?style=for-the-badge
 
 
 ## Screenshots
+
 The Console UI is TBD.
-<img src="https://raw.githubusercontent.com/wiki/nulastudio/NULASpider/images/screenshot_1.gif">
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/wiki/nulastudio/NULASpider/images/screenshot_1.gif">
+</p>
