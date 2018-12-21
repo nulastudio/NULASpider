@@ -23,6 +23,17 @@
 * Plugins
 * Exporters. database, excel, file, csv etc.
 
+## Getting Started
+
+Just download the release, and run the following command.
+
+```shell
+cd path/to/nulaspider
+./NULASpider.PHP User/spiders/liesauer-blog.php
+```
+
+And then, BOOM!
+
 ## Screenshots
 
 The Console UI is TBD.
