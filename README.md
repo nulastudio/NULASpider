@@ -30,3 +30,7 @@ The Console UI is TBD.
 <p align="center">
   <img src="https://raw.githubusercontent.com/wiki/nulastudio/NULASpider/images/screenshot_1.gif">
 </p>
+
+## License
+
+[MIT](https://github.com/nulastudio/NULASpider/blob/reborn/LICENSE)
