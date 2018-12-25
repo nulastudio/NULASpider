@@ -22,3 +22,7 @@ __MACOSX
 
 # composer
 vendor/
+
+# project
+User/priv-spiders/
+
