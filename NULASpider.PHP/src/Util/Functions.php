@@ -173,6 +173,8 @@ function pureXpath($selector)
 function removeHtmlEntities($content)
 {
     $no_named_entities   = html_entity_decode($content, ENT_QUOTES | ENT_HTML5);
-    $no_numeric_entities = $no_named_entities;
+    $no_numeric_entities = preg_replace_callback("/(&#[0-9]+;)/", function ($match) {
+        return mb_convert_encoding($match[1], "UTF-8", "HTML-ENTITIES");
+    }, $no_named_entities);
     return $no_numeric_entities;
 }
