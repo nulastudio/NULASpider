@@ -63,6 +63,7 @@ class Spider
         'on_export'        => null,
         'requestOverride'  => null,
         'findUrlsOverride' => null,
+        'filterUrls'       => null,
     ];
 
     // 爬虫配置项
@@ -431,6 +432,12 @@ class Spider
         } else {
             $urls = $this->findUrls($content, $request, $response);
         }
+        if ($this->hasCallback('filterUrls')) {
+            $urls = $this->callback('filterUrls', $this, $urls);
+            if (!is_array($urls)) {
+                $urls = [];
+            }
+        }
         foreach ($urls as $url) {
             $url = Util\absoluteUrl($prevUrl, $url);
             if ($this->isListUrl($url)) {
@@ -450,6 +457,12 @@ class Spider
             }
         } else {
             $urls = $this->findUrls($content, $request, $response);
+        }
+        if ($this->hasCallback('filterUrls')) {
+            $urls = $this->callback('filterUrls', $this, $urls);
+            if (!is_array($urls)) {
+                $urls = [];
+            }
         }
         foreach ($urls as $url) {
             $url = Util\absoluteUrl($prevUrl, $url);
