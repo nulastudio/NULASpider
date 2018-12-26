@@ -236,7 +236,7 @@ class Spider
         $this->hook('beforeRequest', $this, $request);
 
         $response = null;
-        if ($this->requestOverride) {
+        if ($this->hasCallback('requestOverride')) {
             $response = $this->callback('requestOverride', $this, $request);
             if (!$response instanceof Response) {
                 return;
@@ -305,7 +305,7 @@ class Spider
             $response = Response::fromSHCResponse($response, $request);
         }
 
-        if ($this->on_request) {
+        if ($this->hasCallback('on_request')) {
             $ret = $this->callback('on_request', $this, $request, $response);
             if ($ret === false) {
                 return;
@@ -314,7 +314,7 @@ class Spider
             }
         }
 
-        if ($this->on_status_code) {
+        if ($this->hasCallback('on_status_code')) {
             $status_code = $response->getStatusCode();
             $ret         = $this->callback('on_status_code', $this, $status_code, $request, $response);
             if ($ret === false) {
@@ -324,7 +324,7 @@ class Spider
             }
         }
 
-        if ($this->on_process) {
+        if ($this->hasCallback('on_process')) {
             $url = $request->getUrl();
             $ret = $this->callback('on_process', $this, $url, $request, $response);
             if ($ret === false) {
@@ -345,33 +345,33 @@ class Spider
         $request = $response->getRequest();
         $url     = $request->getUrl();
         $content = $response->getRawContent();
-        if ($this->isScanUrl($url) && $this->on_scan_url) {
+        if ($this->isScanUrl($url) && $this->hasCallback('on_scan_url')) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
-        if ($this->isListUrl($url) && $this->on_list_url) {
+        if ($this->isListUrl($url) && $this->hasCallback('on_list_url')) {
             $ret = $this->callback('on_list_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
         if ($this->isContentUrl($url)) {
-            if ($this->on_content_url) {
+            if ($this->hasCallback('on_content_url')) {
                 $ret = $this->callback('on_content_url', $this, $url, $request, $response);
                 if ($ret !== true) {
                     return;
                 }
             }
             $result = $this->fetchFields($this->configs['fields'], $content, $request, $response);
-            if ($this->on_fetch_page) {
+            if ($this->hasCallback('on_fetch_page')) {
                 $result = $this->callback('on_fetch_page', $this, $result, $request, $response);
                 if ($result === false) {
                     return;
                 }
             }
-            if ($this->on_export) {
+            if ($this->hasCallback('on_export')) {
                 $this->callback('on_export', $this, $this->configs['export'], $result, $request, $response);
             }
         }
@@ -776,6 +776,10 @@ class Spider
         return $ret !== false;
     }
 
+    private function hasCallback(string $callback)
+    {
+        return $this->validCallback($callback);
+    }
     private function callback($callback, ...$params)
     {
         $ret  = null;
