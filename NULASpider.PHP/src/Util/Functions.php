@@ -169,3 +169,10 @@ function pureXpath($selector)
     }
     return implode('/', $parts);
 }
+
+function removeHtmlEntities($content)
+{
+    $no_named_entities   = html_entity_decode($content, ENT_QUOTES | ENT_HTML5);
+    $no_numeric_entities = $no_named_entities;
+    return $no_numeric_entities;
+}

@@ -482,8 +482,10 @@ class Spider
                 $nodes = $document->DocumentNode->SelectNodes("//a[@href]") ?? [];
                 foreach ($nodes as $node) {
                     // $urls[] = $node->Attributes["href"]->Value;
-                    $val            = $node->Attributes->get_Item('href')->Value;
-                    $val && $urls[] = $val;
+                    $val = $node->Attributes->get_Item('href')->Value;
+                    if ($val) {
+                        $urls[] = Util\removeHtmlEntities($val);
+                    }
                 }
             }
         } catch (\Exception $e) {}
