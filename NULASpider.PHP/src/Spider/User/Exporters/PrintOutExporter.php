@@ -12,4 +12,8 @@ class PrintOutExporter extends AbstructExporter
     {
         print_r($data);
     }
+    public function handleUnsupportedData($data)
+    {
+        return $data;
+    }
 }
