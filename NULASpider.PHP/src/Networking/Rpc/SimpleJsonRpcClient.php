@@ -22,12 +22,15 @@ class SimpleJsonRpcClient
     {
         function GUID()
         {
-            $hash = strtoupper(md5(uniqid(mt_rand(), true)));
-            return substr($hash, 0, 8)
-            . substr($hash, 8, 4)
-            . substr($hash, 12, 4)
-            . substr($hash, 16, 4)
-            . substr($hash, 20, 12);
+            $hash      = strtoupper(md5(uniqid(mt_rand(), true)));
+            $seguments = [
+                substr($hash, 0, 8),
+                substr($hash, 8, 4),
+                substr($hash, 12, 4),
+                substr($hash, 16, 4),
+                substr($hash, 20, 12),
+            ];
+            return implode('-', $seguments);
         }
         $json = json_encode([
             'jsonrpc' => '2.0',
