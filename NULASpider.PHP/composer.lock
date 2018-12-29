@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c88483b95e5a17686c676adf626670da",
+    "content-hash": "077402538d9abd55b8df178476b5dbce",
     "packages": [
         {
             "name": "ezsql/ezsql",
@@ -170,6 +170,43 @@
             ],
             "description": "SimpleHttpClient",
             "time": "2018-08-13T14:35:30+00:00"
+        },
+        {
+            "name": "nulastudio/aria2",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nulastudio/Aria2.git",
+                "reference": "79dc771faadd7bf5c88f382634e747c234aba0dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nulastudio/Aria2/zipball/79dc771faadd7bf5c88f382634e747c234aba0dd",
+                "reference": "79dc771faadd7bf5c88f382634e747c234aba0dd",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "liesauer/simple-http-client": "^1.0",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "nulastudio\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Simple Aria2 JSON-RPC client.",
+            "time": "2018-12-29T15:09:30+00:00"
         },
         {
             "name": "nulastudio/middleware",
