@@ -260,19 +260,24 @@ class Spider
             );
              */
             // $proxy     = Uri\parse($option->proxy);
+
+            /**
+             * CURLOPT_SSL_VERIFY* always enabled
+             */
+
             $proxy     = parse_url($option->proxy) ?: [];
             $curl_opts = [
-                // CURLOPT_HTTP_VERSION => @[
+                // CURLOPT_HTTP_VERSION   => @[
                 //     ''    => CURL_HTTP_VERSION_NONE,
                 //     '1'   => CURL_HTTP_VERSION_1_0,
                 //     '1.0' => CURL_HTTP_VERSION_1_0,
                 //     '1.1' => CURL_HTTP_VERSION_1_1,
                 //     '2'   => CURL_HTTP_VERSION_2,
                 // ][$option->httpVersion] ?? '',
-                // CURLOPT_TIMEOUT => $option->timeout,
+                // CURLOPT_TIMEOUT        => $option->timeout,
                 // CURLOPT_FOLLOWLOCATION => $option->followLocation,
                 // CURLOPT_AUTOREFERER    => $option->autoReferer, // does not supported yet
-                // CURLOPT_MAXREDIRS      => $option->maxRedirs,   // does not supported yet
+                // CURLOPT_MAXREDIRS      => $option->maxRedirs,
             ];
             if ($proxy && $proxy['scheme'] && $proxy['host'] && $proxy['port']) {
                 $scheme    = strtolower($proxy['scheme']);
@@ -281,17 +286,18 @@ class Spider
                 $user      = $proxy['user'] ?? '';
                 $pass      = $proxy['pass'] ?? '';
                 $protocols = [
-                    'http'    => CURLPROXY_HTTP,
-                    'socks4'  => CURLPROXY_SOCKS4,
-                    'socks4a' => CURLPROXY_SOCKS4A,
-                    'socks5'  => CURLPROXY_SOCKS5,
-                    'socks5h' => CURLPROXY_SOCKS5_HOSTNAME,
+                    // only http supported
+                    'http' => CURLPROXY_HTTP,
+                    // 'socks4'  => CURLPROXY_SOCKS4,
+                    // 'socks4a' => CURLPROXY_SOCKS4A,
+                    // 'socks5'  => CURLPROXY_SOCKS5,
+                    // 'socks5h' => CURLPROXY_SOCKS5_HOSTNAME,
                 ];
                 if (!isset($protocols[$scheme])) {
                     $this->warning("Unsupported proxy protocol: {$proxy['scheme']}", []);
                 } else {
-                    // $curl_opts[CURLOPT_PROXYTYPE] = $protocols[$scheme];
-                    $curl_opts[CURLOPT_PROXY] = "{$proxy['host']}:{$proxy['port']}";
+                    $curl_opts[CURLOPT_PROXYTYPE] = $protocols[$scheme];
+                    $curl_opts[CURLOPT_PROXY]     = "{$proxy['host']}:{$proxy['port']}";
                     if ($user) {
                         $curl_opts[CURLOPT_PROXYUSERPWD] = "{$proxy['user']}:{$proxy['pass']}";
                     }
@@ -424,7 +430,7 @@ class Spider
     {
         $prevUrl = $request->getUrl();
         $urls    = [];
-        if ($this->findUrlsOverride) {
+        if ($this->hasCallback('findUrlsOverride')) {
             $ret = $this->callback('findUrlsOverride', $this, $content, $request, $response);
             if (is_array($ret)) {
                 $urls = $ret;

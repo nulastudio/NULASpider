@@ -6,7 +6,9 @@ function pattern(string $pattern)
 }
 
 $patterns = [
-    'ezSQL/PDO/pdo.php',
+    // 'ezSQL/PDO/pdo.php',
+    // 'csv/csv.php',
+    // 'aria2/aria2.php',
 ];
 
 foreach ($patterns as $pattern) {
