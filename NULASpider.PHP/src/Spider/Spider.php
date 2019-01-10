@@ -267,17 +267,18 @@ class Spider
 
             $proxy     = parse_url($option->proxy) ?: [];
             $curl_opts = [
-                // CURLOPT_HTTP_VERSION   => @[
-                //     ''    => CURL_HTTP_VERSION_NONE,
-                //     '1'   => CURL_HTTP_VERSION_1_0,
-                //     '1.0' => CURL_HTTP_VERSION_1_0,
-                //     '1.1' => CURL_HTTP_VERSION_1_1,
-                //     '2'   => CURL_HTTP_VERSION_2,
-                // ][$option->httpVersion] ?? '',
-                // CURLOPT_TIMEOUT        => $option->timeout,
-                // CURLOPT_FOLLOWLOCATION => $option->followLocation,
-                // CURLOPT_AUTOREFERER    => $option->autoReferer, // does not supported yet
-                // CURLOPT_MAXREDIRS      => $option->maxRedirs,
+                // only 1.0/1.1 supported now
+                CURLOPT_HTTP_VERSION   => @[
+                    ''    => CURL_HTTP_VERSION_NONE,
+                    '1'   => CURL_HTTP_VERSION_1_0,
+                    '1.0' => CURL_HTTP_VERSION_1_0,
+                    '1.1' => CURL_HTTP_VERSION_1_1,
+                    '2'   => CURL_HTTP_VERSION_2,
+                ][$option->httpVersion] ?? '',
+                CURLOPT_TIMEOUT        => $option->timeout,
+                CURLOPT_FOLLOWLOCATION => $option->followLocation,
+                // CURLOPT_AUTOREFERER    => $option->autoReferer,
+                CURLOPT_MAXREDIRS      => $option->maxRedirs,
             ];
             if ($proxy && $proxy['scheme'] && $proxy['host'] && $proxy['port']) {
                 $scheme    = strtolower($proxy['scheme']);
@@ -286,7 +287,7 @@ class Spider
                 $user      = $proxy['user'] ?? '';
                 $pass      = $proxy['pass'] ?? '';
                 $protocols = [
-                    // only http supported
+                    // only http supported now
                     'http' => CURLPROXY_HTTP,
                     // 'socks4'  => CURLPROXY_SOCKS4,
                     // 'socks4a' => CURLPROXY_SOCKS4A,

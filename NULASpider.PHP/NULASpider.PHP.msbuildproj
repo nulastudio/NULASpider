@@ -19,8 +19,8 @@
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
-    <DotNetCliToolReference Include="Peachpie.Compiler.Tools" Version="0.9.17" />
-    <PackageReference Include="Peachpie.NET.Sdk" Version="0.9.17" PrivateAssets="Build" />
+    <DotNetCliToolReference Include="Peachpie.Compiler.Tools" Version="0.9.28-PRI002" />
+    <PackageReference Include="Peachpie.NET.Sdk" Version="0.9.28-PRI002" PrivateAssets="Build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />
