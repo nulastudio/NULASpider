@@ -8,7 +8,7 @@ namespace nulastudio
     {
         public static string getRootDirectory()
         {
-            // 程序根目录
+            // 程序根目录
             return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).TrimEnd(Path.DirectorySeparatorChar);
         }
         public static string getWorkingDirectory()
