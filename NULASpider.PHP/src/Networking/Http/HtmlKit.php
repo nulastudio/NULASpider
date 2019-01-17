@@ -90,7 +90,7 @@ class HtmlKit
     public static function xpathNode(string $xpath)
     {
         $parts = [
-            'node'   => '',
+            'node'   => $xpath,
             'action' => '',
         ];
 
