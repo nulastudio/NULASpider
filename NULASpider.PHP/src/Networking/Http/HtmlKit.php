@@ -109,4 +109,40 @@ class HtmlKit
 
         return $parts;
     }
+
+    /**
+     * 将 css 表达式拆分为 node 以及 action
+     *
+     * 原因是某些库在匹配 css 时必须提供纯粹的节点表达式，否则无法匹配出来
+     * 事实上 css 选择器不存在 action 的说法，因为 css 选择器是节点级别的
+     * 为了能使 css 选择器选取属性，故扩展出类似 xpath 的语法
+     *
+     * 目前支持的扩展语法：@attr
+     *
+     * @param  string     $css css 表达式
+     * @return string[]
+     */
+    public static function cssNode(string $css)
+    {
+        $parts = [
+            'node'   => $css,
+            'action' => '',
+        ];
+
+        $css = trim($css);
+
+        $isFound = false;
+
+        $parts['node'] = trim(preg_replace_callback('/@[\w]+$/', function ($matches) use (&$parts, &$isFound) {
+            $parts['action'] = trim($matches[0]);
+            $isFound         = true;
+            return '';
+        }, $css));
+
+        if ($isFound) {
+            return $parts;
+        }
+
+        return $parts;
+    }
 }
