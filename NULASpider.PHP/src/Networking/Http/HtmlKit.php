@@ -78,4 +78,35 @@ class HtmlKit
     {
         return \phpUri::parse($base)->join($url);
     }
+
+    /**
+     * 将 xpath 表达式拆分为 node 以及 action
+     *
+     * 原因是某些库在匹配 xpath 时必须提供纯粹的节点表达式，否则无法匹配出来
+     *
+     * @param  string     $xpath xpath 表达式
+     * @return string[]
+     */
+    public static function XPathNode(string $xpath)
+    {
+        $parts = [
+            'node'   => '',
+            'action' => '',
+        ];
+
+        $segments = explode('/', $xpath);
+        if (count($segments)) {
+            $last = $segments[count($segments) - 1];
+            if ($last{0} === '@') {
+                // @attr
+                $parts['action'] = array_pop($segments);
+            } else if ($last === 'text()') {
+                // text()
+                $parts['action'] = array_pop($segments);
+            }
+            $parts['node'] = implode('/', $segments);
+        }
+
+        return $parts;
+    }
 }
