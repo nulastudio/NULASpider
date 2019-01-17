@@ -31,14 +31,38 @@ class HtmlKit
     public static function parseProxy(string $proxy)
     {
         $proxyPart = [
-            'schema'   => '',
+            'schema'   => 'http',
             'username' => '',
             'password' => '',
             'host'     => '',
-            'port'     => 0,
+            'port'     => 1080,
         ];
 
-        // TODO
+        // trim
+        $proxy = preg_replace('#\s+#', '', $proxy);
+        $proxy = rtrim($proxy, '/');
+
+        // has schema?
+        if (strpos($proxy, '://') !== false) {
+            list($proxyPart['schema'], $proxy) = explode('://', $proxy);
+        }
+
+        // has auth?
+        if (strpos($proxy, '@') !== false) {
+            list($proxyAuth, $proxy) = explode('@', $proxy);
+
+            $proxyAuth             = explode(':', $proxyAuth);
+            $proxyPart['username'] = $proxyAuth[0];
+            if (count($proxyAuth) == 2) {
+                $proxyPart['password'] = $proxyAuth[1];
+            }
+        }
+
+        $proxy             = explode(':', $proxy);
+        $proxyPart['host'] = $proxy[0];
+        if (count($proxy) == 2) {
+            $proxyPart['port'] = (int) $proxy[1];
+        }
 
         return $proxyPart;
     }
