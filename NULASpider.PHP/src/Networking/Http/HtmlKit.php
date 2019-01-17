@@ -87,7 +87,7 @@ class HtmlKit
      * @param  string     $xpath xpath 表达式
      * @return string[]
      */
-    public static function XPathNode(string $xpath)
+    public static function xpathNode(string $xpath)
     {
         $parts = [
             'node'   => '',
