@@ -66,4 +66,15 @@ class HtmlKit
 
         return $proxyPart;
     }
+
+    /**
+     * 相对 URL 转绝对 URL
+     *
+     * @param string $base Base URL
+     * @param string $url  URL
+     */
+    public static function absoluteUrl(string $base, string $url)
+    {
+        return \phpUri::parse($base)->join($url);
+    }
 }
