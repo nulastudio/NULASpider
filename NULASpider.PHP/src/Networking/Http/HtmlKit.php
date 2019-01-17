@@ -70,8 +70,9 @@ class HtmlKit
     /**
      * 相对 URL 转绝对 URL
      *
-     * @param string $base Base URL
-     * @param string $url  URL
+     * @param  string   $base Base URL
+     * @param  string   $url  URL
+     * @return string
      */
     public static function absoluteUrl(string $base, string $url)
     {
