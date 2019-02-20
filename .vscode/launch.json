@@ -16,7 +16,8 @@
             "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1",
             "console": "internalConsole",
             "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart"
+            "internalConsoleOptions": "openOnSessionStart",
+            "requireExactSource":false
         },
         {
             "name": "NULASpider.PHP.Test",

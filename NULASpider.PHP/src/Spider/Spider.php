@@ -3,6 +3,8 @@
 namespace nulastudio\Spider;
 
 use liesauer\SimpleHttpClient;
+use nulastudio\Collections\ConcurrentMemoryQueue as ConcurrentQueue;
+use nulastudio\Collections\UniqueQueue;
 use nulastudio\Log\NullLogger;
 use nulastudio\Networking\Http\Request;
 use nulastudio\Networking\Http\Response;
@@ -11,7 +13,6 @@ use nulastudio\Spider\Exceptions\SpiderException;
 use nulastudio\Spider\ServiceProviders\ExporterServiceProvider;
 use nulastudio\Spider\ServiceProviders\HookServiceProvider;
 use nulastudio\Spider\ServiceProviders\PluginServiceProvider;
-use nulastudio\Threading\ConcurrentQueue;
 use nulastudio\Threading\LockManager;
 use nulastudio\Util;
 use Psr\Log\LoggerAwareTrait;
@@ -21,9 +22,8 @@ use Psr\Log\LoggerTrait;
 
 class Spider
 {
-    // 去重url数组
-    private $unique_urls = [];
-
+    // URL 队列（UniqueQueue）
+    private $urlQueue;
     // 请求队列
     private $downloadQueue;
     // 处理队列
@@ -76,9 +76,10 @@ class Spider
     public function __construct(array $configs = [])
     {
         try {
-            // 初始化请求队列、处理队列
-            $this->downloadQueue = new ConcurrentQueue(Request::class);
-            $this->processQueue  = new ConcurrentQueue(Response::class);
+            // 初始化URL队列、请求队列、处理队列
+            $this->urlQueue      = new UniqueQueue();
+            $this->downloadQueue = new ConcurrentQueue();
+            $this->processQueue  = new ConcurrentQueue();
 
             // 接收并检查配置
             $this->checkConfig($configs);
@@ -200,13 +201,14 @@ class Spider
         try {
             LockManager::getLock('add_url');
             $url_hash = md5($url);
-            if (!Util\inArray($url_hash, $this->unique_urls)) {
-                $this->unique_urls[] = $url_hash;
-                $request             = new Request(Request::REQUEST_METHOD_GET, $url);
+            if (!$this->urlQueue->exists($url_hash)) {
+                $this->urlQueue->push($url_hash);
+                $request = new Request(Request::REQUEST_METHOD_GET, $url);
                 if ($prevUrl) {
                     $request->setHeader('Referer', $prevUrl);
                 }
-                $this->downloadQueue->Enqueue($request);
+
+                $this->downloadQueue->push($request);
             }
         } finally {
             LockManager::releaseLock('add_url');
@@ -215,20 +217,26 @@ class Spider
 
     public function getUrl()
     {
-        return $this->downloadQueue->Dequeue();
+        if ($this->hasUrl()) {
+            return $this->downloadQueue->pop();
+        }
+        return null;
     }
     public function hasUrl()
     {
-        return $this->downloadQueue->Count() !== 0;
+        return $this->downloadQueue->count() !== 0;
     }
 
     public function getResponse()
     {
-        return $this->processQueue->Dequeue();
+        if ($this->hasResponse()) {
+            return $this->processQueue->pop();
+        }
+        return null;
     }
     public function hasResponse()
     {
-        return $this->processQueue->Count() !== 0;
+        return $this->processQueue->count() !== 0;
     }
 
     public function fetchUrl($request)
@@ -343,7 +351,7 @@ class Spider
         LockManager::getLock('update_downloaded');
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
-        $this->processQueue->Enqueue($response);
+        $this->processQueue->push($response);
         // LockManager::releaseLock("fetchUrl");
     }
 
@@ -784,9 +792,10 @@ class Spider
         $this->hook('beforeExit', $this, $exit_code);
         $this->info("spider exited with code {$exit_code}", []);
         $this->callback('on_exit', $this, $exit_code);
-        exit($exit_code);
+        // exit($exit_code);
         // .NET way
-        // \System\Environment::Exit($exit_code);
+        // 调试时不会引起ScriptDieException
+        \System\Environment::Exit($exit_code);
     }
 
     private function validCallback(string $callback)

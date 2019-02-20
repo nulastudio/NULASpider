@@ -1,9 +1,9 @@
 <?php
 
-namespace nulastudio\Queue;
+namespace nulastudio\Collections;
 
-use nulastudio\Queue\QueueEmptyException;
-use nulastudio\Queue\QueueInterface;
+use nulastudio\Collections\QueueException;
+use nulastudio\Collections\QueueInterface;
 
 class MemoryQueue implements QueueInterface
 {
@@ -15,12 +15,11 @@ class MemoryQueue implements QueueInterface
         $this->init();
     }
 
-    private function init()
+    protected function init()
     {
         $this->queue   = [];
         $this->pointer = -1;
     }
-
     public function pop()
     {
         if ($this->count()) {
@@ -28,7 +27,7 @@ class MemoryQueue implements QueueInterface
             unset($this->queue[$this->pointer]);
             return $val;
         }
-        throw new QueueEmptyException();
+        throw new QueueException('The Queue is empty.');
     }
     public function push($value)
     {
@@ -39,14 +38,22 @@ class MemoryQueue implements QueueInterface
         if ($this->count()) {
             return $this->queue[$this->pointer + 1];
         }
-        throw new QueueEmptyException();
+        throw new QueueException('The Queue is empty.');
     }
     public function count()
     {
         return count($this->queue);
     }
-    public function clear()
+    public function empty()
     {
         $this->init();
+    }
+    /**
+     * 重建索引
+     */
+    public function reindex()
+    {
+        $this->queue   = array_values($this->queue);
+        $this->pointer = -1;
     }
 }

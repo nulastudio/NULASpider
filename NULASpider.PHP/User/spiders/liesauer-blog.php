@@ -7,7 +7,7 @@ use nulastudio\Spider\Spider;
 
 $config = [
     'thread'              => 5,
-    // 'UI'=>false,
+    'UI'=>false,
     'logger'              => new FileLogger(DIR_LOG . '/' . date('Y-m-d') . '.log'),
     'scan_urls'           => [
         'https://www.liesauer.net/blog/',
@@ -56,9 +56,9 @@ $config = [
     //     'file'  => DIR_DATA . '/blog.xlsx',
     //     'sheet' => 'blog',
     // ],
-    // 'export'              => [
-    //     'type'  => 'print',
-    // ],
+    'export'              => [
+        'type'  => 'print',
+    ],
     // 'export'              => [
     //     'type'     => 'pdo',
     //     'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
