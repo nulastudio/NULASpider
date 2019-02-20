@@ -33,6 +33,10 @@ class MemoryQueue implements QueueInterface
     {
         $this->queue[] = $value;
     }
+    public function exists($value)
+    {
+        return isset(array_flip($this->queue)[$value]);
+    }
     public function peek()
     {
         if ($this->count()) {

@@ -50,6 +50,19 @@ class ConcurrentMemoryQueue extends MemoryQueue
             LockManager::releaseLock($this->token);
         }
     }
+    public function exists($value)
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::exists($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
     public function peek()
     {
         LockManager::getLock($this->token);
@@ -76,10 +89,22 @@ class ConcurrentMemoryQueue extends MemoryQueue
         }
         return $val;
     }
-    function empty() {
+    public function empty()
+    {
         LockManager::getLock($this->token);
         try {
             parent::empty($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+    }
+    public function reindex()
+    {
+        LockManager::getLock($this->token);
+        try {
+            parent::reindex();
         } catch (\Exception $e) {
             throw $e;
         } finally {
