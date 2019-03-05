@@ -56,8 +56,12 @@ $config = [
     //     'file'  => DIR_DATA . '/blog.xlsx',
     //     'sheet' => 'blog',
     // ],
+    // 'export'              => [
+    //     'type'  => 'print',
+    // ],
     'export'              => [
-        'type'  => 'print',
+        'type'  => 'json',
+        'file'  => DIR_DATA . '/blog.json',
     ],
     // 'export'              => [
     //     'type'     => 'pdo',
@@ -83,6 +87,7 @@ $spider->use(User\Plugins\Pipeline::class);
 $spider->use(User\Plugins\ExcelExporter::class);
 $spider->use(User\Plugins\PrintOutExporter::class);
 $spider->use(User\Plugins\PDOExporter::class);
+$spider->use(User\Plugins\JsonExporter::class);
 
 // 默认是不开启的，指定第二个参数可默认开启
 $spider->use(User\Plugins\ProxyPool::class, [
