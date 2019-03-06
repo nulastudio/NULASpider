@@ -134,6 +134,10 @@ class JsonExporter extends AbstructExporter
         // flush
         fflush($this->handle);
     }
+    public function handleUnsupportedData($data)
+    {
+        return $data;
+    }
     public function close()
     {
         fflush($this->handle);
