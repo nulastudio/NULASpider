@@ -11,7 +11,7 @@
             "preLaunchTask": "Build Project",
             "program": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1/NULASpider.PHP.dll",
             "args": [
-                "User/spiders/liesauer-blog.php"
+                "User/spiders/test.php"
             ],
             "cwd": "${workspaceFolder}/NULASpider.PHP/bin/Debug/netcoreapp2.1",
             "console": "internalConsole",
