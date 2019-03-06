@@ -146,7 +146,7 @@ namespace nulastudio.Spider
         private static void processTask(dynamic spider)
         {
             PhpValue thread = Application.configs["thread"];
-            TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
+            TaskFactory taskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler((int)thread));
             Action<object> action = o => {
                 try
                 {
