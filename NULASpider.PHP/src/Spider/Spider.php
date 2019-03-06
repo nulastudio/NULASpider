@@ -778,7 +778,7 @@ class Spider
              */
             if (!$recursive ||
                 ($recursive && is_array($selector) && isset($selector['fields']))) {
-                if ($this->on_fetch_field) {
+                if ($this->hasCallback('on_fetch_field')) {
                     $field = $this->callback('on_fetch_field', $this, $name, $field);
                 }
             }
