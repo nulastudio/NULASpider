@@ -95,7 +95,7 @@ class Header
         })) {
             $ret = array_flip($header_keys)[strtolower($header)] ?? null;
             if ($ret !== null) {
-                $ret = $array_keys($this->headers)[$ret];
+                $ret = array_keys($this->headers)[$ret];
             }
             return $ret;
         }
@@ -179,7 +179,7 @@ class Header
         $headers = '';
         foreach ($this->headers as $key => $value) {
             if (is_array($value)) {
-                foreach ($$value as $v) {
+                foreach ($value as $v) {
                     $headers .= "{$key}: {$v}\r\n";
                 }
             } else {
