@@ -15,7 +15,7 @@
     <PackageReference Include="liesauer.LimitedConcurrencyLevelTaskScheduler.NETStandard" Version="1.0.1" />
     <PackageReference Include="EdjCase.JsonRpc.Client" Version="3.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
-    <PackageReference Include="UTF.Unknown" Version="1.0.0-beta1" />
+    <PackageReference Include="UTF.Unknown" Version="1.*" />
     <PackageReference Include="ConsoleTableExt" Version="2.0.1" />
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
     <PackageReference Include="nulastudio.Document.EPPlus4PHP" Version="0.1.6-*" />

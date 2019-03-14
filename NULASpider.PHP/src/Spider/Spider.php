@@ -5,6 +5,7 @@ namespace nulastudio\Spider;
 use liesauer\SimpleHttpClient;
 use nulastudio\Collections\ConcurrentMemoryQueue as ConcurrentQueue;
 use nulastudio\Collections\UniqueQueue;
+use nulastudio\Encoding\Encoding;
 use nulastudio\Log\NullLogger;
 use nulastudio\Networking\Http\Request;
 use nulastudio\Networking\Http\Response;
@@ -17,6 +18,7 @@ use nulastudio\Threading\LockManager;
 use nulastudio\Util;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerTrait;
+use Psr\Log\LogLevel;
 
 // use Sabre\Uri;
 
@@ -64,6 +66,7 @@ class Spider
         'requestOverride'  => null,
         'findUrlsOverride' => null,
         'filterUrls'       => null,
+        'encodingHandler'  => null,
     ];
 
     // 爬虫配置项
@@ -159,6 +162,9 @@ class Spider
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
+            'input_encoding'      => 'smart',
+            'fallback_encoding'   => '',
+            'output_encoding'     => 'auto',
             'logger'              => new NullLogger,
             'scan_urls'           => [],
             'list_url_pattern'    => [],
@@ -176,6 +182,7 @@ class Spider
         $this->callback('on_start', $this);
 
         if ($this->initWorker()) {
+            Encoding::registerProvider();
             Application::run($this);
         }
 
@@ -358,9 +365,28 @@ class Spider
     public function processResponse($response)
     {
         // LockManager::getLock("processResponse");
-        $request = $response->getRequest();
-        $url     = $request->getUrl();
-        $content = $response->getRawContent();
+
+        // 编码转换
+        $request           = $response->getRequest();
+        $url               = $request->getUrl();
+        $content           = $response->getRawContent();
+        $input_encoding    = strtoupper($this->configs['input_encoding']);
+        $fallback_encoding = strtoupper($this->configs['fallback_encoding']);
+        $encoding          = $this->encodingDetect($response, $input_encoding);
+        if (!$encoding) {
+            $encoding = $this->encodingDetect($response, $fallback_encoding);
+            if (!$encoding) {
+                #warning should stop the spider?
+                $this->log(LogLevel::WARNING, 'Encoding detect failed.');
+            }
+        }
+
+        if ($encoding) {
+            if ($encoding !== 'UTF-8') {
+                $content = iconv($encoding, 'UTF-8//TRANSLIT', $content);
+            }
+        }
+
         if ($this->isScanUrl($url) && $this->hasCallback('on_scan_url')) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
             if ($ret !== true) {
@@ -398,6 +424,61 @@ class Spider
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
         // LockManager::releaseLock("processResponse");
+    }
+
+    private function encodingDetect($response, $processor)
+    {
+        if (empty($response) || empty($processor)) {
+            return false;
+        }
+        $encoding = 'ISO-8859-1';
+        if ($processor === 'AUTO' || $processor === 'SMART') {
+            // use built-in detector
+            $CBC = $processor === 'SMART';
+
+            // detect from header
+            // detect from meta if is html also
+            // priority: header > meta
+            $contentType = $response->getParsedHeader()->getHeaderLine('Content-Type');
+            if ($contentType) {
+                // Content-type: MIME类型; charset=编码
+                $isHTML = false;
+                if (preg_match('/^\s*(?<mime>[\w\/]+);?.*$/i', $contentType, $result) === 1) {
+                    $isHTML = strtolower($result['mime']) === 'text/html';
+                    if (preg_match('/charset=(?<encoding>[\w\-]*).*$/i', $contentType, $result) === 1) {
+                        $encoding = $result['encoding'];
+                    }
+                    if ($isHTML && empty($encoding)) {
+                        // detect from meta
+                        /**
+                         * HTML4: <meta http-equiv="Content-Type" content="text/html;charset=XXX">
+                         * HTML5: <meta charset="XXX">
+                         */
+                        if (preg_match('/<meta\s*http-equiv="Content-Type"\s*content="[\w\/]*;charset=(?<encoding>[\w\-]*)".*$/i', $contentType, $result) === 1) {
+                            $encoding = $result['encoding'];
+                        } else if (preg_match('/<meta\s*charset="(?<encoding>[\w\-]*)".*$/i', $contentType, $result) === 1) {
+                            $encoding = $result['encoding'];
+                        }
+                    }
+                }
+            }
+
+            if ($CBC && !$encoding) {
+                $content = $response->getRawContent();
+                return Encoding::detect($content);
+            }
+        } elseif ($processor === 'HANDLER') {
+            if ($this->hasCallback('encodingHandler')) {
+                return $this->callback('encodingHandler', $this, $response);
+            } else {
+                $this->log(LogLevel::WARNING, 'encodingHandler does not exists.');
+            }
+        } else {
+            // TODO
+            // validate if it is valid encoding
+            $encoding = $processor;
+        }
+        return strtoupper($encoding);
     }
 
     public function isScanUrl($url)
