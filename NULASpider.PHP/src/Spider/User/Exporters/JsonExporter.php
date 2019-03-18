@@ -105,10 +105,12 @@ class JsonExporter extends AbstructExporter
         if ($this->endPos === -1) {
             // 空文件
             // 往文件尾添加 “[]”，并将$endPos指向$this->fileSize + 1
+            // 还要更新fileSize至写入长度，即长度2
             fseek($this->handle, 0, SEEK_END);
             fwrite($this->handle, '[]');
             $this->validJson = true;
             $this->endPos = $this->fileSize + 1;
+            $this->fileSize = 2;
         }
         fseek($this->handle, $this->endPos);
         $this->endData = fread($this->handle, $this->fileSize - $this->endPos);
