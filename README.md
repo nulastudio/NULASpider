@@ -21,7 +21,7 @@
 * Logging
 * Proxy Pool
 * Plugins
-* Exporters. database, excel, file, csv etc.
+* Exporters. database, excel, file, csv, json etc.
 
 ## Getting Started
 
