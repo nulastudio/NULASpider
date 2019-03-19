@@ -471,6 +471,7 @@ class Spider
             if ($this->hasCallback('encodingHandler')) {
                 return $this->callback('encodingHandler', $this, $response);
             } else {
+                $encoding = '';
                 $this->log(LogLevel::WARNING, 'encodingHandler does not exists.');
             }
         } else {
