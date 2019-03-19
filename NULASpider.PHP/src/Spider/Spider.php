@@ -184,6 +184,9 @@ class Spider
 
         if ($this->initWorker()) {
             Encoding::registerProvider();
+            #warning 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃
+            // BAD CODE
+            HtmlKit::init();
             Application::run($this);
         }
 
