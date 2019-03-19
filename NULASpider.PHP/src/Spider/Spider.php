@@ -7,6 +7,7 @@ use nulastudio\Collections\ConcurrentMemoryQueue as ConcurrentQueue;
 use nulastudio\Collections\UniqueQueue;
 use nulastudio\Encoding\Encoding;
 use nulastudio\Log\NullLogger;
+use nulastudio\Networking\Http\HtmlKit;
 use nulastudio\Networking\Http\Request;
 use nulastudio\Networking\Http\Response;
 use nulastudio\Spider\Application;
@@ -704,15 +705,25 @@ class Spider
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
             $document->LoadHtml($content);
-            /**
-             * css选择器是节点级的，无法获取节点的属性值
-             */
+            $cssNode = HtmlKit::cssNode($selector);
 
             // $node = $document->DocumentNode->QuerySelectorAll($selector);
-            $node = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelector($document->DocumentNode, $selector);
+            $node = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelector($document->DocumentNode, $cssNode['node']);
             if ($node) {
-                /* html */
-                return $node->InnerHtml;
+                switch ($cssNode['action']) {
+                    case '@innerHTML':
+                        return $node->InnerHtml;
+                    case '@outerHTML':
+                        return $node->OuterHtml;
+                    case '@innerText':
+                        return $node->InnerText;
+                    default:
+                        if ($node['action']{0} === '@') {
+                            /* property */
+                            return $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
+                        }
+                        return $node->InnerHtml;
+                }
             }
         } catch (\Exception $e) {}
     }
@@ -722,16 +733,26 @@ class Spider
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
             $document->LoadHtml($content);
-            /**
-             * css选择器是节点级的，无法获取节点的属性值
-             */
+            $cssNode = HtmlKit::cssNode($selector);
 
             // $nodes = $document->DocumentNode->QuerySelectorAll($selector);
-            $nodes = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelectorAll($document->DocumentNode, $selector);
+            $nodes = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelectorAll($document->DocumentNode, $cssNode['node']);
             if ($nodes) {
                 foreach ($nodes as $node) {
-                    /* html */
-                    $result[] = $node->InnerHtml;
+                    switch ($cssNode['action']) {
+                        case '@innerHTML':
+                            $result[] = $node->InnerHtml;
+                        case '@outerHTML':
+                            $result[] = $node->OuterHtml;
+                        case '@innerText':
+                            $result[] = $node->InnerText;
+                        default:
+                            if ($node['action']{0} === '@') {
+                                /* property */
+                                $result[] = $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
+                            }
+                            $result[] = $node->InnerHtml;
+                    }
                 }
             }
         } catch (\Exception $e) {}

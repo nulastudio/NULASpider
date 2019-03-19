@@ -117,7 +117,7 @@ class HtmlKit
      * 事实上 css 选择器不存在 action 的说法，因为 css 选择器是节点级别的
      * 为了能使 css 选择器选取属性，故扩展出类似 xpath 的语法
      *
-     * 目前支持的扩展语法：@attr
+     * 目前支持的扩展语法：@attr, @innerHTML, @outerHTML, @innerText
      *
      * @param  string     $css css 表达式
      * @return string[]
