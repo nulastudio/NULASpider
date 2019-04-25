@@ -15,7 +15,7 @@ namespace nulastudio.Encoding
         public static string detect(Context ctx, PhpString content)
         {
             var result = CharsetDetector.DetectFromBytes(content.ToBytes(ctx));
-            return result.Detected.EncodingName;
+            return result.Detected?.EncodingName;
         }
     }
 }
