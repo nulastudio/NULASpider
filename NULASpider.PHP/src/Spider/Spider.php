@@ -435,7 +435,8 @@ class Spider
         if (empty($response) || empty($processor)) {
             return false;
         }
-        $encoding = 'ISO-8859-1';
+        // $encoding = 'ISO-8859-1';
+        $encoding = '';
         if ($processor === 'AUTO' || $processor === 'SMART') {
             // use built-in detector
             $CBC = $processor === 'SMART';
