@@ -596,6 +596,9 @@ class Spider
 
     private function fetchSingleField($type, $selector, $content, $request, $response)
     {
+        if (empty($content)) {
+            return null;
+        }
         if ($type === 'xpath') {
             return $this->fetchSingleFieldXpath($selector, $content, $request, $response);
         } else if ($type === 'regex') {
@@ -611,6 +614,9 @@ class Spider
     }
     private function fetchRepeatedFields($type, $selector, $content, $request, $response)
     {
+        if (empty($content)) {
+            return null;
+        }
         if ($type === 'xpath') {
             return $this->fetchRepeatedFieldsXpath($selector, $content, $request, $response);
         } else if ($type === 'regex') {
@@ -624,7 +630,7 @@ class Spider
         }
         throw new SpiderException("Unrecognized selector type: {$type}.");
     }
-    private function fetchSingleFieldXpath(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldXpath(string $selector, $content, $request, $response)
     {
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
@@ -650,7 +656,7 @@ class Spider
             }
         } catch (\Exception $e) {}
     }
-    private function fetchRepeatedFieldsXpath(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsXpath(string $selector, $content, $request, $response)
     {
         $result = [];
         try {
@@ -680,7 +686,7 @@ class Spider
         } catch (\Exception $e) {}
         return $result;
     }
-    private function fetchSingleFieldRegex(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldRegex(string $selector, $content, $request, $response)
     {
         if (Util\isRegex($selector)) {
             if (preg_match($selector, $content, $matches) === 1) {
@@ -688,7 +694,7 @@ class Spider
             }
         }
     }
-    private function fetchRepeatedFieldsRegex(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsRegex(string $selector, $content, $request, $response)
     {
         $result = [];
         // 如果$matches数组只有一个元素，则表示无分组，使用匹配到的全文作为结果
@@ -704,7 +710,7 @@ class Spider
         }
         return $result;
     }
-    private function fetchSingleFieldCss(string $selector, string $content, $request, $response)
+    private function fetchSingleFieldCss(string $selector, $content, $request, $response)
     {
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
@@ -731,7 +737,7 @@ class Spider
             }
         } catch (\Exception $e) {}
     }
-    private function fetchRepeatedFieldsCss(string $selector, string $content, $request, $response)
+    private function fetchRepeatedFieldsCss(string $selector, $content, $request, $response)
     {
         $result = [];
         try {
@@ -762,11 +768,11 @@ class Spider
         } catch (\Exception $e) {}
         return $result;
     }
-    private function fetchSingleFieldCallback(callable $callback, string $content, $request, $response)
+    private function fetchSingleFieldCallback(callable $callback, $content, $request, $response)
     {
         return call_user_func($callback, $content, $this, $request, $response);
     }
-    private function fetchRepeatedFieldsCallback(callable $callback, string $content, $request, $response)
+    private function fetchRepeatedFieldsCallback(callable $callback, $content, $request, $response)
     {
         $ret = call_user_func($callback, $content, $this, $request, $response);
         // 强制包装成数组，保证结构不被破坏
