@@ -30,7 +30,8 @@
         "psr/http-message": "^1.0",
         "sabre/uri": "^2",
         "ezsql/ezsql": "^3.0",
-        "nulastudio/aria2": "^1.1"
+        "nulastudio/aria2": "^1.1",
+        "mtdowling/jmespath.php": "^2.4"
     },
     "require-dev": {
     },

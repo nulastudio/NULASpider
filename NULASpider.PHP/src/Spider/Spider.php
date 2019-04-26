@@ -609,6 +609,8 @@ class Spider
             return $this->fetchSingleFieldCallback($selector, $content, $request, $response);
         } else if ($type === 'raw') {
             return $this->fetchSingleFieldRaw($selector, $content, $request, $response);
+        } else if ($type === 'jmespath') {
+            return $this->fetchSingleFieldJMESPath($selector, $content, $request, $response);
         }
         throw new SpiderException("Unrecognized selector type: {$type}.");
     }
@@ -627,6 +629,8 @@ class Spider
             return $this->fetchRepeatedFieldsCallback($selector, $content, $request, $response);
         } else if ($type === 'raw') {
             return $this->fetchRepeatedFieldsRaw($selector, $content, $request, $response);
+        } else if ($type === 'jmespath') {
+            return $this->fetchRepeatedFieldsJMESPath($selector, $content, $request, $response);
         }
         throw new SpiderException("Unrecognized selector type: {$type}.");
     }
@@ -793,6 +797,23 @@ class Spider
             $res = [$res];
         }
         return $res;
+    }
+    private function fetchSingleFieldJMESPath($selector, $content, $request, $response)
+    {
+        $json = json_decode($content, true);
+        if (!is_array($json)) {
+            return NULL;
+        }
+        return \JmesPath\search($selector, $json);
+    }
+    private function fetchRepeatedFieldsJMESPath($selector, $content, $request, $response)
+    {
+        $result = $this->fetchSingleFieldJMESPath($selector, $content, $request, $response);
+        // 如果不是数组或者不是索引数组就包装成索引数组
+        if (!is_array($result) || !Util\isIndexedArray($result)) {
+            $result = [$result];
+        }
+        return $result;
     }
 
     private function fetchFields($fields, $content, $request, $response, $recursive = false)
