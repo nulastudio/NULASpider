@@ -163,9 +163,9 @@ class Spider
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
-            'input_encoding'      => 'smart',
+            'input_encoding'      => 'smart', // GIVEN_ENCODING, "auto", "smart", "handler"
             'fallback_encoding'   => '',
-            'output_encoding'     => 'auto',
+            'output_encoding'     => 'auto', // unsupported yet, always "UTF-8"
             'urlQueue'            => new UniqueQueue(),
             'downloadQueue'       => new ConcurrentQueue(),
             'processQueue'        => new ConcurrentQueue(),
