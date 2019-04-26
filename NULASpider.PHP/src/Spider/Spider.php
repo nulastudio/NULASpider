@@ -776,7 +776,7 @@ class Spider
     {
         $ret = call_user_func($callback, $content, $this, $request, $response);
         // 强制包装成数组，保证结构不被破坏
-        if (!is_array($ret)) {
+        if (!is_array($ret) || !Util\isIndexedArray($ret)) {
             $ret = [$ret];
         }
         return $ret;
@@ -789,7 +789,7 @@ class Spider
     {
         $res = $content;
         // 强制包装成数组，保证结构不被破坏
-        if (!is_array($res)) {
+        if (!is_array($res) || !Util\isIndexedArray($res)) {
             $res = [$res];
         }
         return $res;
