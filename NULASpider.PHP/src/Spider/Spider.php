@@ -80,13 +80,13 @@ class Spider
     public function __construct(array $configs = [])
     {
         try {
-            // 初始化URL队列、请求队列、处理队列
-            $this->urlQueue      = new UniqueQueue();
-            $this->downloadQueue = new ConcurrentQueue();
-            $this->processQueue  = new ConcurrentQueue();
-
             // 接收并检查配置
             $this->checkConfig($configs);
+
+            // 初始化URL队列、请求队列、处理队列
+            $this->urlQueue      = $this->configs['urlQueue'];
+            $this->downloadQueue = $this->configs['downloadQueue'];
+            $this->processQueue  = $this->configs['processQueue'];
 
             $this->setLogger($this->configs['logger']);
 
@@ -166,6 +166,9 @@ class Spider
             'input_encoding'      => 'smart',
             'fallback_encoding'   => '',
             'output_encoding'     => 'auto',
+            'urlQueue'            => new UniqueQueue(),
+            'downloadQueue'       => new ConcurrentQueue(),
+            'processQueue'        => new ConcurrentQueue(),
             'logger'              => new NullLogger,
             'scan_urls'           => [],
             'list_url_pattern'    => [],
