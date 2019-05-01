@@ -4,10 +4,13 @@
         {
             "label": "Build Project",
             "command": "dotnet",
-            "type": "process",
+            "type": "shell",
             "args": [
                 "build",
-                "${workspaceFolder}/NULASpider.sln"
+                "${workspaceFolder}/NULASpider.sln",
+                ";",
+                "php",
+                "${workspaceFolder}/NULASpider.PHP/fixDEPS.php"
             ],
             "problemMatcher": "$msCompile"
         },
