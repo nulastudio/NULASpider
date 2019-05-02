@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "NULASpider.PHP": {
+      "commandName": "Project",
+      "commandLineArgs": "User/spiders/test.php",
+      "workingDirectory": "$(TargetDir)",
+      "environmentVariables": {
+        "NULASPIDER_TESTING": "0"
+      }
+    }
+  }
+}

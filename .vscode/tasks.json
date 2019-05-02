@@ -7,10 +7,7 @@
             "type": "shell",
             "args": [
                 "build",
-                "${workspaceFolder}/NULASpider.sln",
-                ";",
-                "php",
-                "${workspaceFolder}/NULASpider.PHP/fixDEPS.php"
+                "${workspaceFolder}/NULASpider.sln"
             ],
             "problemMatcher": "$msCompile"
         },

@@ -27,4 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="php $(ProjectDir)fixDEPS.php" />
+  </Target>
 </Project>
