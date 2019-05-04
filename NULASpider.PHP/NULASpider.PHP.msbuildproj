@@ -14,10 +14,13 @@
     <Compile Remove="vendor/**/test/**/*.php" />
     <Compile Remove="vendor/**/tests/**/*.php" />
     <Compile Remove="vendor/ezsql/ezsql/unsupported/**/*.php" />
-    <Compile Remove="fixDEPS.php" />    
+    <Compile Remove="fixDEPS.php" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
     <!-- <DotNetCliToolReference Include="Peachpie.Compiler.Tools" Version="0.9.28-PRI003" /> -->
