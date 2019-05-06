@@ -4,7 +4,7 @@
         {
             "label": "Build Project",
             "command": "dotnet",
-            "type": "process",
+            "type": "shell",
             "args": [
                 "build",
                 "${workspaceFolder}/NULASpider.sln"
