@@ -19,7 +19,7 @@
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+    <!-- <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" /> -->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />

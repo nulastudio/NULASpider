@@ -1,6 +1,6 @@
 <?php
 
-namespace nulastudio\Collections;
+// namespace nulastudio\Collections;
 
-class QueueException extends \Exception
-{}
+// class QueueException extends \Exception
+// {}
