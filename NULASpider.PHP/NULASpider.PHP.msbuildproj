@@ -5,6 +5,7 @@
     <StartupObject>bootstrap.php</StartupObject>
     <Description>NULASpider</Description>
     <RuntimeIdentifiers>win-x64;win-x86;linux-x64;osx-x64</RuntimeIdentifiers>
+    <ComposerJsonPath>false</ComposerJsonPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />
@@ -24,7 +25,4 @@
   <ItemGroup>
     <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="php $(ProjectDir)fixDEPS.php" />
-  </Target>
 </Project>
