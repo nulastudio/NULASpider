@@ -739,7 +739,7 @@ class Spider
                     case '@innerText':
                         return $node->InnerText;
                     default:
-                        if ($cssNode['action']{0} === '@') {
+                        if ($cssNode['action'] && $cssNode['action']{0} === '@') {
                             /* property */
                             return $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
                         }
@@ -768,7 +768,7 @@ class Spider
                         case '@innerText':
                             $result[] = $node->InnerText;
                         default:
-                            if ($cssNode['action']{0} === '@') {
+                            if ($cssNode['action'] && $cssNode['action']{0} === '@') {
                                 /* property */
                                 $result[] = $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
                             }
