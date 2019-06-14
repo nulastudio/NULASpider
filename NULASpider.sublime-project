@@ -5,7 +5,7 @@
 			"path": "."
 		},
 		{
-			"path": "..\\peachpie"
+			"path": "../peachpie"
 		}
 	]
 }

@@ -739,7 +739,7 @@ class Spider
                     case '@innerText':
                         return $node->InnerText;
                     default:
-                        if ($cssNode['action']{0} === '@') {
+                        if ($cssNode['action'] && $cssNode['action']{0} === '@') {
                             /* property */
                             return $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
                         }
@@ -768,7 +768,7 @@ class Spider
                         case '@innerText':
                             $result[] = $node->InnerText;
                         default:
-                            if ($cssNode['action']{0} === '@') {
+                            if ($cssNode['action'] && $cssNode['action']{0} === '@') {
                                 /* property */
                                 $result[] = $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
                             }
@@ -846,10 +846,20 @@ class Spider
         foreach ($fields as $name => $selector) {
             $field = null;
             if (is_string($selector)) {
+                // TODO: 文档、优化
+                $type = 'xpath';
+                $types = ['xpath', 'css', 'regex', 'jsonpath', 'jmespath'];
+                foreach ($types as $t) {
+                    if (strpos($selector, "{$t}://") === 0) {
+                        $type = $t;
+                        $selector = preg_replace("#{$t}://#", '', $selector, 1);
+                        break;
+                    }
+                }
                 /**
-                 * 简单xpath
+                 * 简单xpath、简化选择器
                  */
-                $field = $this->fetchSingleFieldXpath($selector, $content, $request, $response);
+                $field = $this->fetchSingleField($type, $selector, $content, $request, $response);
             } else if (is_array($selector)) {
                 /**
                  * 数组
