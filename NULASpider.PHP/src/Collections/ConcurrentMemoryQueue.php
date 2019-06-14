@@ -26,6 +26,7 @@ class ConcurrentMemoryQueue extends MemoryQueue
             LockManager::releaseLock($this->token);
         }
     }
+
     public function pop()
     {
         LockManager::getLock($this->token);

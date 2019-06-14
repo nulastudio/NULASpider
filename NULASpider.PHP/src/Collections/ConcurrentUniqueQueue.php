@@ -1,0 +1,115 @@
+<?php
+
+namespace nulastudio\Collections;
+
+use nulastudio\Collections\UniqueQueue;
+use nulastudio\Threading\LockManager;
+
+class ConcurrentUniqueQueue extends UniqueQueue
+{
+    private $token = '';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->token = strtoupper(md5(uniqid(mt_rand(), true)));
+    }
+
+    protected function init()
+    {
+        LockManager::getLock($this->token);
+        try {
+            parent::init();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+    }
+
+    public function pop()
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::pop();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
+    public function push($value)
+    {
+        LockManager::getLock($this->token);
+        try {
+            parent::push($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+    }
+    public function exists($value)
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::exists($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
+    public function peek()
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::peek();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
+    public function count()
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::count();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
+    public function empty()
+    {
+        LockManager::getLock($this->token);
+        try {
+            parent::empty($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+    }
+    public function reindex()
+    {
+        LockManager::getLock($this->token);
+        try {
+            parent::reindex();
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+    }
+}

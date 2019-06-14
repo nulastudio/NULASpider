@@ -24,34 +24,6 @@ error_reporting(E_ALL);
 // error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 date_default_timezone_set('Asia/Shanghai');
 
-$segments = nulastudio\Util\UriUtil::parseUrl('redis://:@127.0.0.1:8080/db0?charset=uft8&timeout=10&message=你好#aaa');
-var_dump($segments);
-
-
-$redisQueue = new nulastudio\Collections\RedisQueue(
-    'redis://127.0.0.1/db0/testUrlQueue?password=test&prefix=pre_'
-);
-
-var_dump($redisQueue->exists('hello'));
-
-$redisQueue->push('你好');
-
-var_dump($redisQueue->exists('你好'));
-
-$redisQueue->push('hello');
-
-var_dump($redisQueue->count());
-
-var_dump($redisQueue->peek());
-
-var_dump($redisQueue->pop());
-
-var_dump($redisQueue->count());
-
-var_dump($redisQueue->exists('你好'));
-
-var_dump($redisQueue->empty());
-
 if (getenv(TESTING_KEY)) {
     require __DIR__ . '/src/Spider/User/Tests/bootstrap.php';
     return;

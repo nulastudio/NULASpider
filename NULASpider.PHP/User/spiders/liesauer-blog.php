@@ -7,7 +7,7 @@ use nulastudio\Spider\Spider;
 
 $config = [
     'thread'              => 5,
-    'UI'=>false,
+    'UI'                  => false,
     'logger'              => new FileLogger(DIR_LOG . '/' . date('Y-m-d') . '.log'),
     'scan_urls'           => [
         'https://www.liesauer.net/blog/',
@@ -60,8 +60,8 @@ $config = [
     //     'type'  => 'print',
     // ],
     'export'              => [
-        'type'  => 'json',
-        'file'  => DIR_DATA . '/blog.json',
+        'type' => 'json',
+        'file' => DIR_DATA . '/blog.json',
     ],
     // 'export'              => [
     //     'type'     => 'pdo',

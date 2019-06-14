@@ -2,13 +2,14 @@
 
 namespace nulastudio\Collections;
 
-use nulastudio\Collections\QueueException;
 use nulastudio\Collections\QueueInterface;
 
 class MemoryQueue implements QueueInterface
 {
     private $queue;
     private $pointer;
+    private $popCount;
+    private $maxCount = 500000;
 
     public function __construct()
     {
@@ -17,17 +18,22 @@ class MemoryQueue implements QueueInterface
 
     protected function init()
     {
-        $this->queue   = [];
-        $this->pointer = -1;
+        $this->queue    = [];
+        $this->pointer  = -1;
+        $this->popCount = 0;
     }
+
     public function pop()
     {
         if ($this->count()) {
             $val = $this->queue[++$this->pointer];
             unset($this->queue[$this->pointer]);
+            if (++$this->popCount >= $this->maxCount) {
+                $this->reindex();
+            }
             return $val;
         }
-        throw new QueueException('The Queue is empty.');
+        return null;
     }
     public function push($value)
     {
@@ -42,7 +48,7 @@ class MemoryQueue implements QueueInterface
         if ($this->count()) {
             return $this->queue[$this->pointer + 1];
         }
-        throw new QueueException('The Queue is empty.');
+        return null;
     }
     public function count()
     {
@@ -57,7 +63,8 @@ class MemoryQueue implements QueueInterface
      */
     public function reindex()
     {
-        $this->queue   = array_values($this->queue);
-        $this->pointer = -1;
+        $this->queue    = array_values($this->queue);
+        $this->pointer  = -1;
+        $this->popCount = 0;
     }
 }
