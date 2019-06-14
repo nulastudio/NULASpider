@@ -846,10 +846,20 @@ class Spider
         foreach ($fields as $name => $selector) {
             $field = null;
             if (is_string($selector)) {
+                // TODO: 文档、优化
+                $type = 'xpath';
+                $types = ['xpath', 'css', 'regex', 'jsonpath', 'jmespath'];
+                foreach ($types as $t) {
+                    if (strpos($selector, "{$t}://") === 0) {
+                        $type = $t;
+                        $selector = preg_replace("#{$t}://#", '', $selector, 1);
+                        break;
+                    }
+                }
                 /**
-                 * 简单xpath
+                 * 简单xpath、简化选择器
                  */
-                $field = $this->fetchSingleFieldXpath($selector, $content, $request, $response);
+                $field = $this->fetchSingleField($type, $selector, $content, $request, $response);
             } else if (is_array($selector)) {
                 /**
                  * 数组
