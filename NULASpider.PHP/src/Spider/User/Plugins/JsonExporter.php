@@ -12,7 +12,7 @@ class JsonExporter implements PluginContract
         $application->registerExporter('json', _JsonExporter::class);
         $application->hooks['beforeExit'][] = function ($spider, $exit_code) {
             $exporter = $spider->getExporter();
-            if ($exporter !== null && $exporter instanceof __JsonExporter) {
+            if ($exporter !== null && $exporter instanceof _JsonExporter) {
                 $exporter->close();
             }
         };

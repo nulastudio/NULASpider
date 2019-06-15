@@ -94,7 +94,7 @@ class ConcurrentUniqueQueue extends UniqueQueue
     {
         LockManager::getLock($this->token);
         try {
-            parent::empty($value);
+            parent::empty();
         } catch (\Exception $e) {
             throw $e;
         } finally {

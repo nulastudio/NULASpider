@@ -129,9 +129,9 @@ class ProxyPool implements PluginContract
             }
 
             if ($intelligent === null) {
-                $proxyPool->enable((bool) $enable);
+                $proxyPool->enable($enable);
             } else {
-                $proxyPool->enable((bool) $enable, (bool) $intelligent);
+                $proxyPool->enable($enable, (bool) $intelligent);
             }
         });
         $application->bind('resetCD', function ($spider, ...$params) use ($proxyPool) {

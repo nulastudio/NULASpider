@@ -58,7 +58,7 @@ class Kernel
     public function bind(string $name, $stuff)
     {
         if (array_key_exists($name, $this->binds)) {
-            throw new KernelException("Service exists: {$service}");
+            throw new KernelException("Service exists: {$name}");
         } else {
             $this->binds[$name] = $stuff;
         }

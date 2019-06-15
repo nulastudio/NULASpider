@@ -5,6 +5,7 @@ namespace nulastudio\Spider\ServiceProviders;
 use nulastudio\Spider\Contracts\ServiceProviderContract;
 use nulastudio\Spider\Kernel;
 use nulastudio\Spider\Services\HookService;
+use nulastudio\Util;
 
 class HookServiceProvider implements ServiceProviderContract
 {
