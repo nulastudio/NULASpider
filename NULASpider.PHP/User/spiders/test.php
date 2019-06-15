@@ -5,13 +5,14 @@ use nulastudio\Networking\Http\Request;
 use nulastudio\Networking\Http\UserAgent;
 use nulastudio\Collections\ConcurrentMemoryQueue;
 use nulastudio\Collections\ConcurrentRedisUniqueQueue;
+use nulastudio\Collections\ConcurrentUniqueQueue;
 use nulastudio\Spider\Spider;
 
 $config = [
     'thread'              => 5,
     'UI'                  => false,
     'logger'              => new FileLogger(DIR_LOG . '/' . date('Y-m-d') . '.log'),
-    'urlQueue'            => new ConcurrentRedisUniqueQueue('redis://127.0.0.1/db0?key=UrlQueue'),
+    'urlQueue'            => new ConcurrentUniqueQueue(),
     'downloadQueue'       => new ConcurrentMemoryQueue(),
     'processQueue'        => new ConcurrentMemoryQueue(),
     'scan_urls'           => [
@@ -62,7 +63,7 @@ $config = [
     //     'sheet' => 'blog',
     // ],
     'export'              => [
-        'type'  => 'print',
+        'type'  => 'print1',
     ],
     // 'export'              => [
     //     'type' => 'json',

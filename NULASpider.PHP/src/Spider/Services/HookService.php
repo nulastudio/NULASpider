@@ -15,7 +15,9 @@ class HookService extends BaseService implements \ArrayAccess
             if (is_string($hook)) {
                 $this->hooks[$hook] = null;
             } else {
-                trigger_error("Trying to register a invalid hook point.", E_USER_WARNING);
+                // trigger_error("Trying to register a invalid hook point.", E_USER_WARNING);
+                // FIXME: 使用Exception代替，set_error_handler以及trigger_error未实现
+                throw new \Exception( "Trying to register a invalid hook point.");
             }
         }
     }

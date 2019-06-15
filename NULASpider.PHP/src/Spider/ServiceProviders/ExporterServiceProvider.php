@@ -28,7 +28,9 @@ class ExporterServiceProvider implements ServiceProviderContract
                 });
                 $exporter->export($data);
             } else {
-                trigger_error("Can not find a suitable exporter for type {$config['type']}.", E_USER_WARNING);
+                // trigger_error("Can not find a suitable exporter for type {$config['type']}.", E_USER_WARNING);
+                // FIXME: 使用Exception代替，set_error_handler以及trigger_error未实现
+                throw new \Exception("Can not find a suitable exporter for type {$config['type']}.");
             }
         };
 
