@@ -202,9 +202,14 @@ class Spider
         if (!$this->configs['scan_urls']) {
             return false;
         }
-        foreach ($this->configs['scan_urls'] as $scan_url) {
-            if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
-                $this->addUrl($scan_url);
+        $lastUrl = $this->getUrl();
+        if ($lastUrl) {
+            $this->addUrl($lastUrl);
+        } else {
+            foreach ($this->configs['scan_urls'] as $scan_url) {
+                if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
+                    $this->addUrl($scan_url);
+                }
             }
         }
         return true;
