@@ -968,9 +968,12 @@ class Spider
 
     private function validCallback(string $callback)
     {
+        LockManager::getLock('validCallback');
+        $callable = $this->$callback;
+        LockManager::releaseLock('validCallback');
         $lock = 'validCallback_' . md5($callback);
         LockManager::getLock($lock);
-        $ret = Util\resolveCallable($this->$callback, true);
+        $ret = Util\resolveCallable($callable, true);
         LockManager::releaseLock($lock);
         return $ret !== false;
     }
