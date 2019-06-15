@@ -215,15 +215,13 @@ class Spider
         try {
             LockManager::getLock('add_url');
             $url_hash = md5($url);
-            if (!$this->urlQueue->exists($url_hash)) {
-                $this->urlQueue->push($url_hash);
-                $request = new Request(Request::REQUEST_METHOD_GET, $url);
-                if ($prevUrl) {
-                    $request->setHeader('Referer', $prevUrl);
-                }
-
-                $this->downloadQueue->push($request);
+            $this->urlQueue->push($url_hash);
+            $request = new Request(Request::REQUEST_METHOD_GET, $url);
+            if ($prevUrl) {
+                $request->setHeader('Referer', $prevUrl);
             }
+
+            $this->downloadQueue->push($request);
         } finally {
             LockManager::releaseLock('add_url');
         }
