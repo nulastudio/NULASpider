@@ -17,7 +17,7 @@ class Response
 
     public static function parseResponseString(string $responseStr, Request $request = null)
     {
-        // TODO
+        // TODO: 从响应字符串创建响应对象
         return null;
     }
 

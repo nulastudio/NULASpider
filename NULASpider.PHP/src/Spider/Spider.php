@@ -187,7 +187,7 @@ class Spider
 
         if ($this->initWorker()) {
             Encoding::registerProvider();
-            #warning 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃
+            // XXX: 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃 
             // BAD CODE
             HtmlKit::init();
             Application::run($this);
@@ -229,26 +229,12 @@ class Spider
 
     public function getUrl()
     {
-        if ($this->hasUrl()) {
-            return $this->downloadQueue->pop();
-        }
-        return null;
-    }
-    public function hasUrl()
-    {
-        return $this->downloadQueue->count() !== 0;
+        return $this->downloadQueue->pop();
     }
 
     public function getResponse()
     {
-        if ($this->hasResponse()) {
-            return $this->processQueue->pop();
-        }
-        return null;
-    }
-    public function hasResponse()
-    {
-        return $this->processQueue->count() !== 0;
+        return $this->processQueue->pop();
     }
 
     public function fetchUrl($request)
@@ -269,17 +255,6 @@ class Spider
             $cookie = '';
             $data   = $request->getData();
             $option = $request->getOption();
-            // bug
-            /*
-            $uri = preg_replace_callback(
-            '/[^[:ascii:]]/u',
-            function($matches) {
-            return rawurlencode($matches[0]);
-            },
-            $uri
-            );
-             */
-            // $proxy     = Uri\parse($option->proxy);
 
             /**
              * CURLOPT_SSL_VERIFY* always enabled
@@ -381,7 +356,7 @@ class Spider
         if (!$encoding) {
             $encoding = $this->encodingDetect($response, $fallback_encoding);
             if (!$encoding) {
-                #warning should stop the spider?
+                // XXX: should stop the spider?
                 $this->log(LogLevel::WARNING, 'Encoding detect failed.');
             }
         }
@@ -481,8 +456,7 @@ class Spider
                 $this->log(LogLevel::WARNING, 'encodingHandler does not exists.');
             }
         } else {
-            // TODO
-            // validate if it is valid encoding
+            // TODO: validate if it is valid encoding
             $encoding = $processor;
         }
         return strtoupper($encoding);
@@ -906,7 +880,7 @@ class Spider
                 $_childs   = $selector['fields'] ?? '';
                 $_callback = $selector['callback'] ?? '';
                 $_repeated = $selector['repeated'] ?? false;
-                // TODO repeated
+                // BUG: Peachpie原因，repeated报错
                 if ($_repeated) {
                     $repeated_fields = $this->fetchRepeatedFields($_type, $_selector, $content, $request, $response);
                     foreach ($repeated_fields as &$_f) {
