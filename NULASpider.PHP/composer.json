@@ -28,7 +28,6 @@
         "pguardiario/phpuri": "^1.0",
         "liesauer/kodmcrypt": "^1.1",
         "psr/http-message": "^1.0",
-        "sabre/uri": "^2",
         "ezsql/ezsql": "^3.0",
         "nulastudio/aria2": "^1.1",
         "mtdowling/jmespath.php": "^2.4",
@@ -45,8 +44,7 @@
         },
         "classmap": [],
         "files": [
-            "src/Util/Functions.php",
-            "src/Util/GenericsHelper.php"
+            "src/Util/Functions.php"
         ]
     }
 }
