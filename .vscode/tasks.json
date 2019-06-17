@@ -7,7 +7,8 @@
             "type": "shell",
             "args": [
                 "build",
-                "${workspaceFolder}/NULASpider.sln"
+                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj",
+                "/p:BuildInParallel=false"
             ],
             "problemMatcher": "$msCompile"
         },
