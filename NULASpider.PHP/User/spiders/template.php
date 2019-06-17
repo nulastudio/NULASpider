@@ -74,16 +74,59 @@ $spider = new Spider($config);
 # 插件加载
 # ====================
 
+/**
+ * Buff插件
+ * 会带来好运吗？
+ */
 $spider->use(User\Plugins\Buff::class);
+
+// $spider->use(User\Plugins\Pipeline::class);
+
+# ====================
+# 导出器插件
+# ====================
 
 // $spider->use(User\Plugins\CSVExporter::class);
 // $spider->use(User\Plugins\ExcelExporter::class);
 // $spider->use(User\Plugins\JsonExporter::class);
 // $spider->use(User\Plugins\PrintOutExporter::class);
 
-// $spider->use(User\Plugins\Pipeline::class);
+# ====================
+# 请求插件
+# ====================
+
+$spider->use(User\Plugins\Aria2::class);
+
+/**
+ * 代理池插件
+ *
+ * @param string[] $proxies     可选，代理IP列表
+ * @param bool     $enable      可选，是否立即启用代理池，默认否
+ * @param bool     $intelligent 可选，是否智能选择优先代理
+ * @param number   $CD          可选，代理冷却时间
+ */
 // $spider->use(User\Plugins\ProxyPool::class);
-// $spider->use(User\Plugins\RandomUserAgent::class);
+
+/**
+ * 随机User-Agent头部插件
+ *
+ * @param string[] $userUAs 可选，如果提供则从$userUAs中随机。
+ */
+
+/*
+// 下面这段配置相当于每次请求时切换随机的UA
+$spider->use(User\Plugins\RandomUserAgent::class);
+
+// 下面这段配置相当于每次请求时切换不同设备类型（如果网站识别UA的话）
+$spider->use(User\Plugins\RandomUserAgent::class, [
+// PC
+'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36',
+// Android
+'Mozilla/5.0 (Linux; Android 4.2.0; Nexus 10 Build/JOP24G) AppleWebKit/537.51.1 (KHTML, like Gecko) Chrome/51.0.2704.79 Mobile Safari/537.36',
+// IOS
+'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.6.1 NetType/WIFI Language/zh_HK',
+]);
+ */
 
 # ====================
 
