@@ -11,9 +11,6 @@
     <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.8.8" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Peachpie.Runtime" Version="0.9.25-devv" />
-    <PackageReference Include="Peachpie.Library" Version="0.9.25-devv" />
-    <PackageReference Include="Peachpie.Library.PDO.MySQL" Version="0.9.25-devv" />
     <PackageReference Include="liesauer.LimitedConcurrencyLevelTaskScheduler.NETStandard" Version="1.0.1" />
     <PackageReference Include="EdjCase.JsonRpc.Client" Version="3.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
@@ -21,6 +18,12 @@
     <PackageReference Include="ConsoleTableExt" Version="2.0.1" />
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
     <PackageReference Include="nulastudio.Document.EPPlus4PHP" Version="0.1.6-*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../peachpie/src/Peachpie.Runtime/Peachpie.Runtime.csproj" />
+    <ProjectReference Include="../../peachpie/src/Peachpie.Library/Peachpie.Library.csproj" />
+    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
   </ItemGroup>
 
 </Project>

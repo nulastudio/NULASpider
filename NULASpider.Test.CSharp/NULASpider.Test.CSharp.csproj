@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />
+    <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

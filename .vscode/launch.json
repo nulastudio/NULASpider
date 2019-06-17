@@ -17,7 +17,9 @@
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
-            "requireExactSource":false
+            "requireExactSource": false,
+            "justMyCode": false,
+            "enableStepFiltering": false
         },
         {
             "name": "NULASpider.PHP.Test",

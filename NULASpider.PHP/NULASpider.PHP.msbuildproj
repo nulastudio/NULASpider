@@ -1,4 +1,4 @@
-<Project Sdk="Peachpie.NET.Sdk/0.9.25-devv">
+<Project Sdk="Peachpie.NET.Sdk/0.9.43-devv">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -6,6 +6,7 @@
     <Description>NULASpider</Description>
     <RuntimeIdentifiers>win-x64;win-x86;linux-x64;osx-x64</RuntimeIdentifiers>
     <ComposerJsonPath>false</ComposerJsonPath>
+    <DisableImplicitPeachpieReferences>true</DisableImplicitPeachpieReferences>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />
@@ -21,9 +22,9 @@
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
-    <!-- <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" /> -->
+    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NULASpider.CSharp\NULASpider.CSharp.csproj" />
+    <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
   </ItemGroup>
 </Project>
