@@ -91,6 +91,11 @@ namespace nulastudio.Spider
                 {
                     spider.exceptionHandler(ex);
                 }
+                catch (System.Exception ex)
+                {
+                    // TODO: System.Exception to Pchp.Library.Spl.Exception properly
+                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()));
+                }
                 finally {
                     finishDownloadOne();
                 }
@@ -155,6 +160,11 @@ namespace nulastudio.Spider
                 catch (Pchp.Library.Spl.Exception ex)
                 {
                     spider.exceptionHandler(ex);
+                }
+                catch (System.Exception ex)
+                {
+                    // TODO: System.Exception to Pchp.Library.Spl.Exception properly
+                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()));
                 }
                 finally {
                     finishProcessOne();
