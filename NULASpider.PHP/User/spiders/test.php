@@ -62,21 +62,23 @@ $config = [
     //     'file'  => DIR_DATA . '/blog.xlsx',
     //     'sheet' => 'blog',
     // ],
-    'export'              => [
-        'type'  => 'print1',
-    ],
+    // 'export'              => [
+    //     'type'  => 'print1',
+    // ],
     // 'export'              => [
     //     'type' => 'json',
     //     'file' => DIR_DATA . '/blog.json',
     // ],
-    // 'export'              => [
-    //     'type'     => 'pdo',
-    //     'dsn'      => 'mysql:dbname=blog;host=localhost;charset=utf8',
-    //     'username' => 'root',
-    //     'password' => 'root',
-    //     'table'    => 'blog',
-    //     'options'  => [],
-    // ],
+    'export'              => [
+        'type'     => 'database',
+        'driver'   => 'mysql',
+        'host'     => 'localhost',
+        'dbname'   => 'blog',
+        'username' => 'root',
+        'password' => 'root',
+        'table'    => 'blog',
+        'options'  => [],
+    ],
 ];
 
 $spider = new Spider($config);
@@ -92,7 +94,7 @@ $spider->use(User\Plugins\Buff::class);
 $spider->use(User\Plugins\Pipeline::class);
 $spider->use(User\Plugins\ExcelExporter::class);
 $spider->use(User\Plugins\PrintOutExporter::class);
-$spider->use(User\Plugins\PDOExporter::class);
+$spider->use(User\Plugins\DataBaseExporter::class);
 $spider->use(User\Plugins\JsonExporter::class);
 
 // 默认是不开启的，指定第二个参数可默认开启

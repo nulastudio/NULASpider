@@ -12,10 +12,20 @@ class PluginService extends BaseService
     {
         if (is_array($plugins)) {
             foreach ($plugins as $plugin) {
-                $plugin::install($application);
+                if (class_exists($plugin)) {
+                    $plugin::install($application);
+                } else {
+                    // FIXME: 使用异常代替错误
+                    throw new \Exception("Plugin {$plugin} does not exists.");
+                }
             }
         } else {
-            $plugins::install($application, ...$params);
+            if (class_exists($plugins)) {
+                $plugins::install($application, ...$params);
+            } else {
+                // FIXME: 使用异常代替错误
+                throw new \Exception("Plugin {$plugins} does not exists.");
+            }
         }
         return $application;
     }

@@ -94,7 +94,9 @@ namespace nulastudio.Spider
                 catch (System.Exception ex)
                 {
                     // TODO: System.Exception to Pchp.Library.Spl.Exception properly
-                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()));
+                    // NOTE: 引发CLR异常还继续跑下去可能会导致整个程序运行异常
+                    // 将runningFlag置为false，强制不让程序跑不下去
+                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()), false);
                 }
                 finally {
                     finishDownloadOne();
@@ -164,7 +166,9 @@ namespace nulastudio.Spider
                 catch (System.Exception ex)
                 {
                     // TODO: System.Exception to Pchp.Library.Spl.Exception properly
-                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()));
+                    // NOTE: 引发CLR异常还继续跑下去可能会导致整个程序运行异常
+                    // 将runningFlag置为false，强制不让程序跑不下去
+                    spider.exceptionHandler(new Pchp.Library.Spl.Exception(ex.ToString()), false);
                 }
                 finally {
                     finishProcessOne();

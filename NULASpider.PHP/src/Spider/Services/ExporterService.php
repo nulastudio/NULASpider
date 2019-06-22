@@ -10,6 +10,7 @@ class ExporterService extends BaseService
     private $config    = [];
     private $exporters = [];
     private $exporter;
+    private $initFailed;
 
     public function __construct(array $config)
     {
@@ -29,12 +30,18 @@ class ExporterService extends BaseService
     }
     public function getExporter()
     {
+        if ($this->initFailed) return null;
         if (!$this->exporter) {
-            $exporter = $this->exporters[$this->config['type'] ?? ''];
-            if (!$exporter) {
-                return;
+            try {
+                $exporter = $this->exporters[$this->config['type'] ?? ''];
+                if (!$exporter) {
+                    return;
+                }
+                $this->exporter = new $exporter($this->config);
+            } catch (\Exception $ex) {
+                $this->initFailed = true;
+                throw $ex;
             }
-            $this->exporter = new $exporter($this->config);
         }
         return $this->exporter;
     }

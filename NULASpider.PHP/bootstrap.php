@@ -60,10 +60,10 @@ if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1) {
     exit;
 }
 
-try {
+// try {
     // 加载爬虫程序
     loadSingleScript($spider);
-} catch (\Exception $e) {
-    echo "Uncaught exception occured while booting spider!\n";
-    echo $e;
-}
+// } catch (\Exception $e) {
+//     echo "Uncaught exception occured while booting spider!\n";
+//     echo $e;
+// }

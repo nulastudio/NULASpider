@@ -3,10 +3,12 @@
 namespace User\Exporters;
 
 use nulastudio\Spider\Contracts\AbstructExporter;
-use User\Exporters\DataBaseExporterDrivers\DriverInterface;
 
 class DataBaseExporter extends AbstructExporter
 {
+    private $drivers = [
+        'mysql' => \User\Exporters\DataBaseExporterDrivers\MySQLDriver::class,
+    ];
     private $driver;
     private $table;
 
@@ -16,10 +18,8 @@ class DataBaseExporter extends AbstructExporter
         if (!$driver) {
             throw new \Exception('You must specify a database driver.');
         }
-        $segments = explode('\\', DriverInterface::class);
-        array_pop($segments);
-        $segments[] = "{$driver}Driver";
-        $driverName = implode('\\', $segments);
+        $driver     = strtolower($driver);
+        $driverName = $this->drivers[$driver] ?? '';
         if (!class_exists($driverName) || !($this->driver = new $driverName($config))) {
             throw new \Exception("The specified database driver ({$driver}) is invalid.");
         }

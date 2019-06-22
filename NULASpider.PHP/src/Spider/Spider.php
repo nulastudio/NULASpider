@@ -1019,13 +1019,13 @@ class Spider
             $this->safeExit(500);
         }
     }
-    public function exceptionHandler(\Exception $ex)
+    public function exceptionHandler(\Exception $ex, $runningFlag = true)
     {
         LockManager::getLock('update_exception');
         $this->monitor['exception']++;
         LockManager::releaseLock('update_exception');
         $this->critical((string) $ex, []);
-        $running = $this->callback('on_exception', $this, $ex);
+        $running = (bool)$runningFlag && ($this->callback('on_exception', $this, $ex) === true);
         if ($running !== true) {
             $this->safeExit(500);
         }
