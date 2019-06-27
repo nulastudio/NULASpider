@@ -885,7 +885,6 @@ class Spider
                 $_childs   = $selector['fields'] ?? '';
                 $_callback = $selector['callback'] ?? '';
                 $_repeated = $selector['repeated'] ?? false;
-                // BUG: Peachpie原因，repeated报错
                 if ($_repeated) {
                     $repeated_fields = $this->fetchRepeatedFields($_type, $_selector, $content, $request, $response);
                     foreach ($repeated_fields as &$_f) {
