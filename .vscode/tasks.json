@@ -29,6 +29,32 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "Init Playground Site",
+            "command": "cd",
+            "type": "shell",
+            "args": [
+                "${workspaceFolder}/NULASpider.Playground.Site",
+                ";",
+                "composer",
+                "install"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Run Playground Site",
+            "command": "cd",
+            "type": "shell",
+            "args": [
+                "${workspaceFolder}/NULASpider.Playground.Site",
+                ";",
+                "php",
+                "-S",
+                "0.0.0.0:8081",
+                "index.php"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "Publish",
             "command": "dotnet",
             "type": "shell",
