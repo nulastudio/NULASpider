@@ -154,27 +154,3 @@ function isRegex($pattern)
     }
     return preg_match('/^[^\da-zA-Z\s].*[^\da-zA-Z\s][a-zA-Z]*$/', $pattern) === 1;
 }
-
-/**
- * 获取纯粹的xpath节点
- */
-function pureXpath($selector)
-{
-    $parts     = explode('/', $selector);
-    $last_part = $parts[count($parts) - 1];
-    if ($last_part{0} === '@') {
-        array_pop($parts);
-    } else if ($last_part === 'text()') {
-        array_pop($parts);
-    }
-    return implode('/', $parts);
-}
-
-function removeHtmlEntities($content)
-{
-    $no_named_entities   = html_entity_decode($content, ENT_QUOTES | ENT_HTML5);
-    $no_numeric_entities = preg_replace_callback("/(&#[0-9]+;)/", function ($match) {
-        return mb_convert_encoding($match[1], "UTF-8", "HTML-ENTITIES");
-    }, $no_named_entities);
-    return $no_numeric_entities;
-}

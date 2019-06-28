@@ -566,7 +566,7 @@ class Spider
                     // $urls[] = $node->Attributes["href"]->Value;
                     $val = $node->Attributes->get_Item('href')->Value;
                     if ($val) {
-                        $urls[] = Util\removeHtmlEntities($val);
+                        $urls[] = HtmlKit::removeHtmlEntities($val);
                     }
                 }
             }
@@ -623,25 +623,11 @@ class Spider
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
             $document->LoadHtml($content);
-            /**
-             * 必须使用纯粹的node节点选择器去获取节点
-             * 否则在某些时候获取到的并不是期望的
-             */
-            $node = $document->DocumentNode->SelectSingleNode(Util\pureXpath($selector));
-            if ($node) {
-                $parts = explode('/', $selector);
-                $attr  = $parts[count($parts) - 1];
-                if ($attr{0} === '@') {
-                    /* attr */
-                    $name = substr($attr, 1);
-                    return $node->Attributes->get_Item($name)->Value;
-                } else if ($attr === 'text()') {
-                    /* text */
-                    return $node->InnerText;
-                }
-                /* html */
-                return $node->InnerHtml;
-            }
+            $xpathNode = HtmlKit::xpathNode($selector);
+
+            $node = $document->DocumentNode->SelectSingleNode($xpathNode['node']);
+
+            return $this->nodeAction($node, $xpathNode['action']);
         } catch (\Exception $e) {}
     }
     private function fetchRepeatedFieldsXpath(string $selector, $content, $request, $response)
@@ -650,26 +636,11 @@ class Spider
         try {
             $document = new \HtmlAgilityPack\HtmlDocument();
             $document->LoadHtml($content);
-            /**
-             * 必须使用纯粹的node节点选择器去获取节点
-             * 否则在某些时候获取到的并不是期望的
-             */
-            $nodes = $document->DocumentNode->SelectNodes(Util\pureXpath($selector));
-            if ($nodes) {
-                foreach ($nodes as $node) {
-                    $parts = explode('/', $selector);
-                    $attr  = $parts[count($parts) - 1];
-                    if ($attr{0} === '@') {
-                        /* attr */
-                        $name     = substr($attr, 1);
-                        $result[] = $node->Attributes->get_Item($name)->Value;
-                    } else if ($attr === 'text()') {
-                        /* text */
-                        $result[] = $node->InnerText;
-                    }
-                    /* html */
-                    $result[] = $node->InnerHtml;
-                }
+            $xpathNode = HtmlKit::xpathNode($selector);
+
+            $nodes = $document->DocumentNode->SelectNodes($xpathNode['node']);
+            foreach ($nodes ?? [] as $node) {
+                $result[] = $this->nodeAction($node, $xpathNode['action']);
             }
         } catch (\Exception $e) {}
         return $result;
@@ -707,22 +678,8 @@ class Spider
 
             // $node = $document->DocumentNode->QuerySelectorAll($selector);
             $node = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelector($document->DocumentNode, $cssNode['node']);
-            if ($node) {
-                switch ($cssNode['action']) {
-                    case '@innerHTML':
-                        return $node->InnerHtml;
-                    case '@outerHTML':
-                        return $node->OuterHtml;
-                    case '@innerText':
-                        return $node->InnerText;
-                    default:
-                        if ($cssNode['action'] && $cssNode['action']{0} === '@') {
-                            /* property */
-                            return $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
-                        }
-                        return $node->InnerHtml;
-                }
-            }
+
+            return $this->nodeAction($node, $cssNode['action']);
         } catch (\Exception $e) {}
     }
     private function fetchRepeatedFieldsCss(string $selector, $content, $request, $response)
@@ -735,23 +692,8 @@ class Spider
 
             // $nodes = $document->DocumentNode->QuerySelectorAll($selector);
             $nodes = \Fizzler\Systems\HtmlAgilityPack\HtmlNodeSelection::QuerySelectorAll($document->DocumentNode, $cssNode['node']);
-            if ($nodes) {
-                foreach ($nodes as $node) {
-                    switch ($cssNode['action']) {
-                        case '@innerHTML':
-                            $result[] = $node->InnerHtml;
-                        case '@outerHTML':
-                            $result[] = $node->OuterHtml;
-                        case '@innerText':
-                            $result[] = $node->InnerText;
-                        default:
-                            if ($cssNode['action'] && $cssNode['action']{0} === '@') {
-                                /* property */
-                                $result[] = $node->Attributes->get_Item(substr($cssNode['action'], 1))->Value;
-                            }
-                            $result[] = $node->InnerHtml;
-                    }
-                }
+            foreach ($nodes ?? [] as $node) {
+                $result[] = $this->nodeAction($node, $cssNode['action']);
             }
         } catch (\Exception $e) {}
         return $result;
@@ -815,6 +757,26 @@ class Spider
             $result = [$result];
         }
         return $result;
+    }
+    private function nodeAction($node, $action)
+    {
+        if (!$node) return null;
+        switch ($action) {
+            case '@innerHTML':
+                return $node->InnerHtml;
+            case '@outerHTML':
+                return $node->OuterHtml;
+            case '@innerText':
+            case '@text()':
+                return $node->InnerText;
+            default:
+                if ($action && $action{0} === '@') {
+                    /* property */
+                    return $node->Attributes->get_Item(substr($action, 1))->Value;
+                }
+                return $node->InnerHtml;
+        }
+        return null;
     }
 
     private function fetchFields($fields, $content, $request, $response, $recursive = false)
