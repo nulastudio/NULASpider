@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+__MACOSX
+
+# sublime
+*.sublime-workspace
+
+# composer
+vendor/
+
+# project
+log/*
+data/*
+cache/*
+!.gitkeep
+!.htaccess
