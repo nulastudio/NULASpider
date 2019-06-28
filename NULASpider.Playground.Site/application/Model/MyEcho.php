@@ -4,6 +4,6 @@ class MyEcho
 {
     public static function format(...$words)
     {
-        echo implode(' ', $words);
+        return implode(' ', $words);
     }
 }
