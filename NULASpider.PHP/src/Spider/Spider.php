@@ -534,7 +534,7 @@ class Spider
     {
         $prevUrl = $request->getUrl();
         $urls    = [];
-        if ($this->findUrlsOverride) {
+        if ($this->hasCallback('findUrlsOverride')) {
             $ret = $this->callback('findUrlsOverride', $this, $content, $request, $response);
             if (is_array($ret)) {
                 $urls = $ret;
@@ -908,9 +908,9 @@ class Spider
 
     private function validCallback(string $callback)
     {
-        LockManager::getLock('validCallback');
-        $callable = $this->$callback;
-        LockManager::releaseLock('validCallback');
+        // LockManager::getLock('validCallback');
+        $callable = $this->callbacks[$callback];
+        // LockManager::releaseLock('validCallback');
         $lock = 'validCallback_' . md5($callback);
         LockManager::getLock($lock);
         $ret = Util\resolveCallable($callable, true);
@@ -927,8 +927,8 @@ class Spider
         $ret  = null;
         $lock = md5($callback);
         LockManager::getLock($lock);
-        if (is_callable($this->$callback)) {
-            $ret = call_user_func($this->$callback, ...$params);
+        if (is_callable($callable = $this->callbacks[$callback])) {
+            $ret = call_user_func($callable, ...$params);
         }
         LockManager::releaseLock($lock);
         return $ret;
