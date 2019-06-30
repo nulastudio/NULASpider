@@ -24,11 +24,11 @@ namespace nulastudio.Collections
                 return base.pop();
             }
         }
-        public new void push(PhpValue value)
+        public new bool push(PhpValue value)
         {
             lock (@lock)
             {
-                base.push(value);
+                return base.push(value);
             }
         }
         public new bool exists(PhpValue value)

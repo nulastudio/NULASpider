@@ -14,7 +14,8 @@ namespace nulastudio.Collections
         /// 压入队列元素
         /// </summary>
         /// <param name="value">压入元素</param>
-        void push(PhpValue value);
+        /// <returns>是否成功压入</returns>
+        bool push(PhpValue value);
         /// <summary>
         /// 判断元素是否存在
         /// </summary>

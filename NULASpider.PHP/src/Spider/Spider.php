@@ -220,13 +220,15 @@ class Spider
         try {
             LockManager::getLock('add_url');
             $url_hash = md5($url);
-            $this->urlQueue->push($url_hash);
-            $request = new Request(Request::REQUEST_METHOD_GET, $url);
-            if ($prevUrl) {
-                $request->setHeader('Referer', $prevUrl);
+            // NOTE: 去重依赖于队列自身的特征，成功加入则加入下载队列
+            if($this->urlQueue->push($url_hash)) {
+                $request = new Request(Request::REQUEST_METHOD_GET, $url);
+                if ($prevUrl) {
+                    $request->setHeader('Referer', $prevUrl);
+                }
+    
+                $this->downloadQueue->push($request);
             }
-
-            $this->downloadQueue->push($request);
         } finally {
             LockManager::releaseLock('add_url');
         }

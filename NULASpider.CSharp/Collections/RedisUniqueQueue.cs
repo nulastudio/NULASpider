@@ -41,13 +41,14 @@ namespace nulastudio.Collections
             var val = this.peek();
             return this.CSRedis.ZRem<string>(this.key, val.ToString(this.ctx)) >= 1 ? val : PhpValue.Null;
         }
-        public void push(PhpValue value)
+        public bool push(PhpValue value)
         {
             if (!this.exists(value))
             {
                 this.ticktock++;
-                this.CSRedis.ZAdd(this.key, (this.ticktock, value.ToString(this.ctx)));
+                return this.CSRedis.ZAdd(this.key, (this.ticktock, value.ToString(this.ctx))) == 1;
             }
+            return false;
         }
         public bool exists(PhpValue value)
         {

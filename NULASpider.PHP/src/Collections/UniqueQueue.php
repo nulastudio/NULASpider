@@ -9,7 +9,8 @@ class UniqueQueue extends MemoryQueue
     public function push($value)
     {
         if (!$this->exists($value)) {
-            parent::push($value);
+            return parent::push($value);
         }
+        return false;
     }
 }

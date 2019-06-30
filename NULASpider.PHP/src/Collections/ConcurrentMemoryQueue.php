@@ -44,12 +44,13 @@ class ConcurrentMemoryQueue extends MemoryQueue
     {
         LockManager::getLock($this->token);
         try {
-            parent::push($value);
+            return parent::push($value);
         } catch (\Exception $e) {
             throw $e;
         } finally {
             LockManager::releaseLock($this->token);
         }
+        return false;
     }
     public function exists($value)
     {

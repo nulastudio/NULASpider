@@ -27,9 +27,9 @@ namespace nulastudio.Collections
         {
             return this.CSRedis.LPop(this.key);
         }
-        public void push(PhpValue value)
+        public bool push(PhpValue value)
         {
-            this.CSRedis.RPush(this.key, value.ToString(this.ctx));
+            return this.count() == this.CSRedis.RPush(this.key, value.ToString(this.ctx)) - 1;
         }
         public bool exists(PhpValue value)
         {

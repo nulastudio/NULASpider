@@ -38,6 +38,7 @@ class MemoryQueue implements QueueInterface
     public function push($value)
     {
         $this->queue[] = $value;
+        return true;
     }
     public function exists($value)
     {
