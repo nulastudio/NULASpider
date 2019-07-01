@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>nulastudio</RootNamespace>
   </PropertyGroup>
 
@@ -21,10 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.Sqlite/Peachpie.Library.PDO.Sqlite.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
+    <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+    <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
+    <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/PDO/Peachpie.Library.PDO.Sqlite/Peachpie.Library.PDO.Sqlite.csproj" />
+    <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Condition="$(Configuration) == 'Release'" Include="Peachpie.App" Version="0.9.44-dev-p.fdfee1b1" />
+    <PackageReference Condition="$(Configuration) == 'Release'" Include="Peachpie.Library.PDO.MySQL" Version="0.9.44-dev-p.fdfee1b1" />
+    <PackageReference Condition="$(Configuration) == 'Release'" Include="Peachpie.Library.PDO.Sqlite" Version="0.9.44-dev-p.fdfee1b1" />
+    <PackageReference Condition="$(Configuration) == 'Release'" Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.44-dev-p.fdfee1b1" />
   </ItemGroup>
 
 </Project>
