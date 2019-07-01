@@ -9,5 +9,6 @@
 </head>
 <body>
     <p><?php echo htmlspecialchars($word); ?></p>
+    <a href="/articles" target="_blank" rel="noopener noreferrer">文章采集</a>
 </body>
 </html>

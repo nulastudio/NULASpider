@@ -11,6 +11,11 @@ $middlewares = [
 
 Router::get('/', 'HomeController@helloworld');
 
+// 文章采集
+Router::get('articles', 'ArticleController@page');
+Router::get('articles/(:num)', 'ArticleController@page');
+Router::get('article/(:num)', 'ArticleController@detail');
+
 // 404处理
 // Router::error(function(){});
 
