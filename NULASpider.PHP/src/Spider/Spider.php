@@ -187,7 +187,7 @@ class Spider
 
         if ($this->initWorker()) {
             Encoding::registerProvider();
-            // XXX: 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃 
+            // XXX: 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃
             // BAD CODE
             HtmlKit::init();
             Application::run($this);
@@ -221,12 +221,12 @@ class Spider
             LockManager::getLock('add_url');
             $url_hash = md5($url);
             // NOTE: 去重依赖于队列自身的特征，成功加入则加入下载队列
-            if($this->urlQueue->push($url_hash)) {
+            if ($this->urlQueue->push($url_hash)) {
                 $request = new Request(Request::REQUEST_METHOD_GET, $url);
                 if ($prevUrl) {
                     $request->setHeader('Referer', $prevUrl);
                 }
-    
+
                 $this->downloadQueue->push($request);
             }
         } finally {
@@ -762,7 +762,10 @@ class Spider
     }
     private function nodeAction($node, $action)
     {
-        if (!$node) return null;
+        if (!$node) {
+            return null;
+        }
+
         switch ($action) {
             case '@innerHTML':
                 return $node->InnerHtml;
@@ -788,11 +791,11 @@ class Spider
             $field = null;
             if (is_string($selector)) {
                 // TODO: 文档、优化
-                $type = 'xpath';
+                $type  = 'xpath';
                 $types = ['xpath', 'css', 'regex', 'jsonpath', 'jmespath'];
                 foreach ($types as $t) {
                     if (strpos($selector, "{$t}://") === 0) {
-                        $type = $t;
+                        $type     = $t;
                         $selector = preg_replace("#{$t}://#", '', $selector, 1);
                         break;
                     }
@@ -844,17 +847,42 @@ class Spider
                         $content = null;
                     }
                 }
-                $_selector = $selector['selector'] ?? '';
-                $_type     = $selector['type'] ?? 'xpath';
-                $_childs   = $selector['fields'] ?? '';
-                $_callback = $selector['callback'] ?? '';
-                $_repeated = $selector['repeated'] ?? false;
+                $_area             = $selector['area'] ?? '';
+                $_selector         = $selector['selector'] ?? '';
+                $_type             = $selector['type'] ?? 'xpath';
+                $_childs           = $selector['fields'] ?? '';
+                $_callback         = $selector['callback'] ?? '';
+                $_repeated         = $selector['repeated'] ?? false;
+                $_recursive        = $selector['recursive'] ?? false;
+                $recursiveSelector = null;
+                if ($_recursive) {
+                    $recursiveSelector = $selector;
+                    unset($recursiveSelector['area']);
+                    $recursiveSelector = [$name => $recursiveSelector];
+                }
+                if ($_area) {
+                    $content = $this->fetchSingleField($_type, $_area, $content, $request, $response);
+                }
                 if ($_repeated) {
                     $repeated_fields = $this->fetchRepeatedFields($_type, $_selector, $content, $request, $response);
                     foreach ($repeated_fields as &$_f) {
+                        $rawf = $_f;
                         if ($_childs) {
-                            // 递归提取
+                            // 嵌套提取
                             $_f = $this->fetchFields($_childs, $_f, $request, $response, true);
+                        }
+                        if ($_recursive && $rawf) {
+                            if (!is_array($_f)) {
+                                $_f = [$_f];
+                            }
+                            $recursiveResult = $this->fetchFields($recursiveSelector, $rawf, $request, $response, false)[$name];
+                            // 如果递归结果返回全是null就表示递归到底了，就不加入最终结果了
+                            // 注意这里不判断空字符串，即“”
+                            if ($recursiveResult && array_filter($recursiveResult, function ($val) {
+                                return $val !== null;
+                            })) {
+                                $_f[$name] = $recursiveResult;
+                            }
                         }
                         if (is_callable($_callback)) {
                             $_f = call_user_func($_callback, $_f, $this, $request, $response);
@@ -862,10 +890,23 @@ class Spider
                     }
                     $field = $repeated_fields;
                 } else {
-                    $field = $this->fetchSingleField($_type, $_selector, $content, $request, $response);
+                    $rawfield = $field = $this->fetchSingleField($_type, $_selector, $content, $request, $response);
                     if ($_childs) {
-                        // 递归提取
+                        // 嵌套提取
                         $field = $this->fetchFields($_childs, $field, $request, $response, true);
+                    }
+                    if ($_recursive && $rawfield) {
+                        if (!is_array($field)) {
+                            $field = [$field];
+                        }
+                        $recursiveResult = $this->fetchFields($recursiveSelector, $rawfield, $request, $response, false)[$name];
+                        // 如果递归结果返回全是null就表示递归到底了，就不加入最终结果了
+                        // 注意这里不判断空字符串，即“”
+                        if ($recursiveResult && array_filter($recursiveResult, function ($val) {
+                            return $val !== null;
+                        })) {
+                            $field[$name] = $recursiveResult;
+                        }
                     }
                     if (is_callable($_callback)) {
                         $field = call_user_func($_callback, $field, $this, $request, $response);
@@ -988,7 +1029,7 @@ class Spider
         $this->monitor['exception']++;
         LockManager::releaseLock('update_exception');
         $this->critical((string) $ex, []);
-        $running = (bool)$runningFlag && ($this->callback('on_exception', $this, $ex) === true);
+        $running = (bool) $runningFlag && ($this->callback('on_exception', $this, $ex) === true);
         if ($running !== true) {
             $this->safeExit(500);
         }
