@@ -6,7 +6,7 @@ if [[ $2 ]]; then
     Configuration=$2
 fi
 
-dotnet build ../peachpie/src/Peachpie.NET.Sdk/ /p:TargetFrameworks=netstandard2.0,Version=$1,Configuration=${Configuration}
+dotnet build ../peachpie/src/Peachpie.NET.Sdk/ /p:Version=$1,Configuration=${Configuration}
 dotnet build ../peachpie/src/Peachpie.Runtime/ /p:TargetFrameworks=netstandard2.0,Version=$1,Configuration=${Configuration}
 dotnet build ../peachpie/src/Peachpie.Library/ /p:TargetFrameworks=netstandard2.0,Version=$1,Configuration=${Configuration}
 dotnet build ../peachpie/src/Peachpie.Library.Graphics/ /p:TargetFrameworks=netstandard2.0,Version=$1,Configuration=${Configuration}
