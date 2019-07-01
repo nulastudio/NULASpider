@@ -922,11 +922,17 @@ class Spider
             }
             /**
              * 只有以下情况会调用on_fetch_field
-             * 1. 第一层
-             * 2. 嵌套的情况下获取嵌套的整个数组
+             * 1. 第一层（非嵌套结构下的每一个字段）
+             * 2. 嵌套的情况下获取每一级嵌套的整个数组
+             * 3. 递归同上
+             * 
+             * 简单点说，如果是嵌套或者递归的情况，重名字段有多少个就应该调用多少次
              */
-            if (!$recursive ||
-                ($recursive && is_array($selector) && isset($selector['fields']))) {
+            if ((!$recursive ||
+                ($recursive && is_array($selector) && isset($selector['fields']))) &&
+                (!is_array($field) || array_filter($field, function ($val) {
+                    return $val !== null;
+                }))) {
                 if ($this->hasCallback('on_fetch_field')) {
                     $field = $this->callback('on_fetch_field', $this, $name, $field);
                 }
