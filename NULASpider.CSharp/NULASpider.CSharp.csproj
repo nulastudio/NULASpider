@@ -9,7 +9,7 @@
     <PackageReference Include="CSRedisCore" Version="3.0.59" />
     <PackageReference Include="CsvHelper" Version="12.1.0" />
     <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.8" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.9" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="liesauer.LimitedConcurrencyLevelTaskScheduler.NETStandard" Version="1.0.1" />
     <PackageReference Include="EdjCase.JsonRpc.Client" Version="3.0.1" />
@@ -21,9 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../peachpie/src/Peachpie.Runtime/Peachpie.Runtime.csproj" />
-    <ProjectReference Include="../../peachpie/src/Peachpie.Library/Peachpie.Library.csproj" />
+    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
     <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
+    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.Sqlite/Peachpie.Library.PDO.Sqlite.csproj" />
+    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
   </ItemGroup>
 
 </Project>
