@@ -1,7 +1,6 @@
 <?php
 
 use nulastudio\Collections\RedisQueue;
-use nulastudio\Log\FileLogger;
 use nulastudio\Spider\Spider;
 
 $config = [
@@ -11,7 +10,6 @@ $config = [
         'host' => '127.0.0.1:6379',
         'key'  => 'urlQueue',
     ]),
-    'logger'              => new FileLogger(DIR_LOG . '/' . date('Y-m-d') . '.log'),
     'scan_urls'           => [],
     'list_url_pattern'    => [],
     'content_url_pattern' => [],

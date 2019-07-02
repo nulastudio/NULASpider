@@ -1,12 +1,10 @@
 <?php
 
-use nulastudio\Log\FileLogger;
 use nulastudio\Spider\Spider;
 
 $config = [
     'thread'              => 5,
     'UI'                  => false,
-    'logger'              => new FileLogger(DIR_LOG . '/' . date('Y-m-d') . '.log'),
     'scan_urls'           => [
         'http://jsonplaceholder.typicode.com/posts/1/comments',
     ],
@@ -15,10 +13,8 @@ $config = [
         'http://jsonplaceholder.typicode.com/posts/1/comments',
     ],
     'fields'              => [
-        'test' => [
-            'type'     => 'jsonpath',
-            'selector' => '$..name',
-        ],
+        'names'  => 'jmespath://[].name',
+        'bodies' => 'jmespath://[].body',
     ],
     'export'              => [
         'type' => 'print',
