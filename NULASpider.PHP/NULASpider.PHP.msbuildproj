@@ -41,8 +41,7 @@
     <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(OutputPath)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
   <Target Name="CopyPlaygroundContentPublish" AfterTargets="Publish">
-    <Error Text="Missing PublishPath" Condition="$(PublishPath) == ''" />
-    <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishPath)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
+    <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishDir)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
   <ItemGroup>
     <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
