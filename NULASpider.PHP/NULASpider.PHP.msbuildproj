@@ -19,7 +19,9 @@
     <Compile Remove="vendor/ezsql/ezsql/unsupported/**/*.php" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="User/**/*" CopyToOutputDirectory="Always" />
+    <UserContent Include="User/**/*" />
+    <UserContent Remove="User/priv-spiders/**/*" />
+    <Content Include="@(UserContent)" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
     <PlaygroundContent Include="../NULASpider.Playground.Site/**/*" />
