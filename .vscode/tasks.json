@@ -42,98 +42,24 @@
         },
         {
             "label": "Run Playground Site",
-            "command": "cd",
+            "command": "php",
             "type": "shell",
             "args": [
-                "${workspaceFolder}/NULASpider.Playground.Site",
-                ";",
-                "php",
                 "-S",
                 "0.0.0.0:8081",
-                "index.php"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "publish",
-                "-c=Release",
-                "${workspaceFolder}/NULASpider.sln"
+                "-t",
+                "${workspaceFolder}/NULASpider.Playground.Site",
+                "${workspaceFolder}/NULASpider.Playground.Site/index.php",
             ],
             "problemMatcher": "$msCompile"
         },
         {
             "label": "Publish All Platforms",
-            "dependsOn": [
-                "publish-win-x64",
-                "publish-win-x86",
-                "publish-linux-x64",
-                "publish-osx-x64",
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish All Platforms (Shell)",
             "type": "shell",
-            "command": "sh ${workspaceFolder}/publish-multi-targets.sh",
+            "command": "sh ${workspaceFolder}/Build/scripts/publish-multi-targets.sh",
             "windows": {
-                "command": "${workspaceFolder}/publish-multi-targets.bat",
+                "command": "${workspaceFolder}/Build/scripts/publish-multi-targets.bat",
             },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish win-x64",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "publish",
-                "-c=Release",
-                "-r=win-x64",
-                "-o=${workspaceFolder}/Release/win-x64/",
-                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish win-x86",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "publish",
-                "-c=Release",
-                "-r=win-x86",
-                "-o=${workspaceFolder}/Release/win-x86/",
-                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish linux-x64",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "publish",
-                "-c=Release",
-                "-r=linux-x64",
-                "-o=${workspaceFolder}/Release/linux-x64/",
-                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Publish osx-x64",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "publish",
-                "-c=Release",
-                "-r=osx-x64",
-                "-o=${workspaceFolder}/Release/osx-x64/",
-                "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj"
-            ],
             "problemMatcher": "$msCompile"
         }
     ]

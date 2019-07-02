@@ -22,6 +22,29 @@
     <Content Include="User/**/*" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
+    <PlaygroundContent Include="../NULASpider.Playground.Site/**/*" />
+  </ItemGroup>
+  <ItemGroup Condition="$(Configuration) == 'Release'">
+    <!-- from .gitignore -->
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/vendor/**/*" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/**/.DS_Store" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/**/__MACOSX" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/**/*.sublime-workspace" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/log/**/*" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/data/**/*" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/cache/**/*" />
+    <PlaygroundContent Include="../NULASpider.Playground.Site/**/.gitkeep" />
+    <PlaygroundContent Include="../NULASpider.Playground.Site/**/.htaccess" />
+    <PlaygroundContent Remove="../NULASpider.Playground.Site/vendor/**/*" />
+  </ItemGroup>
+  <Target Name="CopyPlaygroundContent" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(OutputPath)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
+  </Target>
+  <Target Name="CopyPlaygroundContentPublish" AfterTargets="Publish">
+    <Error Text="Missing PublishPath" Condition="$(PublishPath) == ''" />
+    <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishPath)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
+  </Target>
+  <ItemGroup>
     <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
