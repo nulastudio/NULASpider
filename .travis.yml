@@ -16,6 +16,11 @@ install:
 script:
   - sudo bash ./Build/scripts/publish-multi-targets.sh
 
+before_deploy:
+  - export releaseTitle=$(cat ./Build/Release/releaseTitle)
+  - export releaseNote=$(cat ./Build/Release/releaseNote)
+  - export preRelease=$(cat ./Build/Release/preRelease)
+
 deploy:
   provider: releases
   on:

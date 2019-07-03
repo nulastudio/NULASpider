@@ -6,9 +6,9 @@ latestComment=$(git log 392d3a62cb9af63f625e20892c56de023ba287cc -1 --pretty=%B)
 
 betas=("alpha" "beta" "rc");
 
-export releaseTitle=${latestTag}
-export releaseNote=${latestComment}
-export preRelease='false'
+releaseTitle=${latestTag}
+releaseNote=${latestComment}
+preRelease='false'
 
 for v in ${betas[@]}; do
     if [[ $latestTag =~ $v ]]
@@ -23,11 +23,11 @@ then
     releaseNote=${releaseNote#*\#\ Release}
 fi
 
-travis env set releaseTitle ${releaseTitle}
-travis env set releaseNote ${releaseNote}
-travis env set preRelease ${preRelease}
-
 workdir=${workdir}/../Release
+
+echo ${releaseTitle} > ${workdir}/releaseTitle
+echo ${releaseNote} > ${workdir}/releaseNote
+echo ${preRelease} > ${workdir}/preRelease
 
 if [ -d ${workdir} ];then
     rm -rf ${workdir}
