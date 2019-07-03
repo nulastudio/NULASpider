@@ -23,6 +23,10 @@ then
     releaseNote=${releaseNote#*\#\ Release}
 fi
 
+travis env set releaseTitle ${releaseTitle}
+travis env set releaseNote ${releaseNote}
+travis env set preRelease ${preRelease}
+
 workdir=${workdir}/../Release
 
 if [ -d ${workdir} ];then
