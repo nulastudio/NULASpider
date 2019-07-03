@@ -28,7 +28,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: ./github-releaser -draft -verbose
+  script: if [ -f ./Build/Release/preRelease ];then { prerelease='' } fi;./github-releaser ${prerelease} -verbose
   skip_cleanup: true
   on:
     all_branches: true
