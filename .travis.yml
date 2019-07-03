@@ -14,7 +14,7 @@ install:
   - composer install -d ./NULASpider.PHP
 
 script:
-  - sudo . ./Build/scripts/publish-multi-targets.sh
+  - sudo bash ./Build/scripts/publish-multi-targets.sh
 
 deploy:
   provider: releases
