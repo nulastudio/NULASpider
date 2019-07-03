@@ -1,6 +1,6 @@
 @echo off
 
-for /f "delims=" %%i in ('git rev-list --tags --max-count=1') do set latestCommit=%%i
+for /f "delims=" %%i in ('git rev-list --all --max-count=1') do set latestCommit=%%i
 for /f "delims=" %%i in ('git describe --tags %latestCommit%') do set latestTag=%%i
 
 set workdir=%~dp0..\Release\
