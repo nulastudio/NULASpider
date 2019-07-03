@@ -14,11 +14,12 @@ install:
   - composer install -d ./NULASpider.PHP
 
 script:
-  - sudo bash ./Build/scripts/publish-multi-targets.sh
+  - sudo . ./Build/scripts/publish-multi-targets.sh
 
 deploy:
   provider: releases
-  all_branches: true
+  on:
+    all_branches: true
   api_key: $GITHUB_TOKEN
   file_glob: true
   file: ./Build/Release/*.zip
