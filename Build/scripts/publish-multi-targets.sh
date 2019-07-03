@@ -38,6 +38,6 @@ for target in ${targets[@]}; do
 done
 
 echo ${releaseTitle} > ${workdir}/releaseTitle
-echo ${releaseNote} > ${workdir}/releaseNote
+echo "${releaseNote}" > ${workdir}/releaseNote
 
 echo "\nall done!\n"

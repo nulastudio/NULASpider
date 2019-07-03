@@ -21,7 +21,6 @@ before_deploy:
   - export GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}
   - export releaseTitle=$(cat ./Build/Release/releaseTitle)
   - export releaseNote=$(cat ./Build/Release/releaseNote)
-  - export preRelease=$(cat ./Build/Release/preRelease)
   - export BODY=${releaseNote}
   - export RELEASE_NAME=${releaseTitle}
   - export FILES=./Build/Release/*.zip
