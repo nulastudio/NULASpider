@@ -18,7 +18,7 @@ script:
 
 before_deploy:
   - curl https://github.com/lindell/github-release-cli/releases/download/1.1.0/github-releaser-travis -L --output github-releaser && chmod +x github-releaser
-  = export GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}
+  - export GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}
   - export releaseTitle=$(cat ./Build/Release/releaseTitle)
   - export releaseNote=$(cat ./Build/Release/releaseNote)
   - export preRelease=$(cat ./Build/Release/preRelease)
