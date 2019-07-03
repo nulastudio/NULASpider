@@ -24,20 +24,20 @@ then
     releaseNote=${releaseNote#*\#\ Release}
 fi
 
+if [ -d ${workdir} ];then
+    rm -rf ${workdir}
+fi
+
+for target in ${targets[@]}; do
+    echo "\npublishing target ${target}\n"
+    dotnet publish -c=Release -r=${target} -o=${workdir}/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
+    if [ -d ${workdir}/${target} ];then
+        cd ${workdir}/${target}
+        zip -r ${workdir}/${target}-${latestTag}.zip .
+    fi
+done
+
 echo ${releaseTitle} > ${workdir}/releaseTitle
 echo ${releaseNote} > ${workdir}/releaseNote
 
-# if [ -d ${workdir} ];then
-#     rm -rf ${workdir}
-# fi
-
-# for target in ${targets[@]}; do
-#     echo "\npublishing target ${target}\n"
-#     dotnet publish -c=Release -r=${target} -o=${workdir}/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
-#     if [ -d ${workdir}/${target} ];then
-#         cd ${workdir}/${target}
-#         zip -r ${workdir}/${target}-${latestTag}.zip .
-#     fi
-# done
-
-# echo "\nall done!\n"
+echo "\nall done!\n"
