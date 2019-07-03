@@ -17,18 +17,19 @@ script:
   - sudo bash ./Build/scripts/publish-multi-targets.sh
 
 before_deploy:
+  - curl https://github.com/lindell/github-release-cli/releases/download/1.1.0/github-releaser-travis -L --output github-releaser && chmod +x github-releaser
+  = export GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}
   - export releaseTitle=$(cat ./Build/Release/releaseTitle)
   - export releaseNote=$(cat ./Build/Release/releaseNote)
   - export preRelease=$(cat ./Build/Release/preRelease)
+  - export BODY=${releaseNote}
+  - export RELEASE_NAME=${releaseTitle}
+  - export FILES=./Build/Release/*.zip
 
 deploy:
-  provider: releases
+  provider: script
   on:
     all_branches: true
-  api_key: $GITHUB_TOKEN
+  script: ./github-releaser -verbose
   file_glob: true
-  file: ./Build/Release/*.zip
   skip_cleanup: true
-  name: $releaseTitle
-  body: $releaseNote
-  prerelease: $preRelease
