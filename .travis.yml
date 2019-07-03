@@ -28,8 +28,7 @@ before_deploy:
 
 deploy:
   provider: script
+  script: ./github-releaser -draft -verbose
+  skip_cleanup: true
   on:
     all_branches: true
-  script: ./github-releaser -verbose
-  file_glob: true
-  skip_cleanup: true
