@@ -1,0 +1,27 @@
+sudo: required
+dist: trusty
+language: php
+php:
+  - '7.0'
+
+install:
+  - wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+  - sudo dpkg -i packages-microsoft-prod.deb
+  - sudo apt-get -y install apt-transport-https
+  - sudo apt-get -y update
+  - sudo apt-get -y install dotnet-sdk-2.1
+  - composer config -g repo.packagist composer https://packagist.laravel-china.org
+  - composer install -d ./NULASpider.PHP
+
+script:
+  - sudo bash ./Build/scripts/publish-multi-targets.sh
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file: ./Build/Release/*.zip
+  skip_cleanup: true
+  name: $releaseTitle
+  body: $releaseNote
+  prerelease: $preRelease
