@@ -18,6 +18,7 @@ script:
 
 deploy:
   provider: releases
+  all_branches: true
   api_key: $GITHUB_TOKEN
   file_glob: true
   file: ./Build/Release/*.zip
