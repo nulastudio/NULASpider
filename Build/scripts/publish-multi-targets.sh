@@ -4,7 +4,7 @@ workdir=$(cd $(dirname $0); pwd)
 workdir=${workdir}/../Release
 targets=("win-x64" "win-x86" "linux-x64" "osx-x64");
 latestTag=$(git describe --tags `git rev-list --all --max-count=1`)
-latestComment=$(git log 392d3a62cb9af63f625e20892c56de023ba287cc -1 --pretty=%B)
+latestComment=$(git log -1 --pretty=%B)
 
 betas=("alpha" "beta" "rc");
 
