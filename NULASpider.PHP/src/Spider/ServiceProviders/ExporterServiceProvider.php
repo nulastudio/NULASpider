@@ -14,6 +14,10 @@ class ExporterServiceProvider implements ServiceProviderContract
     {
         $this->exporterService               = new ExporterService($kernel->getApplication()->configs['export'] ?? []);
         $kernel->getApplication()->on_export = function ($spider, $config, $data, $request, $response) {
+            // 没有配置导出器就溜了吧
+            if (!$config) {
+                return;
+            }
             $exporter = $this->exporterService->getExporter();
             if ($exporter) {
                 $data = is_array($data) ? $data : [$data];

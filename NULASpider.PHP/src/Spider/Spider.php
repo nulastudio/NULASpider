@@ -400,8 +400,9 @@ class Spider
                     return;
                 }
             }
-            if ($this->hasCallback('on_export')) {
-                $this->callback('on_export', $this, $this->configs['export'], $result, $request, $response);
+            $export_config = $this->configs['export'];
+            if ($export_config && $this->hasCallback('on_export')) {
+                $this->callback('on_export', $this, $export_config, $result, $request, $response);
             }
         }
         $this->findListUrl($content, $request, $response);
