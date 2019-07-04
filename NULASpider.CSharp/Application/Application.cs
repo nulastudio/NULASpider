@@ -104,10 +104,16 @@ namespace nulastudio.Spider
             };
             while (true)
             {
-                dynamic request = spider.getUrl();
+                dynamic request = (dynamic)(spider.getUrl());
                 if (!request.IsNull)
                 {
                     startDownloadOne();
+                    // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定
+                    int timeLimit = (int)(spider.timeLimit("request", request.ToClr().getUrl()).ToClr());
+                    if (timeLimit != 0)
+                    {
+                        Thread.Sleep(timeLimit);
+                    }
                     if (!inited)
                     {
                         inited = true;
@@ -180,6 +186,12 @@ namespace nulastudio.Spider
                 if (!response.IsNull)
                 {
                     startProcessOne();
+                    // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定
+                    int timeLimit = (int)(spider.timeLimit("process", response.ToClr().getRequest().ToClr().getUrl()).ToClr());
+                    if (timeLimit != 0)
+                    {
+                        Thread.Sleep(timeLimit);
+                    }
                     taskFactory.StartNew(action, response);
                     Thread.Sleep(10);
                 } else {

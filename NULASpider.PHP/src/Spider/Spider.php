@@ -68,6 +68,8 @@ class Spider
         'findUrlsOverride' => null,
         'filterUrls'       => null,
         'encodingHandler'  => null,
+        // TODO: 文档
+        'timeLimit'        => null,
     ];
 
     // 爬虫配置项
@@ -163,6 +165,12 @@ class Spider
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
+            // TODO: 文档
+            // 限制请求速度（ms，多线程下无限制请求很容易触发反爬机制）
+            'requestLimit'        => 0,
+            // TODO: 文档
+            // 限制采集速度（ms，一般情况下不应该设置）
+            'processLimit'        => 0,
             'input_encoding'      => 'smart', // GIVEN_ENCODING, "auto", "smart", "handler"
             'fallback_encoding'   => '',
             'output_encoding'     => 'auto', // unsupported yet, always "UTF-8"
@@ -468,6 +476,23 @@ class Spider
             $encoding = $processor;
         }
         return strtoupper($encoding);
+    }
+
+    public function timeLimit($type, $url)
+    {
+        $time = 0;
+
+        $config = $this->configs;
+        if ($this->hasCallback('timeLimit')) {
+            $time = (int)$this->callback('timeLimit', $this, $type, $url);
+        } else if ($type === 'request' && isset($config['requestLimit'])) {
+            $time = (int)$config['requestLimit'];
+        } else if ($type === 'process' && isset($config['processLimit'])) {
+            $time = (int)$config['processLimit'];
+        }
+
+        // 返回等待时间（ms）
+        return $time < 0 ? 0 : $time;
     }
 
     public function isScanUrl($url)
