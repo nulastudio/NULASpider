@@ -11,14 +11,6 @@ betas=("alpha" "beta" "rc");
 releaseTitle=${latestTag}
 releaseNote=${latestComment}
 
-for v in ${betas[@]}; do
-    if [[ $latestTag =~ $v ]]
-    then
-        echo "" > ${workdir}/preRelease
-        break
-    fi
-done
-
 if [[ $releaseNote =~ "# Release" ]]
 then
     releaseNote=${releaseNote#*\#\ Release}
@@ -39,5 +31,13 @@ done
 
 echo ${releaseTitle} > ${workdir}/releaseTitle
 echo "${releaseNote}" > ${workdir}/releaseNote
+
+for v in ${betas[@]}; do
+    if [[ $latestTag =~ $v ]]
+    then
+        echo "" > ${workdir}/preRelease
+        break
+    fi
+done
 
 echo "\nall done!\n"
