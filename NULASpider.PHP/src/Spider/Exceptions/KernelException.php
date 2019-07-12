@@ -2,5 +2,7 @@
 
 namespace nulastudio\Spider\Exceptions;
 
-class KernelException extends \Exception
+use nulastudio\Spider\Exceptions\SpiderException;
+
+class KernelException extends SpiderException
 {}

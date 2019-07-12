@@ -2,5 +2,7 @@
 
 namespace nulastudio\Spider\Exceptions;
 
-class SpiderException extends \Exception
+use \Exception;
+
+class SpiderException extends Exception
 {}
