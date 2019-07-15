@@ -10,7 +10,11 @@
                 "${workspaceFolder}/NULASpider.PHP/NULASpider.PHP.msbuildproj",
                 "/p:BuildInParallel=false"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Restore Project (composer init included)",
