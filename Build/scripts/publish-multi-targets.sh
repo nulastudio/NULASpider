@@ -35,7 +35,7 @@ publishing target ${target}
             unzip -o -qq "${basedir}/dependencies/${os}/${bit}/*.zip" -d ${workdir}/${target}/
         fi
         if [ -d ${rootdir}/docs/build ];then
-            mkdir -p ${workdir}/${target}/docs && cp -Rf ${rootdir}/docs/build/ "$_"
+            mkdir -p ${workdir}/${target}/docs && cp -Rf ${rootdir}/docs/build/* "$_"
         fi
         cd ${workdir}/${target}
         zip -ry ${workdir}/${target}-${latestTag}.zip .
