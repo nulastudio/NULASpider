@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9be2f7faca6c2f0b63bc58f661268bc",
+    "content-hash": "b5b0f7a13672722f5b9832037819ec2e",
     "packages": [
         {
             "name": "ezsql/ezsql",
-            "version": "3.0.10",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezSQL/ezSQL.git",
-                "reference": "5db3f80ae0ff1684f18cf8b93fd69115062b43dd"
+                "reference": "e84edbad3d97af2b5e12fa87586a4c6b271cd50e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/5db3f80ae0ff1684f18cf8b93fd69115062b43dd",
-                "reference": "5db3f80ae0ff1684f18cf8b93fd69115062b43dd",
+                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/e84edbad3d97af2b5e12fa87586a4c6b271cd50e",
+                "reference": "e84edbad3d97af2b5e12fa87586a4c6b271cd50e",
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -30,10 +30,14 @@
                 "php": ">5.6"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": ">5.7.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
             "autoload": {
                 "files": [
                     "ez_sql_loader.php"
@@ -62,13 +66,13 @@
                 "abstraction",
                 "database",
                 "dba",
-                "mssql",
-                "mysqli",
+                "mysql",
                 "pdo",
-                "postgres",
-                "sqlite"
+                "postgresql",
+                "sqlite3",
+                "sqlserver"
             ],
-            "time": "2018-09-25T21:39:33+00:00"
+            "time": "2019-03-28T00:16:33+00:00"
         },
         {
             "name": "flow/jsonpath",
@@ -85,7 +89,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -119,20 +123,20 @@
         },
         {
             "name": "liesauer/get-middle-text",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liesauer/getMiddleText.git",
-                "reference": "893fd3c39d14c2daf047191390d94943f0618898"
+                "reference": "80c0f8f8b1bfb520660ea229b9164d11ddc0f591"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liesauer/getMiddleText/zipball/893fd3c39d14c2daf047191390d94943f0618898",
-                "reference": "893fd3c39d14c2daf047191390d94943f0618898",
+                "url": "https://api.github.com/repos/liesauer/getMiddleText/zipball/80c0f8f8b1bfb520660ea229b9164d11ddc0f591",
+                "reference": "80c0f8f8b1bfb520660ea229b9164d11ddc0f591",
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -148,7 +152,7 @@
                 "MIT"
             ],
             "description": "getMiddleText",
-            "time": "2017-09-15T10:45:29+00:00"
+            "time": "2019-01-27T08:34:16+00:00"
         },
         {
             "name": "liesauer/kodmcrypt",
@@ -165,7 +169,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -184,20 +188,20 @@
         },
         {
             "name": "liesauer/simple-http-client",
-            "version": "v1.2.1",
+            "version": "1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liesauer/SimpleHttpClient.git",
-                "reference": "e9e3ea0f1fcc9d55af0fd03afbdeba41fb36cb9a"
+                "reference": "d8f482065d2f21e3db8f1473add86bfe984d4d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liesauer/SimpleHttpClient/zipball/e9e3ea0f1fcc9d55af0fd03afbdeba41fb36cb9a",
-                "reference": "e9e3ea0f1fcc9d55af0fd03afbdeba41fb36cb9a",
+                "url": "https://api.github.com/repos/liesauer/SimpleHttpClient/zipball/d8f482065d2f21e3db8f1473add86bfe984d4d84",
+                "reference": "d8f482065d2f21e3db8f1473add86bfe984d4d84",
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -216,7 +220,7 @@
                 "MIT"
             ],
             "description": "SimpleHttpClient",
-            "time": "2018-08-13T14:35:30+00:00"
+            "time": "2019-02-16T14:10:45+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -233,7 +237,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -294,7 +298,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -331,7 +335,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -370,7 +374,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -400,7 +404,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -455,7 +459,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -511,7 +515,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -548,63 +552,6 @@
                 "psr-3"
             ],
             "time": "2018-11-20T15:27:04+00:00"
-        },
-        {
-            "name": "sabre/uri",
-            "version": "2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sabre-io/uri.git",
-                "reference": "a42126042c7dcb53e2978dadb6d22574d1359b4c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/uri/zipball/a42126042c7dcb53e2978dadb6d22574d1359b4c",
-                "reference": "a42126042c7dcb53e2978dadb6d22574d1359b4c",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0",
-                "sabre/cs": "~1.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/functions.php"
-                ],
-                "psr-4": {
-                    "Sabre\\Uri\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Evert Pot",
-                    "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Functions for making sense out of URIs.",
-            "homepage": "http://sabre.io/uri/",
-            "keywords": [
-                "rfc3986",
-                "uri",
-                "url"
-            ],
-            "time": "2017-02-20T20:02:35+00:00"
         }
     ],
     "packages-dev": [],
