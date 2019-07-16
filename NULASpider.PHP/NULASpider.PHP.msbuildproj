@@ -45,8 +45,11 @@
   <Target Name="CopyPlaygroundContentPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishDir)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
-  <ItemGroup>
-    <ProjectReference Condition="$(Configuration) == 'Debug'" Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+  <PropertyGroup>
+    <SourceEnable>No</SourceEnable>
+  </PropertyGroup>
+  <ItemGroup Condition="$(SourceEnable) == 'Yes'">
+    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
