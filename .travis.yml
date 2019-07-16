@@ -14,6 +14,7 @@ install:
   - composer install -d ./NULASpider.PHP
   - pip install --user --upgrade pip
   - pip install --user -U sphinx
+  - sudo apt-get -y install python-sphinx
   - pip install --user -r ./docs/requirements.txt
 
 script:
