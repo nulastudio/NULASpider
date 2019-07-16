@@ -2,6 +2,7 @@
 
 workdir=$(cd $(dirname $0); pwd)
 basedir=$(cd $(dirname ${workdir}); pwd)
+rootdir=$(cd $(dirname ${basedir}); pwd)
 workdir=${workdir}/../Release
 targets=("win-x64" "win-x86" "linux-x64" "osx-x64");
 latestTag=$(git describe --tags `git rev-list --all --max-count=1`)
@@ -32,6 +33,9 @@ publishing target ${target}
     if [ -d ${workdir}/${target} ];then
         if [ -d ${basedir}/dependencies/${os}/${bit} ];then
             unzip -o -qq "${basedir}/dependencies/${os}/${bit}/*.zip" -d ${workdir}/${target}/
+        fi
+        if [ -d ${rootdir}/docs/build ];then
+            mkdir -p ${workdir}/${target}/docs && cp -Rf ${rootdir}/docs/build/ "$_"
         fi
         cd ${workdir}/${target}
         zip -ry ${workdir}/${target}-${latestTag}.zip .
