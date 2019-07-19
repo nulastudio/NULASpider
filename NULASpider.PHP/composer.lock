@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5b0f7a13672722f5b9832037819ec2e",
+    "content-hash": "582e2350b3f8f3bd71569c07de3efcbd",
     "packages": [
         {
             "name": "ezsql/ezsql",
-            "version": "3.1.2",
+            "version": "3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezSQL/ezSQL.git",
-                "reference": "e84edbad3d97af2b5e12fa87586a4c6b271cd50e"
+                "reference": "d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/e84edbad3d97af2b5e12fa87586a4c6b271cd50e",
-                "reference": "e84edbad3d97af2b5e12fa87586a4c6b271cd50e",
+                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2",
+                "reference": "d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -33,11 +33,6 @@
                 "phpunit/phpunit": ">5.7.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "ez_sql_loader.php"
@@ -66,13 +61,13 @@
                 "abstraction",
                 "database",
                 "dba",
-                "mysql",
+                "msserver",
+                "mysqli",
                 "pdo",
-                "postgresql",
-                "sqlite3",
-                "sqlserver"
+                "postgres",
+                "sqlite"
             ],
-            "time": "2019-03-28T00:16:33+00:00"
+            "time": "2018-09-05T19:34:39+00:00"
         },
         {
             "name": "flow/jsonpath",
