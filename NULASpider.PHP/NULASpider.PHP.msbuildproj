@@ -54,4 +54,7 @@
   <ItemGroup>
     <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="nulastudio.NetCoreBeauty" Version="1.0.1" />
+  </ItemGroup>
 </Project>
