@@ -8,7 +8,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NULASpider.Test.CSharp", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NULASpider.Test.PHP", "NULASpider.Test.PHP\NULASpider.Test.PHP.msbuildproj", "{A22CE5AF-91C7-4803-9231-5BB48003F6AE}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "NULASpider.PHP", "NULASpider.PHP\NULASpider.PHP.msbuildproj", "{9B756E49-62DE-43EE-83DF-607BF525F904}"
+Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "NULASpider.PHP", "NULASpider.PHP\NULASpider.PHP.msbuildproj", "{9B756E49-62DE-43EE-83DF-607BF525F904}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{A179B1F6-18AC-4CBC-92C6-D7FA42C9F113}"
+	ProjectSection(SolutionItems) = preProject
+		Build\scripts\build-docs.sh = Build\scripts\build-docs.sh
+		Build\scripts\build-peachpie.sh = Build\scripts\build-peachpie.sh
+		Build\scripts\publish-multi-targets.sh = Build\scripts\publish-multi-targets.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BC1CD67B-2D8C-4107-A75D-989B7DDD276A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +80,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B6820356-E1F5-4870-9183-B3D0E24F2935} = {BC1CD67B-2D8C-4107-A75D-989B7DDD276A}
+		{A22CE5AF-91C7-4803-9231-5BB48003F6AE} = {BC1CD67B-2D8C-4107-A75D-989B7DDD276A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F13F5480-E48C-4C5E-81C1-E54EE7729EBD}
