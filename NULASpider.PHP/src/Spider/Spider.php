@@ -210,9 +210,9 @@ class Spider
         if (!$this->configs['scan_urls']) {
             return false;
         }
-        $lastUrl = $this->getUrl();
-        if ($lastUrl) {
-            $this->addUrl($lastUrl);
+        $lastRequest = $this->getUrl();
+        if ($lastRequest) {
+            $this->addUrl($lastRequest->getUrl());
         } else {
             foreach ($this->configs['scan_urls'] as $scan_url) {
                 if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
@@ -223,13 +223,15 @@ class Spider
         return true;
     }
 
-    public function addUrl($url, $prevUrl = null)
+    public function addUrl($url, $prevUrl = null, $check = true)
     {
         try {
             LockManager::getLock('add_url');
             $url_hash = md5($url);
-            // NOTE: 去重依赖于队列自身的特征，成功加入则加入下载队列
-            if ($this->urlQueue->push($url_hash)) {
+            // NOTE: 去重依赖于队列自身的特征以及是否需要检测去重，通过则加入下载队列
+            // NOTE: 由于response是被序列化保存至队列中的，因此可能会存在两个response被序列化成一样的数据，downloadQueue理论上不应该使用Unique队列
+            $check = $check && $this->urlQueue->push($url_hash);
+            if ($check) {
                 $request = new Request(Request::REQUEST_METHOD_GET, $url);
                 if ($prevUrl) {
                     $request->setHeader('Referer', $prevUrl);
