@@ -225,18 +225,23 @@ class Spider
 
     public function addUrl($url, $prevUrl = null, $check = true)
     {
+        $request = new Request(Request::REQUEST_METHOD_GET, $url);
+        if ($prevUrl) {
+            $request->setHeader('Referer', $prevUrl);
+        }
+        $this->addRequest($request, $check);
+    }
+
+    public function addRequest(Request $request, $check = true)
+    {
         try {
             LockManager::getLock('add_url');
+            $url = $request->getUrl();
             $url_hash = md5($url);
             // NOTE: 去重依赖于队列自身的特征以及是否需要检测去重，通过则加入下载队列
             // NOTE: 由于response是被序列化保存至队列中的，因此可能会存在两个response被序列化成一样的数据，downloadQueue理论上不应该使用Unique队列
             $check = $check && $this->urlQueue->push($url_hash);
             if ($check) {
-                $request = new Request(Request::REQUEST_METHOD_GET, $url);
-                if ($prevUrl) {
-                    $request->setHeader('Referer', $prevUrl);
-                }
-
                 $this->downloadQueue->push($request);
             }
         } finally {
