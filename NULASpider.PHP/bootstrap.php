@@ -53,9 +53,12 @@ if (getenv(TESTING_KEY)) {
 PHP的$argv的第一个参数是启动脚本，第二个开始才是参数
 但在Peachpie中，第一个元素已经是参数了，启动脚本被移除
  */
-$spider = realpath(DIR_WORKING . '/' . ($argv[0] ?? ''));
+$spider = $argv[0] ?? '';
+if (!file_exists($spider)) {
+    $spider = DIR_WORKING . '/' . $spider;
+}
 
-if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1) {
+if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1 && file_exists($spider)) {
     echo "Please specify a valid startup spider script.\n";
     exit;
 }
