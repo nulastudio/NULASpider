@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>nulastudio</RootNamespace>
+    <SourceEnable>No</SourceEnable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,9 +21,6 @@
     <PackageReference Include="nulastudio.Document.EPPlus4PHP" Version="0.1.6-*" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <SourceEnable>No</SourceEnable>
-  </PropertyGroup>
   <ItemGroup Condition="$(SourceEnable) == 'Yes'">
     <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
     <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />

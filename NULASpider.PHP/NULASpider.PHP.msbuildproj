@@ -7,6 +7,7 @@
     <RuntimeIdentifiers>win-x64;win-x86;linux-x64;osx-x64</RuntimeIdentifiers>
     <ComposerJsonPath>false</ComposerJsonPath>
     <DisableImplicitPeachpieReferences Condition="$(Configuration) == 'Debug'">true</DisableImplicitPeachpieReferences>
+    <SourceEnable>No</SourceEnable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />
@@ -45,9 +46,6 @@
   <Target Name="CopyPlaygroundContentPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishDir)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
-  <PropertyGroup>
-    <SourceEnable>No</SourceEnable>
-  </PropertyGroup>
   <ItemGroup Condition="$(SourceEnable) == 'Yes'">
     <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
@@ -55,6 +53,6 @@
     <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="nulastudio.NetCoreBeauty" Version="1.0.1" />
+    <PackageReference Include="nulastudio.NetCoreBeauty" Version="1.0.2" />
   </ItemGroup>
 </Project>
