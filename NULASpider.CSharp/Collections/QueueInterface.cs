@@ -36,5 +36,7 @@ namespace nulastudio.Collections
         /// 清空队列
         /// </summary>
         void empty();
+        PhpString serialize(PhpValue value);
+        PhpValue unserialize(PhpString str);
     }
 }

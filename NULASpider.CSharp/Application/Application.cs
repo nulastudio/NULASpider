@@ -71,6 +71,7 @@ namespace nulastudio.Spider
             // 检测是否已完成任务
             // 有UI的情况下检测finished
             // 无UI的情况下检测downloading和processing
+            // FIXME: 有可能存在死循环，异常退出后采集过后的url加不进去，一直没有init
             while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0))))
             {
                 Thread.Sleep(500);
@@ -104,8 +105,8 @@ namespace nulastudio.Spider
             };
             while (true)
             {
-                dynamic request = (dynamic)(spider.getUrl());
-                if (!request.IsNull)
+                dynamic request = (dynamic)(spider.getRequest());
+                if (request.IsObject && !request.IsNull)
                 {
                     startDownloadOne();
                     // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定
@@ -183,7 +184,7 @@ namespace nulastudio.Spider
             while (true)
             {
                 dynamic response = spider.getResponse();
-                if (!response.IsNull)
+                if (response.IsObject && !response.IsNull)
                 {
                     startProcessOne();
                     // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定

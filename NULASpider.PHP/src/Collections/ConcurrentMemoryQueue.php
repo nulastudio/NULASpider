@@ -113,4 +113,30 @@ class ConcurrentMemoryQueue extends MemoryQueue
             LockManager::releaseLock($this->token);
         }
     }
+    public function serialize($value)
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::serialize($value);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
+    public function unserialize($str)
+    {
+        LockManager::getLock($this->token);
+        $val = null;
+        try {
+            $val = parent::unserialize($str);
+        } catch (\Exception $e) {
+            throw $e;
+        } finally {
+            LockManager::releaseLock($this->token);
+        }
+        return $val;
+    }
 }

@@ -68,5 +68,14 @@ namespace nulastudio.Collections
         {
             this.CSRedis.Del(this.key);
         }
+        // NOTE: 存储的时候无法存储对象，只能先进行序列化再存储
+        public PhpString serialize(PhpValue value)
+        {
+            return Pchp.Library.PhpSerialization.serialize(this.ctx, default(RuntimeTypeHandle), value);
+        }
+        public PhpValue unserialize(PhpString str)
+        {
+            return Pchp.Library.PhpSerialization.unserialize(this.ctx, default(RuntimeTypeHandle), str);
+        }
     }
 }

@@ -59,5 +59,19 @@ namespace nulastudio.Collections
                 base.empty();
             }
         }
+        public new PhpString serialize(PhpValue value)
+        {
+            lock (@lock)
+            {
+                return base.serialize(value);
+            }
+        }
+        public new PhpValue unserialize(PhpString str)
+        {
+            lock (@lock)
+            {
+                return base.unserialize(str);
+            }
+        }
     }
 }

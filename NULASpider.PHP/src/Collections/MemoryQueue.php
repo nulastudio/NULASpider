@@ -68,4 +68,14 @@ class MemoryQueue implements QueueInterface
         $this->pointer  = -1;
         $this->popCount = 0;
     }
+    public function serialize($value)
+    {
+        // 内存队列不需要序列化
+        return $value;
+    }
+    public function unserialize($str)
+    {
+        // 内存队列不需要序列化
+        return $str;
+    }
 }

@@ -68,7 +68,6 @@ class Spider
         'findUrlsOverride' => null,
         'filterUrls'       => null,
         'encodingHandler'  => null,
-        // TODO: 文档
         'timeLimit'        => null,
     ];
 
@@ -165,10 +164,8 @@ class Spider
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
-            // TODO: 文档
             // 限制请求速度（ms，多线程下无限制请求很容易触发反爬机制）
             'requestLimit'        => 0,
-            // TODO: 文档
             // 限制采集速度（ms，一般情况下不应该设置）
             'processLimit'        => 0,
             'input_encoding'      => 'smart', // GIVEN_ENCODING, "auto", "smart", "handler"
@@ -210,9 +207,11 @@ class Spider
         if (!$this->configs['scan_urls']) {
             return false;
         }
-        $lastUrl = $this->getUrl();
-        if ($lastUrl) {
-            $this->addUrl($lastUrl);
+        $lastRequest = $this->getRequest();
+        if ($lastRequest) {
+            // FIXME: 其实受限于urlQueue的去重特性，有可能是加不进去的
+            // FIXME: 当队列刚好没有任务时，且异常退出时会导致爬虫无法进入（判定为已经抓取完，且url被去重无法重新加入）
+            $this->addUrl($lastRequest->getUrl());
         } else {
             foreach ($this->configs['scan_urls'] as $scan_url) {
                 if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
@@ -235,21 +234,23 @@ class Spider
                     $request->setHeader('Referer', $prevUrl);
                 }
 
-                $this->downloadQueue->push($request);
+                $this->downloadQueue->push($this->downloadQueue->serialize($request));
             }
         } finally {
             LockManager::releaseLock('add_url');
         }
     }
 
-    public function getUrl()
+    public function getRequest()
     {
-        return $this->downloadQueue->pop();
+        $request = $this->downloadQueue->pop();
+        return $this->downloadQueue->unserialize($request);
     }
 
     public function getResponse()
     {
-        return $this->processQueue->pop();
+        $response = $this->processQueue->pop();
+        return $this->processQueue->unserialize($response);
     }
 
     public function fetchUrl($request)
@@ -353,7 +354,7 @@ class Spider
         LockManager::getLock('update_downloaded');
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
-        $this->processQueue->push($response);
+        $this->processQueue->push($this->processQueue->serialize($response));
         // LockManager::releaseLock("fetchUrl");
     }
 
