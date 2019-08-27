@@ -805,7 +805,7 @@ class Spider
             case '@outerHTML':
                 return $node->OuterHtml;
             case '@innerText':
-            case '@text()':
+            case 'text()':
                 return $node->InnerText;
             default:
                 if ($action && $action{0} === '@') {
