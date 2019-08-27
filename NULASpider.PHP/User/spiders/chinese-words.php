@@ -34,7 +34,7 @@ $config = [
                 ],
                 'words'   => [
                     'type'     => 'xpath',
-                    'selector' => './/td[2]/a/text()',
+                    'selector' => './/td[2]/a/@innerHTML',
                     'repeated' => true,
                     'callback' => function ($words) {
                         return preg_replace('#<span>\d+</span>#', '', $words);
