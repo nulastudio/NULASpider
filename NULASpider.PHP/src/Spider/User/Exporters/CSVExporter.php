@@ -24,8 +24,7 @@ class CSVExporter extends AbstructExporter
     {
         if ($this->hasHeader && !$this->csvHelper->hasData) {
             $this->csvHelper->writeRow(array_keys($data));
-        } else {
-            $this->csvHelper->writeRow($data);
         }
+        $this->csvHelper->writeRow($data);
     }
 }

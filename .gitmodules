@@ -1,3 +1,6 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/nulastudio/NULASpider-docs.git
+[submodule "nula-peachpie"]
+	path = nula-peachpie
+	url = https://github.com/nulastudio/peachpie.git
