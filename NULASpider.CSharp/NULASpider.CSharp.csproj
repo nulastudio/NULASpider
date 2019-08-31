@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../Common/Common.target" />
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>nulastudio</RootNamespace>
-    <SourceEnable>No</SourceEnable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,16 +22,16 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(SourceEnable) == 'Yes'">
-    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.Sqlite/Peachpie.Library.PDO.Sqlite.csproj" />
-    <ProjectReference Include="../../peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/PDO/Peachpie.Library.PDO.MySQL/Peachpie.Library.PDO.MySQL.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/PDO/Peachpie.Library.PDO.Sqlite/Peachpie.Library.PDO.Sqlite.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
   </ItemGroup>
   <ItemGroup Condition="$(SourceEnable) != 'Yes'">
-    <PackageReference Include="Peachpie.App" Version="0.9.44-dev-p.fdfee1b1" />
-    <PackageReference Include="Peachpie.Library.PDO.MySQL" Version="0.9.44-dev-p.fdfee1b1" />
-    <PackageReference Include="Peachpie.Library.PDO.Sqlite" Version="0.9.44-dev-p.fdfee1b1" />
-    <PackageReference Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.44-dev-p.fdfee1b1" />
+    <PackageReference Include="Peachpie.App" Version="0.9.44-dev-o.2b5b83e2" />
+    <PackageReference Include="Peachpie.Library.PDO.MySQL" Version="0.9.44-dev-o.2b5b83e2" />
+    <PackageReference Include="Peachpie.Library.PDO.Sqlite" Version="0.9.44-dev-o.2b5b83e2" />
+    <PackageReference Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.44-dev-o.2b5b83e2" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-<Project Sdk="Peachpie.NET.Sdk/0.9.44-dev-p.fdfee1b1">
+<Project Sdk="Peachpie.NET.Sdk/0.9.44-dev-o.2b5b83e2">
+  <Import Project="../Common/Common.target" />
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -6,8 +8,6 @@
     <Description>NULASpider</Description>
     <RuntimeIdentifiers>win-x64;win-x86;linux-x64;osx-x64</RuntimeIdentifiers>
     <ComposerJsonPath>false</ComposerJsonPath>
-    <DisableImplicitPeachpieReferences Condition="$(Configuration) == 'Debug'">true</DisableImplicitPeachpieReferences>
-    <SourceEnable>No</SourceEnable>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**/*.php" />
@@ -47,7 +47,7 @@
     <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishDir)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
   <ItemGroup Condition="$(SourceEnable) == 'Yes'">
-    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
