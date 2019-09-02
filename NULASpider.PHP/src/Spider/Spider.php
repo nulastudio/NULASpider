@@ -251,13 +251,13 @@ class Spider
     public function getRequest()
     {
         $request = $this->downloadQueue->pop();
-        return $this->downloadQueue->unserialize($request);
+        return $request ? $this->downloadQueue->unserialize($request) : null;
     }
 
     public function getResponse()
     {
         $response = $this->processQueue->pop();
-        return $this->processQueue->unserialize($response);
+        return $response ? $this->processQueue->unserialize($response) : null;
     }
 
     public function fetchUrl($request)
