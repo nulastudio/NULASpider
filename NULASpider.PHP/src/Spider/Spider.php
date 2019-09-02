@@ -821,19 +821,28 @@ class Spider
     private function fetchFields($fields, $content, $request, $response, $recursive = false)
     {
         $result = [];
+        $parseSelector = function($selector) {
+            $type  = null;
+            $types = ['xpath', 'css', 'regex', 'jsonpath', 'jmespath'];
+            foreach ($types as $t) {
+                if (strpos($selector, "{$t}://") === 0) {
+                    $type     = $t;
+                    $selector = preg_replace("#{$t}://#", '', $selector, 1);
+                    break;
+                }
+            }
+            return [
+                'type'    => $type,
+                'selector'=> $selector,
+            ];
+        };
         foreach ($fields as $name => $selector) {
             $field = null;
             if (is_string($selector)) {
                 // TODO: 文档、优化
-                $type  = 'xpath';
-                $types = ['xpath', 'css', 'regex', 'jsonpath', 'jmespath'];
-                foreach ($types as $t) {
-                    if (strpos($selector, "{$t}://") === 0) {
-                        $type     = $t;
-                        $selector = preg_replace("#{$t}://#", '', $selector, 1);
-                        break;
-                    }
-                }
+                $parsedSelector = $parseSelector($selector);
+                $type           = $parsedSelector['type'] ?? 'xpath';
+                $selector       = $parsedSelector['selector'];
                 /**
                  * 简单xpath、简化选择器
                  */
@@ -881,9 +890,17 @@ class Spider
                         $content = null;
                     }
                 }
-                $_area             = $selector['area'] ?? '';
-                $_selector         = $selector['selector'] ?? '';
-                $_type             = $selector['type'] ?? 'xpath';
+                $_area     = $selector['area'] ?? '';
+                $_type     = '';
+                $_selector = '';
+                if (isset($selector['type'])) {
+                    $_selector = $selector['selector'] ?? '';
+                    $_type     = $selector['type'] ?? 'xpath';
+                } else {
+                    $parsedSelector = $parseSelector($selector['selector']);
+                    $_type          = $parsedSelector['type'] ?? 'xpath';
+                    $_selector      = $parsedSelector['selector'];
+                }
                 $_childs           = $selector['fields'] ?? '';
                 $_callback         = $selector['callback'] ?? '';
                 $_repeated         = $selector['repeated'] ?? false;
