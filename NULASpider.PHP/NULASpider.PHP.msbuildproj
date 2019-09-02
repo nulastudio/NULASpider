@@ -47,7 +47,7 @@
     <Copy SourceFiles="@(PlaygroundContent)" DestinationFiles="@(PlaygroundContent->'$(PublishDir)User/Playground/%(RecursiveDir)%(Filename)%(Extension)')"></Copy>
   </Target>
   <ItemGroup Condition="$(SourceEnable) == 'Yes'">
-    <ProjectReference Include="../../peachpie/src/Peachpie.App/Peachpie.App.csproj" />
+    <ProjectReference Include="../nula-peachpie/src/Peachpie.App/Peachpie.App.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../NULASpider.CSharp/NULASpider.CSharp.csproj" />
