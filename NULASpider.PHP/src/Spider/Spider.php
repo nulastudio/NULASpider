@@ -459,9 +459,10 @@ class Spider
                          * HTML4: <meta http-equiv="Content-Type" content="text/html;charset=XXX">
                          * HTML5: <meta charset="XXX">
                          */
-                        if (preg_match('/<meta\s*http-equiv="Content-Type"\s*content="[\w\/]*;charset=(?<encoding>[\w\-]*)".*$/i', $contentType, $result) === 1) {
+                        $rawContent = $response->getRawContent();
+                        if (preg_match('/<meta\s*http-equiv="Content-Type"\s*content="[\w\/]*;\s*charset=(?<encoding>[\w\-]*)"\s*\/?\s*>/i', $rawContent, $result) === 1) {
                             $encoding = $result['encoding'];
-                        } else if (preg_match('/<meta\s*charset="(?<encoding>[\w\-]*)".*$/i', $contentType, $result) === 1) {
+                        } else if (preg_match('/<meta\s*charset="(?<encoding>[\w\-]*)"\s*\/?\s*>/i', $rawContent, $result) === 1) {
                             $encoding = $result['encoding'];
                         }
                     }
