@@ -99,7 +99,7 @@ class ProxyPool implements PluginContract
                     $this->used[$key]['time'] = microtime(true);
                     return $proxy['proxy'];
                 }
-                return $this->randomOne();
+                // return $this->randomOne();
             }
             public function resetCD()
             {
@@ -131,7 +131,7 @@ class ProxyPool implements PluginContract
             if ($intelligent === null) {
                 $proxyPool->enable($enable);
             } else {
-                $proxyPool->enable($enable, (bool) $intelligent);
+                $proxyPool->enable($enable, $intelligent);
             }
         });
         $application->bind('resetCD', function ($spider, ...$params) use ($proxyPool) {

@@ -816,7 +816,7 @@ class Spider
                 }
                 return $node->InnerHtml;
         }
-        return null;
+        // return null;
     }
 
     private function fetchFields($fields, $content, $request, $response, $recursive = false)

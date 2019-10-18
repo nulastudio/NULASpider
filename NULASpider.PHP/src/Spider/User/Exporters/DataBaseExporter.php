@@ -14,6 +14,7 @@ class DataBaseExporter extends AbstructExporter
 
     public function __construct(array $config = [])
     {
+        parent::__construct($config);
         $driver = $config['driver'] ?? '';
         if (!$driver) {
             throw new \Exception('You must specify a database driver.');

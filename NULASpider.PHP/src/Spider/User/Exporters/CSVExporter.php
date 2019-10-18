@@ -13,6 +13,7 @@ class CSVExporter extends AbstructExporter
 
     public function __construct(array $config = [])
     {
+        parent::__construct($config);
         if (!isset($config['file']) || !is_string($config['file'])) {
             throw new \Exception('config does not provide a valid file to export.');
         }

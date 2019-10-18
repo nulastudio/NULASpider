@@ -24,7 +24,7 @@ class ExporterService extends BaseService
             // trigger_error("Can not register an invalid exporter: {$exporter}", E_USER_WARNING);
             // FIXME: 使用Exception代替，set_error_handler以及trigger_error未实现
             throw new \Exception("Can not register an invalid exporter: {$exporter}");
-            return;
+            // return;
         }
         $this->exporters[$name] = $exporter;
     }

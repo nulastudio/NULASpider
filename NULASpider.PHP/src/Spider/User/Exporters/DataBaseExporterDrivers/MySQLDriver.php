@@ -13,6 +13,7 @@ class MySQLDriver extends AbstructDriver
 
     public function __construct(array $config = [])
     {
+        parent::__construct($config);
         try {
             if (!isset($config['host']) ||!isset($config['dbname'])) {
                 throw new \Exception('empty host or empty dbname');

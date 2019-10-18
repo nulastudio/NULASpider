@@ -4,71 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "582e2350b3f8f3bd71569c07de3efcbd",
+    "content-hash": "7afabb695ddac6667422c0dd5c365526",
     "packages": [
-        {
-            "name": "ezsql/ezsql",
-            "version": "3.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ezSQL/ezSQL.git",
-                "reference": "d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ezSQL/ezSQL/zipball/d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2",
-                "reference": "d30ddf4e1df8efc6f3a94da83bd2fc4d136d1ab2",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">5.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">5.7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "ez_sql_loader.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Justin Vincent",
-                    "email": "webmaster@justinvincent.com"
-                },
-                {
-                    "name": "Stefanie Janine Stoelting",
-                    "email": "mail@stefanie-stoelting.de"
-                },
-                {
-                    "name": "l. stubbs",
-                    "email": "lstubbs@technoexpress.net"
-                }
-            ],
-            "description": "Advance database access layer PHP 5.6+ class. Make interacting with a database ridiculously easy.",
-            "keywords": [
-                "abstraction",
-                "database",
-                "dba",
-                "msserver",
-                "mysqli",
-                "pdo",
-                "postgres",
-                "sqlite"
-            ],
-            "time": "2018-09-05T19:34:39+00:00"
-        },
         {
             "name": "flow/jsonpath",
             "version": "0.4.0",
