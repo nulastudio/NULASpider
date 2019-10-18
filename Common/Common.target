@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <!-- 是否调试Peachpie -->
+        <!-- 是否调试Peachpie源码 -->
         <SourceEnable>No</SourceEnable>
     </PropertyGroup>
     <PropertyGroup Condition="$(SourceEnable) == 'Yes'">
-        <BuildInParallel>false</BuildInParallel>
+        <!-- 并行编译 -->
+        <BuildInParallel>true</BuildInParallel>
+        <!-- 关闭Peachpie隐式引用 -->
         <DisableImplicitPeachpieReferences>true</DisableImplicitPeachpieReferences>
     </PropertyGroup>
     <PropertyGroup Condition="$(SourceEnable) != 'Yes'">
