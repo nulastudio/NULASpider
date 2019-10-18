@@ -22,6 +22,7 @@
   <ItemGroup>
     <UserContent Include="User/**/*" />
     <UserContent Remove="User/priv-spiders/**/*" />
+    <UserContent Include="User/priv-spiders/.gitkeep" />
     <Content Include="@(UserContent)" CopyToOutputDirectory="Always" />
   </ItemGroup>
   <ItemGroup>
