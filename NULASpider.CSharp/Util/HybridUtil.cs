@@ -15,12 +15,18 @@ public class HybridUtil
         return value.ToClr();
     }
 
-    public static void dump(Context ctx, PhpValue obj)
+    public static string base64encode(Context ctx, byte[] bytes)
     {
-        foreach (var item in obj)
-        {
-            Console.WriteLine("");
-        }
-        Console.WriteLine("");
+        return System.Convert.ToBase64String(bytes);
+    }
+
+    public static byte[] base64decode(Context ctx, string base64)
+    {
+        return System.Convert.FromBase64String(base64);
+    }
+
+    public static PhpString byteArray2String(Context ctx, byte[] bytes)
+    {
+        return new PhpString(bytes);
     }
 }

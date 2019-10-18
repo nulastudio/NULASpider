@@ -154,3 +154,23 @@ function isRegex($pattern)
     }
     return preg_match('/^[^\da-zA-Z\s].*[^\da-zA-Z\s][a-zA-Z]*$/', $pattern) === 1;
 }
+
+function string2BytesArray($string)
+{
+    return array_values(unpack('C*', $string));
+}
+
+function bytesArray2String($bytes)
+{
+    return implode('', array_map('chr', $bytes));
+}
+
+function stringEncode($string)
+{
+    return \HybridUtil::base64encode(string2BytesArray($string));
+}
+
+function stringDecode($string)
+{
+    return \HybridUtil::byteArray2String(\HybridUtil::base64decode($string));
+}
