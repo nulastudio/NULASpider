@@ -14,9 +14,18 @@ define('DIR_PLUGINS', DIR_USER . '/Plugins');
 define('DIR_EXPORTERS', DIR_USER . '/Exporters');
 define('DIR_CONFIG', DIR_USER . '/config');
 define('DIR_DATA', DIR_USER . '/data');
+define('DIR_DATATMP', DIR_DATA . '/.tmp');
 define('DIR_LOG', DIR_USER . '/log');
 define('DIR_SPIDER', DIR_USER . '/spiders');
 define('DIR_TMP', Environment::getTempDirectory());
+
+$checkDir = [DIR_USER, DIR_PLUGINS, DIR_EXPORTERS, DIR_CONFIG, DIR_DATA, DIR_DATATMP, DIR_LOG, DIR_SPIDER];
+
+array_walk($checkDir, function ($dir) {
+    if (!file_exists($dir)) {
+        mkdir($dir, 0666, true);
+    }
+});
 
 define('TESTING_KEY', 'NULASPIDER_TESTING');
 

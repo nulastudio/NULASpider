@@ -24,6 +24,8 @@ class Request
     const REQUEST_CONTENT_TYPE_XML                   = 'application/xml';
     const REQUEST_CONTENT_TYPE_HTML                  = 'text/html';
 
+    protected $id = '';
+
     protected static $defaultHeader = null;
     protected static $defaultOption = null;
 
@@ -39,6 +41,7 @@ class Request
 
     public function __construct($method, $url, $header = [], $data = null, $contentType = self::REQUEST_CONTENT_TYPE_X_WWW_FORM_URLENCODED, $encoding = 'utf-8')
     {
+        $this->id     = md5(uniqid(microtime(true), true));
         $this->method = $method;
         $this->url    = $url;
         $this->header = static::getDefaultHeader();
@@ -48,6 +51,11 @@ class Request
         }
         $this->contentType = $contentType;
         $this->encoding    = $encoding;
+    }
+
+    public function getID()
+    {
+        return $this->id;
     }
 
     public static function getDefaultHeader()

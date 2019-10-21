@@ -7,6 +7,8 @@ use nulastudio\Networking\Http\Request;
 
 class Response
 {
+    protected $id = '';
+
     public $request;
 
     public $statusCode;
@@ -14,6 +16,11 @@ class Response
     public $rawContent;
     public $parsedHeader;
     public $parsedContent;
+
+    protected function __construct()
+    {
+        $this->id = md5(uniqid(microtime(true), true));
+    }
 
     public static function parseResponseString(string $responseStr, Request $request = null)
     {
@@ -32,6 +39,11 @@ class Response
         $response->parsedContent = $response->rawContent;
 
         return $response;
+    }
+
+    public function getID()
+    {
+        return $this->id;
     }
 
     public function getRequest()

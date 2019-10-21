@@ -71,7 +71,6 @@ namespace nulastudio.Spider
             // 检测是否已完成任务
             // 有UI的情况下检测finished
             // 无UI的情况下检测downloading和processing
-            // FIXME: 有可能存在死循环，异常退出后采集过后的url加不进去，一直没有init
             while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0))))
             {
                 Thread.Sleep(500);
@@ -86,7 +85,9 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 try
                 {
-                    spider.fetchUrl((PhpValue)o);
+                    // TODO: 优化
+                    var obj = ((PhpValue)o).ToClr();
+                    spider.fetchUrl((dynamic)obj);
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {
@@ -164,7 +165,9 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 try
                 {
-                    spider.processResponse((PhpValue)o);
+                    // TODO: 优化
+                    var obj = ((PhpValue)o).ToClr();
+                    spider.processResponse((dynamic)obj);
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {

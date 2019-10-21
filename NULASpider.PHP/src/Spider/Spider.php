@@ -74,6 +74,10 @@ class Spider
     // 爬虫配置项
     private $configs = [];
 
+    // 存储的临时数据
+    private $storedRequest  = [];
+    private $storedResponse = [];
+
     // logger
     use LoggerTrait;
     use LoggerAwareTrait;
@@ -184,9 +188,39 @@ class Spider
         $this->configs = array_replace_recursive($default_configs, $configs);
     }
 
+    private function restoreData()
+    {
+        // 恢复Request
+        $this->restoreDataTo('request', 'storedRequest');
+
+        // 恢复Response
+        $this->restoreDataTo('response', 'storedResponse');
+    }
+
+    private function restoreDataTo($glob, $key)
+    {
+        $datas = [];
+        foreach (glob(DIR_DATATMP . "/{$glob}*") as $file) {
+            $mtime = filemtime($file);
+            $datas[md5($file)] = [
+                'data' => file_get_contents($file),
+                'time' => $mtime,
+            ];
+        }
+        uasort($datas, function ($a, $b) {
+            return Util\sign($a['time'], $b['time']);
+        });
+        $this->$key = array_map(function ($r) {
+            return unserialize($r['data']);
+        }, $datas);
+    }
+
     public function start()
     {
         define('BOOT_UP_TIME_FLOAT', microtime(true));
+
+        // 临时数据恢复
+        $this->restoreData();
 
         $this->callback('on_start', $this);
 
@@ -207,11 +241,16 @@ class Spider
         if (!$this->configs['scan_urls']) {
             return false;
         }
+        /**
+         * 当存在异常退出时的数据直接返回
+         * 不得重新addUrl，否则会出现重复请求
+         */
+        if (count($this->storedRequest)) {
+            return true;
+        }
         $lastRequest = $this->getRequest();
         if ($lastRequest) {
-            // FIXME: 其实受限于urlQueue的去重特性，有可能是加不进去的
-            // FIXME: 当队列刚好没有任务时，且异常退出时会导致爬虫无法进入（判定为已经抓取完，且url被去重无法重新加入）
-            $this->addUrl($lastRequest->getUrl());
+            $this->addRequest($lastRequest, false);
         } else {
             foreach ($this->configs['scan_urls'] as $scan_url) {
                 if (is_string($scan_url) && !Util\isRegex($scan_url) && strpos($scan_url, 'http') === 0) {
@@ -248,19 +287,77 @@ class Spider
         }
     }
 
+    private function startFetch(Request $request)
+    {
+        $id = $request->getID();
+        file_put_contents(DIR_DATATMP . "/request{$id}", serialize($request));
+    }
+
+    private function endFetch(Request $request)
+    {
+        $id = $request->getID();
+        unlink(DIR_DATATMP . "/request{$id}");
+    }
+
+    private function startProcess(Response $response)
+    {
+        $id = $response->getID();
+        file_put_contents(DIR_DATATMP . "/response{$id}", serialize($response));
+    }
+
+    private function endProcess(Response $response)
+    {
+        $id = $response->getID();
+        unlink(DIR_DATATMP . "/response{$id}");
+    }
+
     public function getRequest()
     {
-        $request = $this->downloadQueue->pop();
-        return $request ? $this->downloadQueue->unserialize($request) : null;
+        $request = null;
+        LockManager::getLock('getRequest');
+        if (count($this->storedRequest)) {
+            $request = array_shift($this->storedRequest);
+        }
+        LockManager::releaseLock('getRequest');
+        if ($request === null) {
+            $request = $this->downloadQueue->pop();
+            if (!$request) {
+                return null;
+            }
+            $request = $this->downloadQueue->unserialize($request);
+        } else {
+            if (empty($request)) {
+                return null;
+            }
+        }
+        $this->startFetch($request);
+        return $request;
     }
 
     public function getResponse()
     {
-        $response = $this->processQueue->pop();
-        return $response ? $this->processQueue->unserialize($response) : null;
+        $response = null;
+        LockManager::getLock('getResponse');
+        if (count($this->storedResponse)) {
+            $response = array_shift($this->storedResponse);
+        }
+        LockManager::releaseLock('getResponse');
+        if ($response === null) {
+            $response = $this->processQueue->pop();
+            if (!$response) {
+                return null;
+            }
+            $response = $this->processQueue->unserialize($response);
+        } else {
+            if (empty($response)) {
+                return null;
+            }
+        }
+        $this->startProcess($response);
+        return $response;
     }
 
-    public function fetchUrl($request)
+    public function fetchUrl(Request $request)
     {
         // LockManager::getLock("fetchUrl");
         $this->hook('beforeRequest', $this, $request);
@@ -362,10 +459,11 @@ class Spider
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
         $this->processQueue->push($this->processQueue->serialize($response));
+        $this->endFetch($request);
         // LockManager::releaseLock("fetchUrl");
     }
 
-    public function processResponse($response)
+    public function processResponse(Response $response)
     {
         // LockManager::getLock("processResponse");
 
@@ -427,6 +525,7 @@ class Spider
         LockManager::getLock('update_processed');
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
+        $this->endProcess($response);
         // LockManager::releaseLock("processResponse");
     }
 

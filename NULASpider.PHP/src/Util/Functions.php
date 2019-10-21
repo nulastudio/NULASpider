@@ -174,3 +174,11 @@ function stringDecode($string)
 {
     return \HybridUtil::byteArray2String(\HybridUtil::base64decode($string));
 }
+
+function sign($a, $b)
+{
+    if ($a == $b) {
+        return 0;
+    }
+    return $a < $b ? -1 : 1;
+}
