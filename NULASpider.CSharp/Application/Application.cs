@@ -85,9 +85,7 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 try
                 {
-                    // TODO: 优化
-                    var obj = ((PhpValue)o).ToClr();
-                    spider.fetchUrl((dynamic)obj);
+                    spider.fetchUrl((dynamic)o);
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {
@@ -106,12 +104,11 @@ namespace nulastudio.Spider
             };
             while (true)
             {
-                dynamic request = (dynamic)(spider.getRequest());
-                if (request.IsObject && !request.IsNull)
+                dynamic request = spider.getRequest();
+                if (request != null)
                 {
                     startDownloadOne();
-                    // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定
-                    int timeLimit = (int)(spider.timeLimit("request", request.ToClr().getUrl()).ToClr());
+                    int timeLimit = (int)spider.timeLimit("request", request.getUrl());
                     if (timeLimit != 0)
                     {
                         Thread.Sleep(timeLimit);
@@ -165,9 +162,7 @@ namespace nulastudio.Spider
             Action<object> action = o => {
                 try
                 {
-                    // TODO: 优化
-                    var obj = ((PhpValue)o).ToClr();
-                    spider.processResponse((dynamic)obj);
+                    spider.processResponse((dynamic)o);
                 }
                 catch (Pchp.Library.Spl.Exception ex)
                 {
@@ -187,11 +182,10 @@ namespace nulastudio.Spider
             while (true)
             {
                 dynamic response = spider.getResponse();
-                if (response.IsObject && !response.IsNull)
+                if (response != null)
                 {
                     startProcessOne();
-                    // OPTIMIZE: ToClr比较低效，为了避免产生PhpValue，需在PHP代码中做类型限定
-                    int timeLimit = (int)(spider.timeLimit("process", response.ToClr().getRequest().ToClr().getUrl()).ToClr());
+                    int timeLimit = (int)spider.timeLimit("process", response.getRequest()?.getUrl());
                     if (timeLimit != 0)
                     {
                         Thread.Sleep(timeLimit);

@@ -39,7 +39,7 @@ class Request
 
     protected $option = null;
 
-    public function __construct($method, $url, $header = [], $data = null, $contentType = self::REQUEST_CONTENT_TYPE_X_WWW_FORM_URLENCODED, $encoding = 'utf-8')
+    public function __construct(string $method, string $url, $header = [], $data = null, $contentType = self::REQUEST_CONTENT_TYPE_X_WWW_FORM_URLENCODED, $encoding = 'utf-8')
     {
         $this->id     = md5(uniqid(microtime(true), true));
         $this->method = $method;
@@ -91,7 +91,7 @@ class Request
         return $this;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }

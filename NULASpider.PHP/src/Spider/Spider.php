@@ -211,7 +211,7 @@ class Spider
             return Util\sign($a['time'], $b['time']);
         });
         $this->$key = array_map(function ($r) {
-            return unserialize($r['data']);
+            return empty($r['data']) ? false : unserialize($r['data']);
         }, $datas);
     }
 
@@ -311,7 +311,7 @@ class Spider
         unlink(DIR_DATATMP . "/response{$id}");
     }
 
-    public function getRequest()
+    public function getRequest(): ?Request
     {
         $request = null;
         LockManager::getLock('getRequest');
@@ -334,7 +334,7 @@ class Spider
         return $request;
     }
 
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         $response = null;
         LockManager::getLock('getResponse');
@@ -586,7 +586,7 @@ class Spider
         return strtoupper($encoding);
     }
 
-    public function timeLimit($type, $url)
+    public function timeLimit(string $type, string $url): int
     {
         $time = 0;
 
