@@ -67,7 +67,7 @@ if (!file_exists($spider)) {
     $spider = DIR_WORKING . '/' . $spider;
 }
 
-if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1 && file_exists($spider)) {
+if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1 || !file_exists($spider)) {
     echo "Please specify a valid startup spider script.\n";
     exit;
 }
