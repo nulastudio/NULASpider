@@ -22,6 +22,12 @@ if [ -d ${workdir} ];then
     rm -rf ${workdir}
 fi
 
+if [ -d ${rootdir}/NULASpider.PHP/Build ];then
+    rm -rf ${rootdir}/NULASpider.PHP/Build
+fi
+
+mkdir -p ${workdir}
+
 for target in ${targets[@]}; do
     segments=(${target//-/ })
     os=${segments[0]}
@@ -29,7 +35,9 @@ for target in ${targets[@]}; do
     echo "
 publishing target ${target}
 "
-    dotnet publish -c=Release -r=${target} -o=${workdir}/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
+    # -o参数不能指定绝对路径，NetCoreBeauty目录拼接会出问题
+    dotnet publish -c=Release -r=${target} -o=Build/Release/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
+    mv ${rootdir}/NULASpider.PHP/Build/Release/${target}/ ${basedir}/Release/${target}/
     if [ -d ${workdir}/${target} ];then
         if [ -d ${basedir}/dependencies/${os}/${bit} ];then
             unzip -o -qq "${basedir}/dependencies/${os}/${bit}/*.zip" -d ${workdir}/${target}/
@@ -41,6 +49,10 @@ publishing target ${target}
         zip -ry ${workdir}/${target}-${latestTag}.zip .
     fi
 done
+
+if [ -d ${rootdir}/NULASpider.PHP/Build ];then
+    rm -rf ${rootdir}/NULASpider.PHP/Build
+fi
 
 echo ${releaseTitle} > ${workdir}/releaseTitle
 echo "${releaseNote}" > ${workdir}/releaseNote

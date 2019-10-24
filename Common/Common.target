@@ -12,4 +12,11 @@
     </PropertyGroup>
     <PropertyGroup Condition="$(SourceEnable) != 'Yes'">
     </PropertyGroup>
+
+    <PropertyGroup>
+        <BeautyLibsDir>runtimes</BeautyLibsDir>
+        <!-- <DisableBeauty>False</DisableBeauty> -->
+        <BeautyLogLevel>Detail</BeautyLogLevel>
+        <GitCDN>https://gitee.com/liesauer/HostFXRPatcher</GitCDN>
+    </PropertyGroup>
 </Project>
