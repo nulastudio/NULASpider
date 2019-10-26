@@ -29,4 +29,9 @@ public class HybridUtil
     {
         return new PhpString(bytes);
     }
+
+    public static bool loadClass(Context ctx, string @class)
+    {
+        return ctx.GetDeclaredType(@class, true) != null;
+    }
 }

@@ -2,13 +2,16 @@
 
 namespace nulastudio\Spider;
 
+use HybridUtil;
 use liesauer\SimpleHttpClient;
 use nulastudio\Collections\ConcurrentMemoryQueue as ConcurrentQueue;
 use nulastudio\Collections\UniqueQueue;
 use nulastudio\Encoding\Encoding;
 use nulastudio\Log\NullLogger;
+use nulastudio\Networking\Http\Header;
 use nulastudio\Networking\Http\HtmlKit;
 use nulastudio\Networking\Http\Request;
+use nulastudio\Networking\Http\RequestOption;
 use nulastudio\Networking\Http\Response;
 use nulastudio\Spider\Application;
 use nulastudio\Spider\Exceptions\SpiderException;
@@ -118,6 +121,10 @@ class Spider
                 return $this->configs;
             case 'monitor':
                 return $this->monitor;
+            case 'storedRequest':
+                return count($this->storedRequest);
+            case 'storedResponse':
+                return count($this->storedResponse);
             // case 'callbacks':
             //     return $this->callbacks;
             default:
@@ -202,17 +209,24 @@ class Spider
         $datas = [];
         foreach (glob(DIR_DATATMP . "/{$glob}*") as $file) {
             $mtime = filemtime($file);
+            $data  = file_get_contents($file);
+            if (empty($data)) {
+                unlink($file);
+                continue;
+            }
             $datas[md5($file)] = [
-                'data' => file_get_contents($file),
+                'data' => $data,
                 'time' => $mtime,
             ];
         }
         uasort($datas, function ($a, $b) {
             return Util\sign($a['time'], $b['time']);
         });
-        $this->$key = array_map(function ($r) {
-            return empty($r['data']) ? false : unserialize($r['data']);
-        }, $datas);
+        $this->$key = array_filter(array_map(function ($r) {
+            return unserialize($r['data']);
+        }, $datas), function ($item) {
+            return !empty($item);
+        });
     }
 
     public function start()
@@ -226,9 +240,8 @@ class Spider
 
         if ($this->initWorker()) {
             Encoding::registerProvider();
-            // XXX: 预调用加载 HtmlKit 类，防止多线程下 Autoload 崩溃
-            // BAD CODE
-            HtmlKit::init();
+            // HACK: 预调用加载类，防止多线程下 Autoload 崩溃
+            $this->checkClass();
             Application::run($this);
         }
 
@@ -245,7 +258,7 @@ class Spider
          * 当存在异常退出时的数据直接返回
          * 不得重新addUrl，否则会出现重复请求
          */
-        if (count($this->storedRequest)) {
+        if (count($this->storedRequest) || count($this->storedResponse)) {
             return true;
         }
         $lastRequest = $this->getRequest();
@@ -259,6 +272,24 @@ class Spider
             }
         }
         return true;
+    }
+
+    private function checkClass()
+    {
+        $classes = [
+            SimpleHttpClient::class,
+            Header::class,
+            Request::class,
+            RequestOption::class,
+            Response::class,
+            HtmlKit::class,
+        ];
+
+        foreach ($classes as $class) {
+            if (!HybridUtil::loadClass($class)) {
+                throw new SpiderException("Preload class failed: {$class}");
+            }
+        }
     }
 
     public function addUrl($url, $prevUrl = null, $check = true)
@@ -287,25 +318,25 @@ class Spider
         }
     }
 
-    private function startFetch(Request $request)
+    public function startFetch(Request $request)
     {
         $id = $request->getID();
         file_put_contents(DIR_DATATMP . "/request{$id}", serialize($request));
     }
 
-    private function endFetch(Request $request)
+    public function endFetch(Request $request)
     {
         $id = $request->getID();
         unlink(DIR_DATATMP . "/request{$id}");
     }
 
-    private function startProcess(Response $response)
+    public function startProcess(Response $response)
     {
         $id = $response->getID();
         file_put_contents(DIR_DATATMP . "/response{$id}", serialize($response));
     }
 
-    private function endProcess(Response $response)
+    public function endProcess(Response $response)
     {
         $id = $response->getID();
         unlink(DIR_DATATMP . "/response{$id}");
@@ -330,7 +361,6 @@ class Spider
                 return null;
             }
         }
-        $this->startFetch($request);
         return $request;
     }
 
@@ -353,7 +383,6 @@ class Spider
                 return null;
             }
         }
-        $this->startProcess($response);
         return $response;
     }
 
@@ -459,7 +488,6 @@ class Spider
         $this->monitor['downloaded']++;
         LockManager::releaseLock('update_downloaded');
         $this->processQueue->push($this->processQueue->serialize($response));
-        $this->endFetch($request);
         // LockManager::releaseLock("fetchUrl");
     }
 
@@ -525,7 +553,6 @@ class Spider
         LockManager::getLock('update_processed');
         $this->monitor['processed']++;
         LockManager::releaseLock('update_processed');
-        $this->endProcess($response);
         // LockManager::releaseLock("processResponse");
     }
 

@@ -27,6 +27,8 @@ namespace nulastudio.Spider
         private static long downloaded = 0;
         private static long processing = 0;
         private static long processed = 0;
+        private static long storedRequest = 0;
+        private static long storedResponse = 0;
         private static bool inited = false;
         private static bool finished = false;
 
@@ -52,8 +54,14 @@ namespace nulastudio.Spider
         {
             Application.ctx = ctx;
             Application.spider = spider;
-            Application.configs = (PhpArray)(spider.__get((PhpValue)"configs"));
-            bool hasUI = ((PhpValue)Application.configs["UI"]).ToBoolean();
+            Application.configs = spider.__get("configs").ToArray();
+            bool hasUI = Application.configs["UI"].ToBoolean();
+            storedRequest = spider.__get("storedRequest").ToLong();
+            storedResponse = spider.__get("storedResponse").ToLong();
+            if (storedRequest != 0 || storedResponse != 0)
+            {
+                inited = true;
+            }
             Thread downloadThread = new Thread(new ParameterizedThreadStart(downloadTask));
             Thread processThread = new Thread(new ParameterizedThreadStart(processTask));
             Thread monitorThread = new Thread(new ParameterizedThreadStart(monitorTask));
@@ -67,11 +75,10 @@ namespace nulastudio.Spider
                 monitorThread.Start(Application.spider);
             }
 
-            // Thread.Sleep(3000);
             // 检测是否已完成任务
             // 有UI的情况下检测finished
             // 无UI的情况下检测downloading和processing
-            while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0))))
+            while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0 || storedRequest != 0 || storedResponse != 0))))
             {
                 Thread.Sleep(500);
             }
@@ -100,6 +107,7 @@ namespace nulastudio.Spider
                 }
                 finally {
                     finishDownloadOne();
+                    spider.endFetch((dynamic)o);
                 }
             };
             while (true)
@@ -108,6 +116,7 @@ namespace nulastudio.Spider
                 if (request != null)
                 {
                     startDownloadOne();
+                    spider.startFetch((dynamic)request);
                     int timeLimit = (int)spider.timeLimit("request", request.getUrl());
                     if (timeLimit != 0)
                     {
@@ -135,6 +144,10 @@ namespace nulastudio.Spider
         {
             lock (Application.downloadStatusObj)
             {
+                if (Application.storedRequest != 0)
+                {
+                    Application.storedRequest--;
+                }
                 Application.downloading--;
                 Application.downloaded++;
             }
@@ -150,6 +163,10 @@ namespace nulastudio.Spider
         {
             lock (Application.processStatusObj)
             {
+                if (Application.storedResponse != 0)
+                {
+                    Application.storedResponse--;
+                }
                 Application.processing--;
                 Application.processed++;
             }
@@ -177,6 +194,7 @@ namespace nulastudio.Spider
                 }
                 finally {
                     finishProcessOne();
+                    spider.endProcess((dynamic)o);
                 }
             };
             while (true)
@@ -185,6 +203,7 @@ namespace nulastudio.Spider
                 if (response != null)
                 {
                     startProcessOne();
+                    spider.startProcess((dynamic)response);
                     int timeLimit = (int)spider.timeLimit("process", response.getRequest()?.getUrl());
                     if (timeLimit != 0)
                     {
@@ -204,11 +223,11 @@ namespace nulastudio.Spider
             bool shouldStop = false;
             while (true)
             {
-                if (inited && downloading == 0 && processing == 0)
+                if (inited && downloading == 0 && processing == 0 && storedRequest == 0 && storedResponse == 0)
                 {
                     shouldStop = true;
                 }
-                PhpArray monitor = (PhpArray)(spider.__get((PhpValue)"monitor"));
+                PhpArray monitor = spider.__get("monitor").ToArray();
                 string downloaded = monitor["downloaded"].ToString();
                 string processed = monitor["processed"].ToString();
                 string error = monitor["error"].ToString();

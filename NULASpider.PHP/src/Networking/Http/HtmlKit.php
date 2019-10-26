@@ -4,9 +4,6 @@ namespace nulastudio\Networking\Http;
 
 class HtmlKit
 {
-    public static function init()
-    {}
-
     /**
      * 移除 HTML 中的字符实体
      *
