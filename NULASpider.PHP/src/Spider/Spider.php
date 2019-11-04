@@ -175,6 +175,9 @@ class Spider
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
+            'noquit'              => false, // 爬虫常驻不退出（即使抓取完毕）
+            'nodownload'          => false, // 不请求页面
+            'noprocess'           => false, // 不抓取字段
             // 限制请求速度（ms，多线程下无限制请求很容易触发反爬机制）
             'requestLimit'        => 0,
             // 限制采集速度（ms，一般情况下不应该设置）

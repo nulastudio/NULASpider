@@ -31,6 +31,9 @@ namespace nulastudio.Spider
         private static long storedResponse = 0;
         private static bool inited = false;
         private static bool finished = false;
+        private static bool noquit = false;
+        private static bool nodownload = false;
+        private static bool noprocess = false;
 
         internal static List<string> getFiles(string dir, string extension = null)
         {
@@ -56,6 +59,9 @@ namespace nulastudio.Spider
             Application.spider = spider;
             Application.configs = spider.__get("configs").ToArray();
             bool hasUI = Application.configs["UI"].ToBoolean();
+            noquit = Application.configs["noquit"].ToBoolean();
+            nodownload = Application.configs["nodownload"].ToBoolean();
+            noprocess = Application.configs["noprocess"].ToBoolean();
             storedRequest = spider.__get("storedRequest").ToLong();
             storedResponse = spider.__get("storedResponse").ToLong();
             if (storedRequest != 0 || storedResponse != 0)
@@ -68,17 +74,28 @@ namespace nulastudio.Spider
             downloadThread.IsBackground = true;
             processThread.IsBackground = true;
             monitorThread.IsBackground = true;
-            downloadThread.Start(Application.spider);
-            processThread.Start(Application.spider);
+            if (!nodownload)
+            {
+                downloadThread.Start(Application.spider);
+            } else {
+                storedRequest = 0;
+            }
+            if (!noprocess)
+            {
+                processThread.Start(Application.spider);
+            } else {
+                storedResponse = 0;
+            }
             if (hasUI)
             {
                 monitorThread.Start(Application.spider);
             }
 
             // 检测是否已完成任务
+            // noquit不退出
             // 有UI的情况下检测finished
             // 无UI的情况下检测downloading和processing
-            while (!inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0 || storedRequest != 0 || storedResponse != 0))))
+            while (noquit || !inited || ((hasUI && !finished) || (!hasUI && (downloading != 0 || processing != 0 || storedRequest != 0 || storedResponse != 0))))
             {
                 Thread.Sleep(500);
             }
@@ -223,7 +240,7 @@ namespace nulastudio.Spider
             bool shouldStop = false;
             while (true)
             {
-                if (inited && downloading == 0 && processing == 0 && storedRequest == 0 && storedResponse == 0)
+                if (!noquit && inited && downloading == 0 && processing == 0 && storedRequest == 0 && storedResponse == 0)
                 {
                     shouldStop = true;
                 }
