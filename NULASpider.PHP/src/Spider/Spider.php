@@ -516,19 +516,19 @@ class Spider
             }
         }
 
-        if ($this->isScanUrl($url) && $this->hasCallback('on_scan_url')) {
+        if ($this->isScanUrl($url, $request, $response) && $this->hasCallback('on_scan_url')) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
-        if ($this->isListUrl($url) && $this->hasCallback('on_list_url')) {
+        if ($this->isListUrl($url, $request, $response) && $this->hasCallback('on_list_url')) {
             $ret = $this->callback('on_list_url', $this, $url, $request, $response);
             if ($ret !== true) {
                 return;
             }
         }
-        if ($this->isContentUrl($url)) {
+        if ($this->isContentUrl($url, $request, $response)) {
             if ($this->hasCallback('on_content_url')) {
                 $ret = $this->callback('on_content_url', $this, $url, $request, $response);
                 if ($ret !== true) {
@@ -630,19 +630,19 @@ class Spider
         return $time < 0 ? 0 : $time;
     }
 
-    public function isScanUrl($url)
+    public function isScanUrl($url, ?Request $request = null, ?Response $response = null)
     {
-        return $this->isUrlMatchesPattern($url, $this->configs['scan_urls']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['scan_urls'], $request, $response) !== false;
     }
-    public function isListUrl($url)
+    public function isListUrl($url, ?Request $request = null, ?Response $response = null)
     {
-        return $this->isUrlMatchesPattern($url, $this->configs['list_url_pattern']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['list_url_pattern'], $request, $response) !== false;
     }
-    public function isContentUrl($url)
+    public function isContentUrl($url, ?Request $request = null, ?Response $response = null)
     {
-        return $this->isUrlMatchesPattern($url, $this->configs['content_url_pattern']) !== false;
+        return $this->isUrlMatchesPattern($url, $this->configs['content_url_pattern'], $request, $response) !== false;
     }
-    private function isUrlMatchesPattern($url, $pattern)
+    private function isUrlMatchesPattern($url, $pattern, ?Request $request = null, ?Response $response = null)
     {
         if (empty($url) || empty($pattern) || !is_string($url)) {
             return false;
@@ -656,7 +656,7 @@ class Spider
                     break;
                 }
             } else if (is_callable($patt)) {
-                if (call_user_func($patt, $url) === true) {
+                if (call_user_func($patt, $url, $request, $response) === true) {
                     $matched_pattern = $patt;
                     break;
                 }
