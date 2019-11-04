@@ -182,3 +182,18 @@ function sign($a, $b)
     }
     return $a < $b ? -1 : 1;
 }
+
+function md5_32($data)
+{
+    return md5($data);
+}
+
+function md5_16($data)
+{
+    return substr(md5_32($data), 8, 16);
+}
+
+function md5_8($data)
+{
+    return substr(md5_32($data), 12, 8);
+}

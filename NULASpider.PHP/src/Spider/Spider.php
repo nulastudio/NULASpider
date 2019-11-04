@@ -28,6 +28,11 @@ use Psr\Log\LogLevel;
 
 class Spider
 {
+    // 爬虫唯一名字
+    private $name;
+    // 爬虫实例唯一名字（md5）
+    private $uid;
+
     // URL 队列（UniqueQueue）
     private $urlQueue;
     // 请求队列
@@ -117,6 +122,10 @@ class Spider
     {
         // readonly
         switch ($prop) {
+            case 'name':
+                return $this->name;
+            case 'uid':
+                return $this->uid;
             case 'configs':
                 return $this->configs;
             case 'monitor':
@@ -172,6 +181,9 @@ class Spider
 
     private function checkConfig($configs)
     {
+        $name = $configs['name'] ?? '';
+        unset($configs['name']);
+        unset($configs['uid']);
         $default_configs = [
             'thread'              => 5,
             'UI'                  => true,
@@ -196,6 +208,19 @@ class Spider
             'export'              => [],
         ];
         $this->configs = array_replace_recursive($default_configs, $configs);
+        if (empty($name)) {
+            // 从scan_urls获取（第一个string类型的入口）
+            foreach ($this->configs['scan_urls'] as $entry) {
+                if (is_string($entry)) {
+                    $name = 'spider-' . Util\md5_8($entry);
+                }
+            }
+            if (empty($name)) {
+                $name = 'unnamed-spider-' . Util\md5_8(microtime(true));
+            }
+        }
+        $this->name = $name;
+        $this->uid = Util\md5_16($this->name) . Util\md5_16(uniqid(microtime(true), true));
     }
 
     private function restoreData()
