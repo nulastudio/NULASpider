@@ -28,10 +28,10 @@
     <ProjectReference Include="../nula-peachpie/src/PDO/Peachpie.Library.PDO.SqlSrv/Peachpie.Library.PDO.SqlSrv.csproj" />
   </ItemGroup>
   <ItemGroup Condition="$(SourceEnable) != 'Yes'">
-    <PackageReference Include="Peachpie.App" Version="0.9.44-dev-p.d2597a5f" />
-    <PackageReference Include="Peachpie.Library.PDO.MySQL" Version="0.9.44-dev-p.d2597a5f" />
-    <PackageReference Include="Peachpie.Library.PDO.Sqlite" Version="0.9.44-dev-p.d2597a5f" />
-    <PackageReference Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.44-dev-p.d2597a5f" />
+    <PackageReference Include="Peachpie.App" Version="0.9.500-dev-p.cd7f96ff" />
+    <PackageReference Include="Peachpie.Library.PDO.MySQL" Version="0.9.500-dev-p.cd7f96ff" />
+    <PackageReference Include="Peachpie.Library.PDO.Sqlite" Version="0.9.500-dev-p.cd7f96ff" />
+    <PackageReference Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.500-dev-p.cd7f96ff" />
   </ItemGroup>
 
 </Project>
