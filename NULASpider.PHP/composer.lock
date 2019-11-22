@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7afabb695ddac6667422c0dd5c365526",
+    "content-hash": "e5ad3158abc6fb275d0ffdae689e3252",
     "packages": [
         {
             "name": "flow/jsonpath",
@@ -85,38 +85,6 @@
             ],
             "description": "getMiddleText",
             "time": "2019-01-27T08:34:16+00:00"
-        },
-        {
-            "name": "liesauer/kodmcrypt",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/liesauer/KODMcrypt.git",
-                "reference": "a42946d04bb2d781fde6ece3f7ab97d26487485a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/liesauer/KODMcrypt/zipball/a42946d04bb2d781fde6ece3f7ab97d26487485a",
-                "reference": "a42946d04bb2d781fde6ece3f7ab97d26487485a",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "time": "2018-07-21T06:20:25+00:00"
         },
         {
             "name": "liesauer/simple-http-client",
