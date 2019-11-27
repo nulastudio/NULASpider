@@ -35,8 +35,7 @@ for target in ${targets[@]}; do
     echo "
 publishing target ${target}
 "
-    # -o参数不能指定绝对路径，NetCoreBeauty目录拼接会出问题
-    dotnet publish -c=Release -r=${target} -o=Build/Release/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
+    dotnet publish -c=Release -r=${target} -o=${rootdir}/Build/Release/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
     mv ${rootdir}/NULASpider.PHP/Build/Release/${target}/ ${basedir}/Release/${target}/
     if [ -d ${workdir}/${target} ];then
         if [ -d ${basedir}/dependencies/${os}/${bit} ];then

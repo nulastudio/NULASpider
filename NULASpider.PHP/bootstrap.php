@@ -69,7 +69,7 @@ if (!file_exists($spider)) {
 
 if (!$spider || preg_match('#.*?\.php$#', $spider) !== 1 || !file_exists($spider)) {
     echo "Please specify a valid startup spider script.\n";
-    exit;
+    exit(0);
 }
 
 // try {
