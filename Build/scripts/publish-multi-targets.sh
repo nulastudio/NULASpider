@@ -36,7 +36,6 @@ for target in ${targets[@]}; do
 publishing target ${target}
 "
     dotnet publish -c=Release -r=${target} -o=${rootdir}/Build/Release/${target}/ ${workdir}/../../NULASpider.PHP/NULASpider.PHP.msbuildproj
-    mv ${rootdir}/NULASpider.PHP/Build/Release/${target}/ ${basedir}/Release/${target}/
     if [ -d ${workdir}/${target} ];then
         if [ -d ${basedir}/dependencies/${os}/${bit} ];then
             unzip -o -qq "${basedir}/dependencies/${os}/${bit}/*.zip" -d ${workdir}/${target}/
