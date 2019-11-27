@@ -155,7 +155,7 @@ function isRegex($pattern)
     return preg_match('/^[^\da-zA-Z\s].*[^\da-zA-Z\s][a-zA-Z]*$/', $pattern) === 1;
 }
 
-function string2BytesArray($string)
+function string2BytesArray($string): array
 {
     return array_values(unpack('C*', $string));
 }

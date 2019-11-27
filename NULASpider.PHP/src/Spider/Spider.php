@@ -526,7 +526,7 @@ class Spider
         // 编码转换
         $request           = $response->getRequest();
         $url               = $request->getUrl();
-        $content           = $response->getRawContent();
+        $content           = /*(binary)*/$response->getRawContent();
         $input_encoding    = strtoupper($this->configs['input_encoding']);
         $fallback_encoding = strtoupper($this->configs['fallback_encoding']);
         $encoding          = $this->encodingDetect($response, $input_encoding);
@@ -543,6 +543,8 @@ class Spider
                 $content = iconv($encoding, 'UTF-8//TRANSLIT', $content);
             }
         }
+
+        // $content = HybridUtil::toBlob($content);
 
         if ($this->isScanUrl($url, $request, $response) && $this->hasCallback('on_scan_url')) {
             $ret = $this->callback('on_scan_url', $this, $url, $request, $response);
@@ -755,7 +757,7 @@ class Spider
                 $nodes = $document->DocumentNode->SelectNodes("//a[@href]") ?? [];
                 foreach ($nodes as $node) {
                     // $urls[] = $node->Attributes["href"]->Value;
-                    $val = $node->Attributes->get_Item('href')->Value;
+                    $val = HybridUtil::getStrItem($node->Attributes, 'href')->Value;
                     if ($val) {
                         $urls[] = HtmlKit::removeHtmlEntities($val);
                     }
@@ -966,7 +968,7 @@ class Spider
             default:
                 if ($action && $action{0} === '@') {
                     /* property */
-                    return $node->Attributes->get_Item(substr($action, 1))->Value;
+                    return HybridUtil::getStrItem($node->Attributes, substr($action, 1))->Value;
                 }
                 return $node->InnerHtml;
         }

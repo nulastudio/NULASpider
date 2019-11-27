@@ -1,3 +1,5 @@
+using System.Text;
+using System.Linq;
 using System;
 using Pchp.Core;
 using Pchp.Library;
@@ -33,5 +35,26 @@ public class HybridUtil
     public static bool loadClass(Context ctx, string @class)
     {
         return ctx.GetDeclaredType(@class, true) != null;
+    }
+
+    public static PhpValue getStrItem(Context ctx, PhpValue obj, PhpValue key)
+    {
+        return getItem(ctx, obj.ToClr(), key.ToString(ctx));
+    }
+    public static PhpValue getIntItem(Context ctx, PhpValue obj, PhpValue key)
+    {
+        return getItem(ctx, obj.ToClr(), key.ToInt());
+    }
+    private static PhpValue getItem(Context ctx, dynamic obj, dynamic key)
+    {
+        return PhpValue.FromClr(obj[key]);
+    }
+
+    public static PhpString toBlob(Context ctx, PhpString @string)
+    {
+        // byte[] bytes = phpArray.Values.Select((val) => {
+        //     return (byte)val.ToInt();
+        // }).ToArray();
+        return new PhpString(new PhpString.Blob(@string.ToBytes(ctx)));
     }
 }
