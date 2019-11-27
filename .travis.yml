@@ -22,6 +22,7 @@ install:
 script:
   - sudo bash ./Build/scripts/build-docs.sh
   - sudo bash ./Build/scripts/publish-multi-targets.sh
+  - ./Build/Release/linux-x64/NULASpider.PHP
 
 before_deploy:
   - curl https://github.com/liesauer/github-release-cli/releases/download/1.3.0/github-releaser-travis -L --output github-releaser && chmod +x github-releaser
